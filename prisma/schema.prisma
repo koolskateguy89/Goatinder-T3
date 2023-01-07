@@ -55,6 +55,9 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    profile       Profile?
+    disliked      Shoe[]    @relation("Dislikes")
+    liked         Shoe[]    @relation("Likes")
 }
 
 model VerificationToken {
@@ -63,4 +66,20 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+// TODO
+// decide what to show
+// decide if necessary
+model Profile {
+    userId String @id
+    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Shoe {
+    searchSKU String @id
+    json      String
+
+    dislikes User[] @relation("Dislikes")
+    likes    User[] @relation("Likes")
 }
