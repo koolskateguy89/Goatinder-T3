@@ -3,9 +3,40 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "plugins": ["@typescript-eslint"],
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier"
+  ],
   "rules": {
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/no-misused-promises": "off",
+    "@typescript-eslint/return-await": "off",
+    "@typescript-eslint/require-await": "off", // really annoying during development
+
+    // overriding [mostly] airbnb rules
+    "react/react-in-jsx-scope": "off",
+    "react/prop-types": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/function-component-definition": "off",
+    "arrow-body-style": "off",
+    "no-param-reassign": "off",
+    "spaced-comment": "off", // like the idea but isn't good with doc comments
+    "no-console": "off",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-unused-vars": "warn", // annoying having it as error during development
+
+    // my own rules
+    "no-duplicate-imports": "error",
     "@typescript-eslint/consistent-type-imports": "warn"
   }
 }
