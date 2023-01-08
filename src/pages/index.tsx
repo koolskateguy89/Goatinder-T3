@@ -52,15 +52,7 @@ const Shoe = ({ shoe }: { shoe: GoatShoe }) => {
   );
 };
 
-/*
-would like to have like an infinite scolling functionality, where
-the page will be increased by 1 when the user scrolls to the bottom
-and make a new request for next page of results
-*/
-
-const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
+const ShoesSection = () => {
   // TODO: set query & filters, use debounced input for query
   // not sure about filters, maybe a dropdown? or switches?
   const [query, setQuery] = useState("yeezy");
@@ -77,7 +69,23 @@ const Home: NextPage = () => {
     return <div>Loading...</div>;
   }
 
-  console.log(shoes.data);
+  return (
+    <div className="flex flex-row flex-wrap justify-center gap-2">
+      {shoes.data?.map((shoe) => (
+        <Shoe key={shoe.objectID} shoe={shoe} />
+      ))}
+    </div>
+  );
+};
+
+/*
+would like to have like an infinite scolling functionality, where
+the page will be increased by 1 when the user scrolls to the bottom
+and make a new request for next page of results
+*/
+
+const Home: NextPage = () => {
+  const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
   return (
     <>
@@ -91,14 +99,13 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
           </h1>
-          <AuthShowcase />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <Link
               className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
               href="https://create.t3.gg/en/usage/first-steps"
               target="_blank"
             >
-              <h3 className="text-2xl font-bold">First Steps →</h3>
+              <h2 className="text-2xl font-bold">First Steps →</h2>
               <div className="text-lg">
                 Just the basics - Everything you need to know to set up your
                 database and authentication.
@@ -109,24 +116,21 @@ const Home: NextPage = () => {
               href="https://create.t3.gg/en/introduction"
               target="_blank"
             >
-              <h3 className="text-2xl font-bold">Documentation →</h3>
+              <h2 className="text-2xl font-bold">Documentation →</h2>
               <div className="text-lg">
                 Learn more about Create T3 App, the libraries it uses, and how
                 to deploy it.
               </div>
             </Link>
           </div>
+          <AuthShowcase />
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl text-white">
               {hello.data ? hello.data.greeting : "Loading tRPC query..."}
             </p>
           </div>
 
-          <div className="flex flex-row flex-wrap justify-center gap-2">
-            {shoes.data?.map((shoe) => (
-              <Shoe key={shoe.objectID} shoe={shoe} />
-            ))}
-          </div>
+          <ShoesSection />
         </div>
       </main>
     </>
