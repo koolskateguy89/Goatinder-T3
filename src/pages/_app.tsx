@@ -2,8 +2,10 @@ import { type AppType } from "next/app";
 import { Inter } from "@next/font/google";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { ThemeProvider } from "next-themes";
 
 import { api } from "utils/api";
+import Container from "components/Container";
 
 import "styles/globals.css";
 
@@ -16,7 +18,11 @@ const MyApp: AppType<{ session: Session | null }> = ({
   return (
     <div className={inter.className}>
       <SessionProvider session={session}>
-        <Component {...pageProps} />
+        <ThemeProvider attribute="class">
+          <Container>
+            <Component {...pageProps} />
+          </Container>
+        </ThemeProvider>
       </SessionProvider>
     </div>
   );

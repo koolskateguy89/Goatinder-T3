@@ -17,6 +17,7 @@ specifiers:
   '@typescript-eslint/parser': ^5.48.0
   autoprefixer: ^10.4.13
   axios: ^1.2.2
+  clsx: ^1.2.1
   eslint: ^8.31.0
   eslint-config-airbnb: ^19.0.4
   eslint-config-airbnb-typescript: ^17.0.0
@@ -26,12 +27,14 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   next: 13.1.1
   next-auth: ^4.18.8
+  next-themes: ^0.2.1
   postcss: ^8.4.21
   prettier: ^2.8.2
   prettier-plugin-tailwindcss: ^0.2.1
   prisma: ^4.8.1
   react: 18.2.0
   react-dom: 18.2.0
+  react-icons: ^4.7.1
   superjson: 1.12.1
   tailwindcss: ^3.2.4
   type-fest: ^3.5.1
@@ -48,10 +51,13 @@ dependencies:
   '@trpc/react-query': 10.8.1_4ojdwnpnbtgkfc47umwlqljm64
   '@trpc/server': 10.8.1
   axios: 1.2.2
+  clsx: 1.2.1
   next: 13.1.1_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.18.8_q76c2b4vyoegvsbrcwkfvimnai
+  next-themes: 0.2.1_q76c2b4vyoegvsbrcwkfvimnai
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-icons: 4.7.1_react@18.2.0
   superjson: 1.12.1
   zod: 3.20.2
 
@@ -834,6 +840,11 @@ packages:
 
   /client-only/0.0.1:
     resolution: {integrity: sha512-IV3Ou0jSMzZrd3pZ48nLkT9DA7Ag1pnPzaiQhpW7c3RbcqqzvzzVu+L8gfqMp/8IM2MQtSiqaCxrrcfu8I8rMA==}
+    dev: false
+
+  /clsx/1.2.1:
+    resolution: {integrity: sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==}
+    engines: {node: '>=6'}
     dev: false
 
   /color-convert/2.0.1:
@@ -2135,6 +2146,18 @@ packages:
       uuid: 8.3.2
     dev: false
 
+  /next-themes/0.2.1_q76c2b4vyoegvsbrcwkfvimnai:
+    resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
+    peerDependencies:
+      next: '*'
+      react: '*'
+      react-dom: '*'
+    dependencies:
+      next: 13.1.1_biqbaboplfbrettd7655fr4n2y
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /next/13.1.1_biqbaboplfbrettd7655fr4n2y:
     resolution: {integrity: sha512-R5eBAaIa3X7LJeYvv1bMdGnAVF4fVToEjim7MkflceFPuANY3YyvFxXee/A+acrSYwYPvOvf7f6v/BM/48ea5w==}
     engines: {node: '>=14.6.0'}
@@ -2522,6 +2545,14 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-icons/4.7.1_react@18.2.0:
+    resolution: {integrity: sha512-yHd3oKGMgm7zxo3EA7H2n7vxSoiGmHk5t6Ou4bXsfcgWyhfDKMpyKfhHR6Bjnn63c+YXBLBPUql9H4wPJM6sXw==}
+    peerDependencies:
+      react: '*'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is/16.13.1:
