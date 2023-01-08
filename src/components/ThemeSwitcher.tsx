@@ -1,4 +1,3 @@
-// react-icons
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
@@ -9,23 +8,34 @@ export default function ThemeSwitcher() {
   const [mounted, setMounded] = useState(false);
 
   useEffect(() => setMounded(true), []);
-  if (!mounted) return null;
 
-  const handleClick = () =>
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  // workaround for daisyui theme
+  // https://daisyui.com/docs/themes/
+  // thing is next-themes supports how they do it ([data-theme="..."]])
+  // but tailwind does not.
+  useEffect(() => {
+    document.documentElement.dataset.theme = resolvedTheme;
+  }, [resolvedTheme]);
+
+  const checked = resolvedTheme === "light";
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setTheme(e.target.checked ? "dark" : "light");
+  };
 
   return (
-    <button
-      type="button"
-      aria-label="Toggle Dark Mode"
-      className="flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-200 text-xl  text-neutral-800 ring-gray-300  transition-all hover:ring-2  dark:bg-neutral-600 dark:text-neutral-200"
-      onClick={handleClick}
-    >
-      {resolvedTheme === "dark" ? (
-        <MdOutlineLightMode />
-      ) : (
-        <MdOutlineDarkMode />
+    // https://daisyui.com/components/swap/
+    <label className="swap-rotate swap btn-ghost btn h-9 min-h-0 w-9 min-w-0 text-lg motion-reduce:no-animation motion-reduce:[&_:where(.swap-on,.swap-off)]:!transform-none">
+      {mounted && (
+        <>
+          <span className="sr-only">
+            Toggle {checked ? "Dark" : "Light"} Mode
+          </span>
+          <input type="checkbox" checked={checked} onChange={handleChange} />
+          <MdOutlineLightMode className="swap-on" />
+          <MdOutlineDarkMode className="swap-off" />
+        </>
       )}
-    </button>
+    </label>
   );
 }

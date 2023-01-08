@@ -9,7 +9,9 @@ export default function Container({ children }: ContainerProps) {
       <div className="flex items-center justify-between px-4">
         <span />
         <NavTabs />
-        <ThemeSwitcher />
+        <div className="flex">
+          <ThemeSwitcher />
+        </div>
       </div>
       {children}
     </div>

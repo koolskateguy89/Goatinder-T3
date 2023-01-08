@@ -36,6 +36,8 @@
     "@typescript-eslint/no-unused-vars": "warn", // annoying having it as error during development
     "no-restricted-syntax": "off", // saying that for...of is not allowed
     "no-underscore-dangle": "off", // annoying to deal with when using external libraries
+    "global-require": "off",
+    "jsx-a11y/label-has-associated-control": "off", // gives error when an input is inside label, not worth customizing
 
     // my own rules
     "no-duplicate-imports": "error",
