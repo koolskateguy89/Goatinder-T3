@@ -20,7 +20,7 @@ export default function ThemeSwitcher() {
   const checked = resolvedTheme === "light";
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTheme(e.target.checked ? "dark" : "light");
+    setTheme(e.target.checked ? "light" : "dark");
   };
 
   return (
