@@ -18,11 +18,12 @@ export const goatRouter = createTRPCRouter({
     .input(
       z.object({
         query: z.string(),
+        page: z.number().int().nonnegative(),
         filters: FiltersSchema.nullish(),
       })
     )
     .query(async ({ input }) => {
-      const { query, filters } = input;
+      const { query, page, filters } = input;
 
       const url = getAlgoliaUrl(
         env.ALGOLIA_APPLICATION_ID,
@@ -43,7 +44,7 @@ export const goatRouter = createTRPCRouter({
           requests: [
             {
               indexName: "product_variants_v2",
-              params: `distinct=true&query=${query}&hitsPerPage=100`,
+              params: `distinct=true&query=${query}&hitsPerPage=20&page=${page}`,
               // params: `highlightPreTag=%3Cais-highlight-0000000000%3E&highlightPostTag=%3C%2Fais-highlight-0000000000%3E&distinct=true&query=${query}&maxValuesPerFacet=30&page=${page}&facets=%5B%22product_category%22%2C%22instant_ship_lowest_price_cents%22%2C%22single_gender%22%2C%22presentation_size%22%2C%22shoe_condition%22%2C%22brand_name%22%2C%22color%22%2C%22silhouette%22%2C%22designer%22%2C%22upper_material%22%2C%22midsole%22%2C%22category%22%2C%22release_date_name%22%5D&tagFilters=&facetFilters=%5B%5B%22product_category%3Ashoes%22%5D%5D`,
             },
           ],

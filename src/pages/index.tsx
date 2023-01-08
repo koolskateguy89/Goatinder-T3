@@ -52,6 +52,12 @@ const Shoe = ({ shoe }: { shoe: GoatShoe }) => {
   );
 };
 
+/*
+would like to have like an infinite scolling functionality, where
+the page will be increased by 1 when the user scrolls to the bottom
+and make a new request for next page of results
+*/
+
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
 
@@ -59,9 +65,11 @@ const Home: NextPage = () => {
   // not sure about filters, maybe a dropdown? or switches?
   const [query, setQuery] = useState("yeezy");
   const [filters, setFilters] = useState(null);
+  const [page, setPage] = useState(0); // or 0?
 
   const shoes = api.goat.search.useQuery({
     query,
+    page,
     // filters: null,
   });
 
