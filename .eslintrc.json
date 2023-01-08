@@ -34,6 +34,8 @@
     "no-console": "off",
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-unused-vars": "warn", // annoying having it as error during development
+    "no-restricted-syntax": "off", // saying that for...of is not allowed
+    "no-underscore-dangle": "off", // annoying to deal with when using external libraries
 
     // my own rules
     "no-duplicate-imports": "error",

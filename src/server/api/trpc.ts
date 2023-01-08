@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 /**
  * YOU PROBABLY DON'T NEED TO EDIT THIS FILE, UNLESS:
  * 1. You want to modify request context (see Part 1)
@@ -19,8 +20,8 @@
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { type Session } from "next-auth";
 
-import { getServerAuthSession } from "../auth";
-import { prisma } from "../db";
+import { getServerAuthSession } from "server/auth";
+import { prisma } from "server/db";
 
 type CreateContextOptions = {
   session: Session | null;
