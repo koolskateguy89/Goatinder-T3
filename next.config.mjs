@@ -17,5 +17,13 @@ const config = {
   experimental: {
     appDir: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "image.goat.com",
+      },
+    ],
+  },
 };
 export default config;

@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import { api } from "utils/api";
-import type { GoatShoe } from "types/goat-shoe";
 
 const AuthShowcase: React.FC = () => {
   const { data: sessionData } = useSession();
@@ -33,43 +30,8 @@ const AuthShowcase: React.FC = () => {
   );
 };
 
-const Shoe = ({ shoe }: { shoe: GoatShoe }) => {
-  return (
-    <div className="flex flex-col rounded-2xl border-4 border-solid border-white/10 p-3 text-gray-500 dark:text-gray-300">
-      <Image
-        src={shoe.grid_picture_url}
-        alt={shoe.name}
-        width={300}
-        height={300}
-      />
-      <div className="flex flex-col gap-2">
-        {/* TODO: fix wrapping */}
-        <p className="max-w-full break-all text-lg font-bold">{shoe.name}</p>
-        <p className="text-sm font-bold">{shoe.brand_name}</p>
-        <p className="text-lg font-bold">{shoe.retail_price_cents_gbp}</p>
-      </div>
-    </div>
-  );
-};
-
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
-  // TODO: set query & filters, use debounced input for query
-  // not sure about filters, maybe a dropdown? or switches?
-  const [query, setQuery] = useState("yeezy");
-  const [filters, setFilters] = useState(null);
-
-  const shoes = api.goat.search.useQuery({
-    query,
-    // filters: null,
-  });
-
-  if (shoes.isLoading) {
-    return <div>Loading...</div>;
-  }
-
-  console.log(shoes.data);
 
   return (
     <>
@@ -83,7 +45,6 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> App
           </h1>
-          <AuthShowcase />
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
             <Link
               className="flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 text-white hover:bg-white/20"
@@ -112,12 +73,7 @@ const Home: NextPage = () => {
             <p className="text-2xl text-white">
               {hello.data ? hello.data.greeting : "Loading tRPC query..."}
             </p>
-          </div>
-
-          <div className="flex flex-row flex-wrap justify-center gap-2">
-            {shoes.data?.map((shoe) => (
-              <Shoe key={shoe.objectID} shoe={shoe} />
-            ))}
+            <AuthShowcase />
           </div>
         </div>
       </main>
