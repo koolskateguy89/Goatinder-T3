@@ -1,16 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { z } from "zod";
 
+const genders = ["men", "women", "youth", "infant"] as const;
+
+const shoeConditions = ["new_no_defects", "used", "new_with_defects"] as const;
+
+export type Gender = (typeof genders)[number];
+
+export type ShoeCondition = (typeof shoeConditions)[number];
+
 export const FiltersSchema = z.object({
-  gender: z.enum(["men", "women", "youth", "infant"]),
-  condition: z.enum(["new_no_defects", "used", "new_with_defects"]),
+  gender: z.enum(genders),
+  condition: z.enum(shoeConditions),
 });
 
 export type Filters = z.infer<typeof FiltersSchema>;
-
-export type Gender = Filters["gender"];
-
-export type ShoeCondition = Filters["condition"];
 
 export type GoatShoe = {
   // [key: string]: any | undefined;
