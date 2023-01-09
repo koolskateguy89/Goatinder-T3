@@ -12,18 +12,7 @@ import { prisma } from "server/db";
 
 const ProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ user }) => {
-  // maybe use 404 page?
-  if (!user)
-    return (
-      <>
-        <Head>
-          <title>Not found - goaTinder</title>
-        </Head>
-        <div>no user with thhis id</div>
-      </>
-    );
-
+> = ({ user, isMyProfile }) => {
   const title = `${user.name} - goaTinder`;
 
   return (
@@ -31,9 +20,11 @@ const ProfilePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <div>
-        Profile
-        <h1 className="text-2xl font-bold">{user.name}</h1>
+      <div className="flex flex-col items-center gap-4">
+        <h1 className="text-5xl font-extrabold underline underline-offset-4">
+          Profile
+        </h1>
+        <h2 className="text-2xl font-semibold">{user.name}</h2>
         {user.image && (
           <div className="avatar">
             <div className="w-24 rounded-full">
@@ -47,6 +38,11 @@ const ProfilePage: NextPage<
               />
             </div>
           </div>
+        )}
+        {isMyProfile && (
+          <button type="button" className="btn-secondary btn w-fit">
+            Edit Profile
+          </button>
         )}
       </div>
     </>
@@ -62,10 +58,9 @@ export const getServerSideProps = (async (context) => {
     authOptions
   );
 
-  // TODO: check it's their profile to enable
-  // extra functionality
+  const userId = context.params?.id;
 
-  const userId = context.params?.id as string | undefined;
+  const isMyProfile = session?.user?.id === userId;
 
   // TODO: query db
 
@@ -80,9 +75,16 @@ export const getServerSideProps = (async (context) => {
     },
   });
 
+  if (!user)
+    return {
+      notFound: true,
+    };
+
   return {
     props: {
       user,
+      isMyProfile,
     },
   };
-}) satisfies GetServerSideProps;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+}) satisfies GetServerSideProps<any, { id: string }>;
