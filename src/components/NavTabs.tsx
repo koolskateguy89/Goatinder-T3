@@ -16,10 +16,10 @@ function NavTab({ href, children }: NavTabProps) {
       aria-selected={active}
       role="tab"
       className={clsx(
-        "relative flex h-full items-center px-3 transition-colors after:absolute after:inset-x-2 after:top-[calc(100%-theme(spacing.1))] after:h-1 after:bg-primary hover:text-base-content motion-safe:after:transition-transform",
+        "relative flex h-full items-center px-3 transition-colors after:absolute after:inset-x-2 after:top-[calc(100%-theme(spacing.1))] after:h-1 after:bg-primary motion-safe:after:transition-transform",
         active
           ? "font-semibold text-base-content after:scale-y-100 after:ease-out"
-          : "font-normal text-base-content/80 after:scale-y-0 after:ease-in dark:text-base-content/70"
+          : "font-normal text-base-content/80 after:scale-y-0 after:ease-in hover:text-base-content dark:text-base-content/70 dark:hover:text-base-content"
       )}
     >
       {children}
