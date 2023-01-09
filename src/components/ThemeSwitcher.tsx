@@ -25,7 +25,7 @@ export default function ThemeSwitcher() {
 
   return (
     // https://daisyui.com/components/swap/
-    // prettier-ignore
+    // TODO: try to change to a button
     <label className="navbar-icon-btn !swap motion-safe:swap-rotate">
       {mounted && (
         <>

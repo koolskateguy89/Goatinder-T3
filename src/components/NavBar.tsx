@@ -9,7 +9,7 @@ import Profile from "./navbar/Profile";
 export default function NavBar() {
   return (
     // https://daisyui.com/components/navbar/#responsive-dropdown-menu-on-small-screen-center-menu-on-large-screen
-    <div className="navbar items-stretch py-0">
+    <header className="navbar items-stretch py-0">
       <div className="navbar-start">
         <MobileNav />
         <Link
@@ -26,13 +26,17 @@ export default function NavBar() {
       </div>
 
       <div className="navbar-end">
-        <button type="button" className="navbar-icon-btn">
+        <button type="button" className="navbar-icon-btn" aria-label="Search">
           <span>
             <MdSearch />
           </span>
         </button>
 
-        <button type="button" className="navbar-icon-btn">
+        <button
+          type="button"
+          className="navbar-icon-btn"
+          aria-label="Notifications"
+        >
           <div className="indicator">
             <MdOutlineNotifications />
             <span className="badge-primary badge badge-xs indicator-item" />
@@ -43,6 +47,6 @@ export default function NavBar() {
 
         <Profile />
       </div>
-    </div>
+    </header>
   );
 }

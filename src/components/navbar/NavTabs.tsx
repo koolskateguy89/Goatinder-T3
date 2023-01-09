@@ -9,8 +9,6 @@ function NavTab({ href, children }: React.PropsWithChildren<{ href: string }>) {
   return (
     <Link
       href={href}
-      aria-selected={active}
-      role="tab"
       className={clsx(
         "relative flex h-full items-center px-3 after:absolute after:inset-x-2 after:top-[calc(100%-theme(spacing.1))] after:h-1 after:bg-primary motion-safe:after:transition-transform",
         active
@@ -25,14 +23,15 @@ function NavTab({ href, children }: React.PropsWithChildren<{ href: string }>) {
 
 export default function NavTabs() {
   return (
-    <div
+    <nav
       className="flex h-full flex-row items-stretch"
-      // aria-label="website navigation"
-      role="tablist"
+      role="navigation"
+      aria-label="Main"
     >
       <NavTab href="/">Home</NavTab>
+      <NavTab href="/shoes">Shoes</NavTab>
       <NavTab href="/about">About</NavTab>
       <NavTab href="/contact">Contact</NavTab>
-    </div>
+    </nav>
   );
 }
