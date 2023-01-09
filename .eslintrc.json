@@ -39,6 +39,8 @@
     "global-require": "off",
     "jsx-a11y/label-has-associated-control": "off", // gives error when an input is inside label, not worth customizing
     "jsx-a11y/no-noninteractive-tabindex": "off", // will deal with it later (hopefully)
+    "jsx-a11y/click-events-have-key-events": "off", // annoying during development
+    "jsx-a11y/no-noninteractive-element-interactions": "off", // annoying during development
 
     // my own rules
     "no-duplicate-imports": "error",
