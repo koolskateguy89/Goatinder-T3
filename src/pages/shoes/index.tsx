@@ -9,24 +9,23 @@ import type { GoatShoe } from "types/goat-shoe";
 
 const Shoe = ({ shoe }: { shoe: GoatShoe }) => {
   return (
-    <div className="flex flex-col rounded-2xl border-4 border-solid border-white/10 p-3 text-gray-500 dark:text-gray-300">
-      <Image
-        src={shoe.grid_picture_url}
-        alt={shoe.name}
-        width={300}
-        height={300}
-      />
-      <div className="flex flex-col gap-2">
-        {/* TODO: fix wrapping */}
-        <Link
-          href={`/shoes/${shoe.search_sku}`}
-          className="max-w-full break-all text-lg font-bold"
-        >
-          {shoe.name}
-        </Link>
-        <p className="max-w-full break-all text-lg font-bold">{shoe.name}</p>
-        <p className="text-sm font-bold">{shoe.brand_name}</p>
-        <p className="text-lg font-bold">{shoe.retail_price_cents_gbp}</p>
+    // using negative margins for image & body to get rid of the spacing in
+    // the image on smaller screens
+    <div className="card ring-2 ring-primary">
+      <figure className="relative mx-auto h-60 w-60 max-md:-mt-10 md:h-60 md:w-60">
+        <Image src={shoe.grid_picture_url} alt={shoe.name} fill sizes="15rem" />
+      </figure>
+      <div className="card-body items-center text-center max-md:-mt-10">
+        <h2 className="link-hover link-primary link card-title">
+          <Link href={`/shoes/${shoe.search_sku}`}>{shoe.name}</Link>
+        </h2>
+        <p className="text-sm">{shoe.brand_name}</p>
+        <p>Retail: £{shoe.retail_price_cents_gbp * 0.01}</p>
+        <div className="card-actions">
+          <button type="button" className="btn-primary btn">
+            Buy Now
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -34,15 +33,16 @@ const Shoe = ({ shoe }: { shoe: GoatShoe }) => {
 
 const ShoesSection = () => {
   // TODO: set query & filters, use debounced input for query
-  // not sure about filters, maybe a dropdown? or switches?
+  // not sure about implementing filters, maybe a dropdown? or switches?
   const [query, setQuery] = useState("yeezy");
   const [filters, setFilters] = useState(null);
-  const [page, setPage] = useState(0); // or 0?
+  // page will be automatically set by infiinte scrolling thingy?
+  const [page, setPage] = useState(0);
 
   const shoes = api.goat.search.useQuery({
     query,
     page,
-    // filters: null,
+    filters,
   });
 
   if (shoes.isLoading) {
@@ -50,7 +50,10 @@ const ShoesSection = () => {
   }
 
   return (
-    <div className="flex flex-row flex-wrap justify-center gap-2">
+    <div
+      className="mx-auto grid max-w-5xl grid-cols-1 grid-rows-[auto] gap-4
+    sm:grid-cols-2 lg:grid-cols-3"
+    >
       {shoes.data?.map((shoe) => (
         <Shoe key={shoe.objectID} shoe={shoe} />
       ))}
@@ -70,7 +73,7 @@ const ShoesPage: NextPage = () => {
       <Head>
         <title>Shoes - goaTinder</title>
       </Head>
-      <main>
+      <main className="mx-6 mt-4">
         <ShoesSection />
       </main>
     </>
