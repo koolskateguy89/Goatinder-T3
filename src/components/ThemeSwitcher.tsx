@@ -25,12 +25,10 @@ export default function ThemeSwitcher() {
 
   return (
     // https://daisyui.com/components/swap/
-    <label className="swap-rotate swap btn-ghost btn h-9 min-h-0 w-9 min-w-0 text-lg motion-reduce:no-animation motion-reduce:[&_:where(.swap-on,.swap-off)]:!transform-none">
+    <label className="swap btn-ghost btn-circle btn text-xl motion-safe:swap-rotate">
       {mounted && (
         <>
-          <span className="sr-only">
-            Toggle {checked ? "Dark" : "Light"} Mode
-          </span>
+          <span className="sr-only">Toggle Theme</span>
           <input type="checkbox" checked={checked} onChange={handleChange} />
           <MdOutlineLightMode className="swap-on" />
           <MdOutlineDarkMode className="swap-off" />
