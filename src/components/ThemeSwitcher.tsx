@@ -19,18 +19,32 @@ export default function ThemeSwitcher() {
 
   const checked = resolvedTheme === "light";
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
+    if (e.key === "Enter")
+      setTheme(resolvedTheme === "light" ? "dark" : "light");
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTheme(e.target.checked ? "light" : "dark");
   };
 
   return (
     // https://daisyui.com/components/swap/
-    // TODO: try to change to a button
-    <label className="navbar-icon-btn !swap motion-safe:swap-rotate">
+    // TODO?: change to a button
+    <label
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      className="navbar-icon-btn !swap motion-safe:swap-rotate"
+    >
       {mounted && (
         <>
           <span className="sr-only">Toggle Theme</span>
-          <input type="checkbox" checked={checked} onChange={handleChange} />
+          <input
+            tabIndex={-1}
+            type="checkbox"
+            checked={checked}
+            onChange={handleChange}
+          />
           <MdOutlineLightMode className="swap-on" />
           <MdOutlineDarkMode className="swap-off" />
         </>

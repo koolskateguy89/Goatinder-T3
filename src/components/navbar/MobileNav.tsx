@@ -37,7 +37,7 @@ export default function MobileNav() {
       <nav className="dropdown-content" role="navigation" aria-label="Main">
         <ul
           tabIndex={0}
-          className="menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
+          className="menu rounded-box menu-compact mt-3 w-52 bg-base-200 p-2 shadow"
         >
           <li className="menu-title">
             <span>Category</span>
