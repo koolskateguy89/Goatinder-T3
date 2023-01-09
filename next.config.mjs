@@ -20,6 +20,10 @@ const config = {
         protocol: "https",
         hostname: "image.goat.com",
       },
+      {
+        protocol: "https",
+        hostname: "cdn.discordapp.com",
+      },
     ],
   },
 };

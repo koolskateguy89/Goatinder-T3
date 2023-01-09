@@ -6,4 +6,8 @@
   .btn {
     @apply motion-reduce:no-animation;
   }
+
+  .navbar-icon-btn {
+    @apply btn btn-ghost btn-sm md:btn-md btn-circle !text-xl;
+  }
 }
