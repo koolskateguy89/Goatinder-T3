@@ -38,6 +38,7 @@
     "no-underscore-dangle": "off", // annoying to deal with when using external libraries
     "global-require": "off",
     "jsx-a11y/label-has-associated-control": "off", // gives error when an input is inside label, not worth customizing
+    "jsx-a11y/no-noninteractive-tabindex": "off", // will deal with it later (hopefully)
 
     // my own rules
     "no-duplicate-imports": "error",
