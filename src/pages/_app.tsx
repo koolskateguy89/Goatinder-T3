@@ -4,6 +4,7 @@ import { Inter } from "@next/font/google";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
+import { Toaster, ToastBar } from "react-hot-toast";
 
 import { api } from "utils/api";
 import Container from "components/Container";
@@ -26,6 +27,14 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <SessionProvider session={session}>
         <ThemeProvider attribute="class">
           <div className={inter.className}>
+            <Toaster>
+              {(t) => (
+                <span className="dark:[&>*]:!bg-base-200 dark:[&>*]:text-base-content">
+                  <ToastBar style={t.style} toast={t} />
+                </span>
+              )}
+            </Toaster>
+
             <Container>
               <Component {...pageProps} />
             </Container>
