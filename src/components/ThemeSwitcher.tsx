@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
+import clsx from "clsx";
 
 export default function ThemeSwitcher() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -17,38 +18,33 @@ export default function ThemeSwitcher() {
     document.documentElement.dataset.theme = resolvedTheme;
   }, [resolvedTheme]);
 
-  const checked = resolvedTheme === "light";
+  // can't just check mounted inside button because then it will
+  // show dark icon when reloading in light mode
+  if (!mounted)
+    return (
+      // eslint-disable-next-line jsx-a11y/control-has-associated-label
+      <button type="button" className="navbar-icon-btn" />
+    );
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLLabelElement>) => {
-    if (e.key === "Enter")
-      setTheme(resolvedTheme === "light" ? "dark" : "light");
-  };
+  const active = resolvedTheme === "light";
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTheme(e.target.checked ? "light" : "dark");
+  const handleClick = () => {
+    setTheme(active ? "dark" : "light");
   };
 
   return (
     // https://daisyui.com/components/swap/
-    // TODO?: change to a button
-    <label
-      tabIndex={0}
-      onKeyDown={handleKeyDown}
-      className="navbar-icon-btn !swap motion-safe:swap-rotate"
-    >
-      {mounted && (
-        <>
-          <span className="sr-only">Toggle Theme</span>
-          <input
-            tabIndex={-1}
-            type="checkbox"
-            checked={checked}
-            onChange={handleChange}
-          />
-          <MdOutlineLightMode className="swap-on" />
-          <MdOutlineDarkMode className="swap-off" />
-        </>
+    <button
+      type="button"
+      onClick={handleClick}
+      className={clsx(
+        "navbar-icon-btn swap grid motion-safe:swap-rotate",
+        resolvedTheme === "light" && "swap-active"
       )}
-    </label>
+    >
+      <span className="sr-only">Toggle Theme</span>
+      <MdOutlineLightMode className="swap-on" />
+      <MdOutlineDarkMode className="swap-off" />
+    </button>
   );
 }
