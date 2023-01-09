@@ -13,6 +13,8 @@ function NavTab({ href, children }: NavTabProps) {
   return (
     <Link
       href={href}
+      aria-selected={active}
+      role="tab"
       className={clsx(
         "relative flex h-full items-center px-3 transition-colors after:absolute after:inset-x-2 after:top-[calc(100%-theme(spacing.1))] after:h-1 after:bg-primary hover:text-base-content motion-safe:after:transition-transform",
         active
@@ -27,7 +29,11 @@ function NavTab({ href, children }: NavTabProps) {
 
 export default function NavTabs() {
   return (
-    <div className="flex h-full flex-row items-stretch">
+    <div
+      className="flex h-full flex-row items-stretch"
+      // aria-label="website navigation"
+      role="tablist"
+    >
       <NavTab href="/">Home</NavTab>
       <NavTab href="/about">About</NavTab>
       <NavTab href="/contact">Contact</NavTab>
