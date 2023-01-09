@@ -2,9 +2,77 @@
 /* eslint-disable jsx-a11y/no-noninteractive-tabindex */
 
 import Link from "next/link";
+import { useRouter } from "next/router";
+import clsx from "clsx";
 
-import NavTabs from "./NavTabs";
 import ThemeSwitcher from "./ThemeSwitcher";
+
+function NavTab({ href, children }: React.PropsWithChildren<{ href: string }>) {
+  const router = useRouter();
+  const active = router.asPath === href;
+
+  return (
+    <Link
+      href={href}
+      aria-selected={active}
+      role="tab"
+      className={clsx(
+        "relative flex h-full items-center px-3 transition-colors after:absolute after:inset-x-2 after:top-[calc(100%-theme(spacing.1))] after:h-1 after:bg-primary motion-safe:after:transition-transform",
+        active
+          ? "font-semibold text-base-content after:scale-y-100 after:ease-out"
+          : "font-normal text-base-content/80 after:scale-y-0 after:ease-in hover:text-base-content dark:text-base-content/70 dark:hover:text-base-content"
+      )}
+    >
+      {children}
+    </Link>
+  );
+}
+
+function NavTabs() {
+  return (
+    <div
+      className="flex h-full flex-row items-stretch"
+      // aria-label="website navigation"
+      role="tablist"
+    >
+      <NavTab href="/">Home</NavTab>
+      <NavTab href="/about">About</NavTab>
+      <NavTab href="/contact">Contact</NavTab>
+    </div>
+  );
+}
+
+function MobileNavItem({
+  href,
+  children,
+}: React.PropsWithChildren<{ href: string }>) {
+  const router = useRouter();
+  const active = router.asPath === href;
+
+  return (
+    <li>
+      <Link href={href} className={clsx(active && "active")}>
+        {children}
+      </Link>
+    </li>
+  );
+}
+
+// TODO: styling?
+// TODO: add icons
+function MobileNav() {
+  return (
+    <>
+      <MobileNavItem href="/">Home</MobileNavItem>
+      <MobileNavItem href="/contact">Contact</MobileNavItem>
+      <MobileNavItem href="/about">About</MobileNavItem>
+    </>
+  );
+}
+
+// TODO: mobile nav list
+// or maybe a drawer instead
+// https://daisyui.com/components/drawer/
 
 export default function NavBar() {
   return (
@@ -32,7 +100,10 @@ export default function NavBar() {
             tabIndex={0}
             className="dropdown-content menu rounded-box menu-compact mt-3 w-52 bg-base-100 p-2 shadow"
           >
-            <li>Mobile nav</li>
+            <li className="menu-title">
+              <span>Category</span>
+            </li>
+            <MobileNav />
           </ul>
         </div>
         <Link href="/" className="btn-ghost btn text-xl font-bold normal-case">
