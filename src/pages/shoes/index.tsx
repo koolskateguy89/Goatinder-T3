@@ -58,17 +58,25 @@ const ShoesSection = () => {
   );
 };
 
+/*
+would like to have like an infinite scolling functionality, where
+the page will be increased by 1 when the user scrolls to the bottom
+and make a new request for next page of results
+*/
+
 const ShoesPage: NextPage = () => {
   return (
     <>
       <Head>
         <title>Shoes - goaTinder</title>
       </Head>
-      <div>lol</div>
-      <div>lol</div>
-      <ShoesSection />
+      <main>
+        <ShoesSection />
+      </main>
     </>
   );
 };
 
 export default ShoesPage;
+
+// TODO: getserversideprops with initialData
