@@ -22,19 +22,20 @@ model Example {
 
 // Necessary for Next auth
 model Account {
-    id                String  @id @default(cuid())
-    userId            String
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String? // @db.Text
-    access_token      String? // @db.Text
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String? // @db.Text
-    session_state     String?
-    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                       String  @id @default(cuid())
+    userId                   String
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String? // @db.Text
+    access_token             String? // @db.Text
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String? // @db.Text
+    session_state            String?
+    refresh_token_expires_in Int? // Github
+    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
 }
@@ -48,16 +49,17 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String         @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?        @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
     sessions      Session[]
     profile       Profile?
-    disliked      Shoe[]    @relation("Dislikes")
-    liked         Shoe[]    @relation("Likes")
+    disliked      Shoe[]         @relation("Dislikes")
+    liked         Shoe[]         @relation("Likes")
+    comments      ShoeComments[]
 }
 
 model VerificationToken {
@@ -77,9 +79,24 @@ model Profile {
 }
 
 model Shoe {
-    searchSKU String @id
-    json      String
+    searchSKU String         @id
+    json      String         @unique
+    dislikes  User[]         @relation("Dislikes")
+    likes     User[]         @relation("Likes")
+    comments  ShoeComments[]
+}
 
-    dislikes User[] @relation("Dislikes")
-    likes    User[] @relation("Likes")
+// TODO: forum/comment kinda system for shoes
+// should we do notifications for comments? or smthn idk
+
+model ShoeComments {
+    id          String   @id @default(cuid())
+    shoeSKU     String
+    userId      String
+    datePosted  DateTime @default(now())
+    dateUpdated DateTime @updatedAt
+    upvotes     Int      @default(0)
+    downvotes   Int      @default(0)
+    shoe        Shoe     @relation(fields: [shoeSKU], references: [searchSKU])
+    user        User     @relation(fields: [userId], references: [id])
 }
