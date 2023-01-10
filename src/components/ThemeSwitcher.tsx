@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
-import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 import clsx from "clsx";
+import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 
 export default function ThemeSwitcher() {
   const { resolvedTheme, setTheme } = useTheme();

@@ -8,11 +8,12 @@ export default function Profile() {
   const { data: session, status } = useSession();
 
   // TODO: use daisyUI loading shiny thingy
+  // should never show tho, since we're passing session to _app with getServerSideProps on every page
   if (status === "loading") {
     return (
-      <div className="placeholder avatar">
-        <div className="w-10 rounded-full bg-neutral-focus" />
-      </div>
+      <button type="button" className="btn-primary btn-sm btn md:btn-md">
+        Sign in
+      </button>
     );
   }
 
@@ -32,8 +33,8 @@ export default function Profile() {
   return (
     // {/* <img src="https://placeimg.com/192/192/people" /> */}
     // maybe use a modal instead of dropdown on mobile?
-    // TODO: change label to a button with useState(open), so can close menu onClick
-    <div className="dropdown dropdown-end" aria-haspopup="menu">
+    // TODO: image fallback https://vercel.com/templates/next.js/image-fallback (customise component so that fallback is reactnode)
+    <div className="dropdown-end dropdown" aria-haspopup="menu">
       <label tabIndex={0} className="flex cursor-pointer">
         <div className={clsx("avatar", !session.user.image && "placeholder")}>
           {session.user.image ? (

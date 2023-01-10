@@ -14,10 +14,12 @@ export default function NavBar() {
         <MobileNav />
         <Link
           href="/"
-          className="btn-ghost btn-sm btn !text-lg font-bold normal-case md:!text-xl md:btn-md"
+          className="group btn-ghost btn-sm btn !text-lg font-bold normal-case md:!text-xl md:btn-md [&>*]:transition-colors [&>*]:duration-300"
         >
-          <span>goa</span>
-          <span className="text-primary">Tinder</span>
+          <span className="group-hover:text-primary">goa</span>
+          <span className="text-primary group-hover:text-base-content">
+            Tinder
+          </span>
         </Link>
       </div>
 
