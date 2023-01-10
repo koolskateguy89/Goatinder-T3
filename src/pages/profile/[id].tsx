@@ -3,9 +3,9 @@ import type {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
-import { unstable_getServerSession } from "next-auth";
 import Head from "next/head";
 import Image from "next/image";
+import { unstable_getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
@@ -82,6 +82,7 @@ export const getServerSideProps = (async (context) => {
 
   return {
     props: {
+      session,
       user,
       isMyProfile,
     },

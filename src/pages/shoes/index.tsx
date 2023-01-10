@@ -1,9 +1,11 @@
 import { useState } from "react";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { unstable_getServerSession } from "next-auth";
 
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import { api } from "utils/api";
 import type { GoatShoe } from "types/goat-shoe";
 
@@ -83,3 +85,16 @@ const ShoesPage: NextPage = () => {
 export default ShoesPage;
 
 // TODO: getserversideprops with initialData
+export const getServerSideProps = (async (context) => {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  return {
+    props: {
+      session,
+    },
+  };
+}) satisfies GetServerSideProps;

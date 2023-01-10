@@ -1,8 +1,10 @@
-import { type NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { unstable_getServerSession } from "next-auth";
 import { signIn, signOut, useSession } from "next-auth/react";
 
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import { api } from "utils/api";
 
 const AuthShowcase: React.FC = () => {
@@ -80,3 +82,17 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+export const getServerSideProps = (async (context) => {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  return {
+    props: {
+      session,
+    },
+  };
+}) satisfies GetServerSideProps;

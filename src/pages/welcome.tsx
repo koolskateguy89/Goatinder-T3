@@ -7,21 +7,35 @@ import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
+import { useSession } from "next-auth/react";
 
 // TODO: get them to create a profile?
 
 const WelcomePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ session }) => {
+> = () => {
+  const { data: session } = useSession();
+
+  const sessionJsonLines = JSON.stringify(session, null, 2).split("\n");
+
   return (
     <>
       <Head>
         <title>Welcome - goaTinder</title>
       </Head>
-      <div>
-        <span>Welcome to Next.js!</span>
-        {JSON.stringify(session)}
-      </div>
+      <main>
+        <span>Welcome to goaTinder!</span>
+        <div className="mockup-code">
+          <pre data-prefix="$">
+            <code>console.log(JSON.stringify(session, null, 2));</code>
+          </pre>
+          {sessionJsonLines.map((line) => (
+            <pre key={line} data-prefix=">">
+              <code>{line}</code>
+            </pre>
+          ))}
+        </div>
+      </main>
     </>
   );
 };

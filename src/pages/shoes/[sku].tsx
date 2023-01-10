@@ -13,7 +13,7 @@ import type { GoatShoe } from "types/goat-shoe";
 
 const ShoePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ session, shoe }) => {
+> = ({ shoe }) => {
   const title = `${shoe.name} - goaTinder`;
 
   return (
