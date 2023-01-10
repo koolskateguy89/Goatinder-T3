@@ -1,4 +1,4 @@
-import type { AppType } from "next/app";
+import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Inter } from "@next/font/google";
 import type { Session } from "next-auth";
@@ -7,16 +7,21 @@ import { ThemeProvider } from "next-themes";
 import { Toaster, ToastBar } from "react-hot-toast";
 
 import { api } from "utils/api";
+import type { AppPage } from "types";
 import Container from "components/Container";
 
 import "styles/globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const MyApp: AppType<{ session: Session | null }> = ({
+interface MyAppProps extends AppProps<{ session: Session | null }> {
+  Component: AppProps["Component"] & AppPage;
+}
+
+function MyApp({
   Component,
   pageProps: { session, ...pageProps },
-}) => {
+}: MyAppProps) {
   return (
     <>
       <Head>
@@ -35,14 +40,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
               )}
             </Toaster>
 
-            <Container>
+            {Component.noContainer ? (
               <Component {...pageProps} />
-            </Container>
+            ) : (
+              <Container>
+                <Component {...pageProps} />
+              </Container>
+            )}
           </div>
         </ThemeProvider>
       </SessionProvider>
     </>
   );
-};
+}
 
 export default api.withTRPC(MyApp);
