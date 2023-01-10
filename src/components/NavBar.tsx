@@ -1,17 +1,32 @@
 import Link from "next/link";
+import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { MdOutlineNotifications, MdSearch } from "react-icons/md";
 
 import ThemeSwitcher from "./ThemeSwitcher";
-import MobileNav from "./navbar/MobileNav";
 import NavTabs from "./navbar/NavTabs";
 import Profile from "./navbar/Profile";
 
-export default function NavBar() {
+function MobileDrawerOpener({ drawerInputId }: { drawerInputId: string }) {
+  return (
+    <label
+      tabIndex={0}
+      htmlFor={drawerInputId}
+      className="navbar-icon-btn lg:hidden"
+    >
+      <span className="sr-only">Toggle navigation</span>
+      <span>
+        <HiOutlineMenuAlt1 />
+      </span>
+    </label>
+  );
+}
+
+export default function NavBar({ drawerInputId }: { drawerInputId: string }) {
   return (
     // https://daisyui.com/components/navbar/#responsive-dropdown-menu-on-small-screen-center-menu-on-large-screen
     <header className="navbar items-stretch py-0">
       <div className="navbar-start">
-        <MobileNav />
+        <MobileDrawerOpener drawerInputId={drawerInputId} />
         <Link
           href="/"
           className="btn-ghost btn-sm btn !text-lg font-bold normal-case md:!text-xl md:btn-md"
