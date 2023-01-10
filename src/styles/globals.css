@@ -7,6 +7,7 @@
     @apply motion-reduce:no-animation;
   }
 
+  /* for some reason the icon isn't sized properly unless it's nested at least 1 child inside button */
   .navbar-icon-btn {
     @apply btn btn-ghost btn-sm md:btn-md btn-circle !text-xl;
   }
