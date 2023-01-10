@@ -14,7 +14,8 @@ import { useSession } from "next-auth/react";
 const WelcomePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = () => {
-  const { data: session } = useSession();
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const session = useSession().data!;
 
   const sessionJsonLines = JSON.stringify(session, null, 2).split("\n");
 
