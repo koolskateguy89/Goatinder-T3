@@ -96,7 +96,7 @@ const SignInPage: AppPage<
                   type="button"
                   onClick={() => signIn(provider.id, { callbackUrl })}
                   // gradient border effect: https://www.youtube.com/shorts/qzZ0iQKoUQ0
-                  className="group btn-outline btn relative text-base normal-case before:absolute before:-inset-[1px] before:bg-gradient-to-br before:from-primary/40 before:via-transparent before:to-primary/40 before:opacity-0 before:[border-radius:inherit] hover:before:opacity-100 dark:hover:bg-white/5 dark:hover:text-base-content"
+                  className="btn-outline btn relative text-base normal-case before:absolute before:-inset-[1px] before:bg-gradient-to-br before:from-primary/40 before:via-transparent before:to-primary/40 before:opacity-0 before:[border-radius:inherit] hover:before:opacity-100 dark:hover:bg-white/5 dark:hover:text-base-content"
                 >
                   <div className="absolute inset-[1px] flex items-center justify-center gap-3 bg-inherit [border-radius:inherit]">
                     <span className="text-2xl">{icons[provider.id]}</span>
