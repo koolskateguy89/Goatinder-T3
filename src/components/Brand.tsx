@@ -6,13 +6,15 @@ export default function Brand({ className, ...props }: BrandProps) {
   return (
     <span
       className={clsx(
-        "group font-bold transition-colors [&>span]:duration-300",
+        "group/brand font-bold transition-colors [&>span]:duration-300",
         className
       )}
       {...props}
     >
-      <span className="group-hover:text-primary">goa</span>
-      <span className="text-primary group-hover:text-base-content">Tinder</span>
+      <span className="group-hover/brand:text-primary">goa</span>
+      <span className="text-primary group-hover/brand:text-base-content">
+        Tinder
+      </span>
     </span>
   );
 }
