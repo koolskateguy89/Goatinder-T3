@@ -5,10 +5,16 @@ import type {
   NextPage,
 } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { unstable_getServerSession } from "next-auth";
 import { getProviders, signIn } from "next-auth/react";
 import toast from "react-hot-toast";
+import { FaDiscord } from "react-icons/fa";
+import { GoMarkGithub } from "react-icons/go";
+
 import { authOptions } from "pages/api/auth/[...nextauth]";
+import type { AppPage } from "types";
+import Brand from "components/Brand";
 
 /**
  * The following errors are passed as error query parameters to the default or overridden sign-in page.
@@ -48,7 +54,12 @@ const errors: Record<SignInErrorTypes, string> = {
   default: "Unable to sign in.",
 };
 
-const SignInPage: NextPage<
+const icons: Record<string, JSX.Element> = {
+  discord: <FaDiscord />,
+  github: <GoMarkGithub />,
+};
+
+const SignInPage: AppPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ providers, errorType, callbackUrl }) => {
   const error = errorType && (errors[errorType] ?? errors.default);
@@ -57,7 +68,7 @@ const SignInPage: NextPage<
     if (error) {
       toast.error(error, {
         id: "signInError",
-        duration: Infinity,
+        // duration: Infinity,
       });
     }
     return () => {
@@ -70,20 +81,27 @@ const SignInPage: NextPage<
       <Head>
         <title>Sign in to goaTinder</title>
       </Head>
-      <main className="flex flex-grow items-center justify-center">
-        <div className="rounded-box flex flex-col items-center gap-3 border-2 border-primary p-8">
-          <span>Sign in with</span>
-          <div className="grid grid-cols-2 gap-2">
+      <main className="flex h-screen flex-grow flex-col items-center justify-center gap-y-8">
+        <Link href="/" className="-mt-20 p-4 text-4xl">
+          <Brand />
+        </Link>
+
+        <div className="rounded-box flex flex-col items-center gap-3 border-2 border-primary p-8 dark:bg-base-200">
+          <span className="text-sm">Sign in with</span>
+          <div className="grid w-96 grid-cols-2 gap-3">
             {providers &&
               Object.values(providers).map((provider) => (
                 <button
                   key={provider.name}
                   type="button"
                   onClick={() => signIn(provider.id, { callbackUrl })}
-                  className="btn-outline btn gap-2"
+                  // gradient border effect: https://www.youtube.com/shorts/qzZ0iQKoUQ0
+                  className="group btn-outline btn relative text-base normal-case before:absolute before:-inset-[1px] before:bg-gradient-to-br before:from-primary/40 before:via-transparent before:to-primary/40 before:opacity-0 before:[border-radius:inherit] hover:before:opacity-100 dark:hover:bg-white/5 dark:hover:text-base-content"
                 >
-                  Sign in with {provider.name}
-                  {/* src="https://authjs.dev/img/providers/discord-dark.svg" */}
+                  <div className="absolute inset-[1px] flex items-center justify-center gap-3 bg-inherit [border-radius:inherit]">
+                    <span className="text-2xl">{icons[provider.id]}</span>
+                    {provider.name}
+                  </div>
                 </button>
               ))}
           </div>
@@ -92,6 +110,8 @@ const SignInPage: NextPage<
     </>
   );
 };
+
+SignInPage.noContainer = true;
 
 export default SignInPage;
 
