@@ -69,7 +69,8 @@ function Drawer({
         )}
       >
         {/* drawer content here */}
-        <div className="mb-4 flex flex-row items-center gap-1 px-4 pt-3">
+
+        <header className="flex flex-row items-center gap-1 border-b border-base-300 px-4 pb-4 pt-3 dark:border-white/20">
           <Link href="/" className="btn-ghost btn-sm btn text-xl normal-case">
             <Brand />
           </Link>
@@ -87,24 +88,24 @@ function Drawer({
           >
             X
           </button>
-        </div>
+        </header>
 
-        <hr />
-
-        <nav>
-          <ul className="menu my-4 px-4">
-            <MobileNavItem href="/">Home</MobileNavItem>
-            <MobileNavItem href="/shoes">Shoes</MobileNavItem>
-            <MobileNavItem href="/contact">Contact</MobileNavItem>
-            <MobileNavItem href="/about">About</MobileNavItem>
-            {Array.from({ length: 20 }).map((_, i) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <li key={i}>
-                <span>{i + 1}</span>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <main>
+          <nav>
+            <ul className="menu my-4 px-4">
+              <MobileNavItem href="/">Home</MobileNavItem>
+              <MobileNavItem href="/shoes">Shoes</MobileNavItem>
+              <MobileNavItem href="/contact">Contact</MobileNavItem>
+              <MobileNavItem href="/about">About</MobileNavItem>
+              {Array.from({ length: 20 }).map((_, i) => (
+                // eslint-disable-next-line react/no-array-index-key
+                <li key={i}>
+                  <span>{i + 1}</span>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        </main>
       </aside>
     </div>,
     document.body
