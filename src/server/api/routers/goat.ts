@@ -1,7 +1,11 @@
 import axios from "axios";
 import { z } from "zod";
 
-import { createTRPCRouter, publicProcedure } from "server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  protectedProcedure,
+} from "server/api/trpc";
 import { FiltersSchema, type GoatShoe } from "types/goat-shoe";
 import { env } from "env/server.mjs";
 
@@ -20,10 +24,11 @@ export const goatRouter = createTRPCRouter({
         query: z.string(),
         page: z.number().int().nonnegative(),
         filters: FiltersSchema.nullish(),
+        hitsPerPage: z.number().int().nonnegative().default(24),
       })
     )
-    .query(async ({ input }) => {
-      const { query, page, filters } = input;
+    .query(async ({ ctx, input }) => {
+      const { query, page, filters, hitsPerPage } = input;
 
       const url = getAlgoliaUrl(
         env.ALGOLIA_APPLICATION_ID,
@@ -44,16 +49,42 @@ export const goatRouter = createTRPCRouter({
           requests: [
             {
               indexName: "product_variants_v2",
-              params: `distinct=true&query=${query}&hitsPerPage=24&page=${page}`,
+              params: `distinct=true&query=${query}&hitsPerPage=${hitsPerPage}&page=${page}`,
               // params: `highlightPreTag=%3Cais-highlight-0000000000%3E&highlightPostTag=%3C%2Fais-highlight-0000000000%3E&distinct=true&query=${query}&maxValuesPerFacet=30&page=${page}&facets=%5B%22product_category%22%2C%22instant_ship_lowest_price_cents%22%2C%22single_gender%22%2C%22presentation_size%22%2C%22shoe_condition%22%2C%22brand_name%22%2C%22color%22%2C%22silhouette%22%2C%22designer%22%2C%22upper_material%22%2C%22midsole%22%2C%22category%22%2C%22release_date_name%22%5D&tagFilters=&facetFilters=%5B%5B%22product_category%3Ashoes%22%5D%5D`,
             },
           ],
         }
       );
 
-      if (!filters) return algoliaResult.results[0].hits;
+      const { hits } = algoliaResult.results[0];
 
-      const shoes: GoatShoe[] = algoliaResult.results[0].hits.filter((shoe) => {
+      const createManyShoes = hits.map((shoe) =>
+        ctx.prisma.goatShoe.upsert({
+          where: {
+            searchSKU: shoe.search_sku,
+          },
+          create: {
+            searchSKU: shoe.search_sku,
+            json: JSON.stringify(shoe),
+            shoe: {
+              create: {},
+            },
+          },
+          update: {},
+          select: {
+            // don't want to return anything but select can't be empty
+            searchSKU: true,
+          },
+        })
+      );
+
+      Promise.all(createManyShoes)
+        .then(() => console.log("ALL done"))
+        .catch((e) => console.log("at least 1 failed", e));
+
+      if (!filters) return hits;
+
+      const shoes: GoatShoe[] = hits.filter((shoe) => {
         if (filters.condition && shoe.shoe_condition !== filters.condition) {
           return false;
         }
@@ -66,5 +97,27 @@ export const goatRouter = createTRPCRouter({
       });
 
       return shoes;
+    }),
+
+  getShoeBySku: publicProcedure
+    .input(z.object({ sku: z.string() }))
+    .query(async ({ input }) => {
+      const { sku } = input;
+    }),
+
+  addLike: protectedProcedure
+    .input(
+      z.object({
+        searchSKU: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { searchSKU } = input;
+
+      const userID = ctx.session.user.id;
+
+      // TODO
+
+      // await ctx.prisma.
     }),
 });

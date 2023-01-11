@@ -78,12 +78,21 @@ model Profile {
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+// just what is returned from algolia
+model GoatShoe {
+    searchSKU String @id
+    json      String @unique
+    shoe      Shoe?
+}
+
+// 'actual' additional things about shoe
+// tbh might as well just put in GoatShoe? because it seems to be all relations
 model Shoe {
-    searchSKU String         @id
-    json      String         @unique
-    dislikes  User[]         @relation("Dislikes")
-    likes     User[]         @relation("Likes")
-    comments  ShoeComments[]
+    goatShoeSKU String         @id
+    goatShoe    GoatShoe       @relation(fields: [goatShoeSKU], references: [searchSKU])
+    dislikes    User[]         @relation("Dislikes")
+    likes       User[]         @relation("Likes")
+    comments    ShoeComments[]
 }
 
 // TODO: forum/comment kinda system for shoes
@@ -97,6 +106,6 @@ model ShoeComments {
     dateUpdated DateTime @updatedAt
     upvotes     Int      @default(0)
     downvotes   Int      @default(0)
-    shoe        Shoe     @relation(fields: [shoeSKU], references: [searchSKU])
+    shoe        Shoe     @relation(fields: [shoeSKU], references: [goatShoeSKU])
     user        User     @relation(fields: [userId], references: [id])
 }
