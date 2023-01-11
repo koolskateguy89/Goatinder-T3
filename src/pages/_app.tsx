@@ -5,6 +5,7 @@ import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";
 import { Toaster, ToastBar } from "react-hot-toast";
+import { Analytics } from "@vercel/analytics/react";
 
 import { api } from "utils/api";
 import type { AppPage } from "types";
@@ -50,6 +51,7 @@ function MyApp({
           </div>
         </ThemeProvider>
       </SessionProvider>
+      <Analytics />
     </>
   );
 }
