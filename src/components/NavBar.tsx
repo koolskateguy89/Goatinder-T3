@@ -1,25 +1,23 @@
 import Link from "next/link";
 import { MdOutlineNotifications, MdSearch } from "react-icons/md";
 
-import ThemeSwitcher from "./ThemeSwitcher";
-import MobileNav from "./navbar/MobileNav";
-import NavTabs from "./navbar/NavTabs";
-import Profile from "./navbar/Profile";
+import Brand from "components/Brand";
+import ThemeSwitcher from "components/ThemeSwitcher";
+import MobileDrawer from "components/navbar/MobileDrawer";
+import NavTabs from "components/navbar/NavTabs";
+import Profile from "components/navbar/Profile";
 
 export default function NavBar() {
   return (
     // https://daisyui.com/components/navbar/#responsive-dropdown-menu-on-small-screen-center-menu-on-large-screen
     <header className="navbar items-stretch py-0">
       <div className="navbar-start">
-        <MobileNav />
+        <MobileDrawer />
         <Link
           href="/"
-          className="group btn-ghost btn-sm btn !text-lg font-bold normal-case md:!text-xl md:btn-md [&>*]:transition-colors [&>*]:duration-300"
+          className="btn-ghost btn-sm btn !text-lg normal-case md:!text-xl md:btn-md"
         >
-          <span className="group-hover:text-primary">goa</span>
-          <span className="text-primary group-hover:text-base-content">
-            Tinder
-          </span>
+          <Brand />
         </Link>
       </div>
 
