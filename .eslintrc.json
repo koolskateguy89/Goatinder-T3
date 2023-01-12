@@ -8,11 +8,11 @@
   ],
   "extends": [
     "eslint:recommended",
-    "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
+    "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
     "prettier"
@@ -42,6 +42,7 @@
     "jsx-a11y/click-events-have-key-events": "off", // annoying during development
     "jsx-a11y/no-noninteractive-element-interactions": "off", // annoying during development
     "react/jsx-key": "error", // i have no idea why it's disabled by airbnb
+    "no-nested-ternary": "off", // i like ternary operators
 
     // my own rules
     "no-duplicate-imports": "error",
