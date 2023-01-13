@@ -7,13 +7,25 @@ import { ThemeProvider } from "next-themes";
 import { Toaster, ToastBar } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
 
+import algoliasearch from "algoliasearch/lite";
+import { InstantSearch } from "react-instantsearch-hooks-web";
+
 import { api } from "utils/api";
 import type { AppPage } from "types";
 import Container from "components/Container";
+import { env } from "env/client.mjs";
 
 import "styles/globals.css";
 
+// next font optimization: https://nextjs.org/docs/basic-features/font-optimization
 const inter = Inter({ subsets: ["latin"] });
+
+// TODO: routing thingy to change URL
+// algolia instant search: https://www.algolia.com/doc/guides/building-search-ui/what-is-instantsearch/react-hooks/
+const searchClient = algoliasearch(
+  env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+  env.NEXT_PUBLIC_ALGOLIA_API_KEY
+);
 
 interface MyAppProps extends AppProps<{ session: Session | null }> {
   Component: AppProps["Component"] & AppPage;
@@ -32,25 +44,31 @@ function MyApp({
       </Head>
       <SessionProvider session={session}>
         <ThemeProvider attribute="class">
-          <div className={inter.className}>
-            <Toaster>
-              {(t) => (
-                <span className="dark:[&>*]:!bg-base-200 dark:[&>*]:text-base-content">
-                  <ToastBar style={t.style} toast={t} />
-                </span>
-              )}
-            </Toaster>
+          <InstantSearch
+            searchClient={searchClient}
+            indexName="product_variants_v2"
+          >
+            <div className={inter.className}>
+              <Toaster>
+                {(t) => (
+                  <span className="dark:[&>*]:!bg-base-200 dark:[&>*]:text-base-content">
+                    <ToastBar style={t.style} toast={t} />
+                  </span>
+                )}
+              </Toaster>
 
-            {Component.noContainer ? (
-              <Component {...pageProps} />
-            ) : (
-              <Container>
+              {Component.noContainer ? (
                 <Component {...pageProps} />
-              </Container>
-            )}
-          </div>
+              ) : (
+                <Container>
+                  <Component {...pageProps} />
+                </Container>
+              )}
+            </div>
+          </InstantSearch>
         </ThemeProvider>
       </SessionProvider>
+
       <Analytics />
     </>
   );
