@@ -1,9 +1,5 @@
 import { useEffect } from "react";
-import type {
-  InferGetServerSidePropsType,
-  GetServerSideProps,
-  NextPage,
-} from "next";
+import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { unstable_getServerSession } from "next-auth";
@@ -59,6 +55,19 @@ const icons: Record<string, JSX.Element> = {
   github: <GoMarkGithub />,
 };
 
+/**
+ * FIXME: always in system theme mode (for daisyUI but correct for tailwind) when opening this page directly,
+ * e.g. going to https://.../signin, not navigating to it from the app
+ *
+ * Importing and rendering the ThemeSwitcher component here fixes the issue, but it's not a good solution
+ * (it works because ThemeSwitcher) basically sets the theme for daisyUI. I tried to instead set the theme
+ * in `_app` but it didn't work - `resolvedTheme` is always `undefined`. I need to look at using
+ * `theme-change` which is what daisyUI recommends.
+ * @see https://github.com/saadeghi/theme-change
+ *
+ *
+ * @see https://next-auth.js.org/configuration/pages#sign-in-page
+ */
 const SignInPage: AppPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ providers, errorType, callbackUrl }) => {
@@ -81,14 +90,18 @@ const SignInPage: AppPage<
       <Head>
         <title>Sign in to goaTinder</title>
       </Head>
-      <main className="flex h-screen flex-grow flex-col items-center justify-center gap-y-8">
-        <Link href="/" className="-mt-20 p-4 text-4xl">
+
+      <main className="flex h-screen h-[100dvh] flex-col items-center justify-center gap-y-8">
+        <Link
+          href="/"
+          className="btn-ghost btn text-3xl normal-case md:-mt-10 md:!text-4xl md:btn-lg"
+        >
           <Brand />
         </Link>
 
-        <div className="rounded-box flex flex-col items-center gap-3 border-2 border-primary p-8 dark:bg-base-200">
-          <span className="text-sm">Sign in with</span>
-          <div className="grid w-96 grid-cols-2 gap-3">
+        <section className="flex w-full flex-col items-center gap-3 border-y-2 border-primary py-8 dark:bg-base-200 sm:mx-auto sm:max-w-md sm:border-2 sm:border-x-2 sm:px-8 sm:rounded-box">
+          <h1 className="text-sm">Sign in with</h1>
+          <div className="grid w-full grid-cols-2 gap-3 max-sm:px-6">
             {providers &&
               Object.values(providers).map((provider) => (
                 <button
@@ -99,13 +112,15 @@ const SignInPage: AppPage<
                   className="btn-outline btn relative text-base normal-case before:absolute before:-inset-[1px] before:bg-gradient-to-br before:from-primary/40 before:via-transparent before:to-primary/40 before:opacity-0 before:[border-radius:inherit] hover:before:opacity-100 dark:hover:bg-white/5 dark:hover:text-base-content"
                 >
                   <div className="absolute inset-[1px] flex items-center justify-center gap-3 bg-inherit [border-radius:inherit]">
-                    <span className="text-2xl">{icons[provider.id]}</span>
+                    {icons[provider.id] && (
+                      <span className="text-2xl">{icons[provider.id]}</span>
+                    )}
                     {provider.name}
                   </div>
                 </button>
               ))}
           </div>
-        </div>
+        </section>
       </main>
     </>
   );
