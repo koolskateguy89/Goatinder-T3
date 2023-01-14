@@ -16,6 +16,9 @@ export const FiltersSchema = z.object({
 
 export type Filters = z.infer<typeof FiltersSchema>;
 
+/**
+ * Note this isn't the full type, just the fields we care about.
+ */
 export type GoatShoe = {
   // [key: string]: any | undefined;
   name: string;
@@ -94,5 +97,6 @@ export type GoatShoe = {
   //</editor-fold>
   special_display_price_cents: number; // can be 0
   status: string; // all 'active' ?
+  story_html: string | null;
   upper_material: string | null; // can be empty string
 };
