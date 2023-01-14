@@ -43,7 +43,7 @@ function MyApp({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <SessionProvider session={session}>
-        <ThemeProvider attribute="class">
+        <ThemeProvider>
           <InstantSearch
             searchClient={searchClient}
             indexName="product_variants_v2"

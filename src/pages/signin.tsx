@@ -56,16 +56,6 @@ const icons: Record<string, JSX.Element> = {
 };
 
 /**
- * FIXME: always in system theme mode (for daisyUI but correct for tailwind) when opening this page directly,
- * e.g. going to https://.../signin, not navigating to it from the app
- *
- * Importing and rendering the ThemeSwitcher component here fixes the issue, but it's not a good solution
- * (it works because ThemeSwitcher) basically sets the theme for daisyUI. I tried to instead set the theme
- * in `_app` but it didn't work - `resolvedTheme` is always `undefined`. I need to look at using
- * `theme-change` which is what daisyUI recommends.
- * @see https://github.com/saadeghi/theme-change
- *
- *
  * @see https://next-auth.js.org/configuration/pages#sign-in-page
  */
 const SignInPage: AppPage<
@@ -90,7 +80,6 @@ const SignInPage: AppPage<
       <Head>
         <title>Sign in to goaTinder</title>
       </Head>
-
       <main className="flex h-screen h-[100dvh] flex-col items-center justify-center gap-y-8">
         <Link
           href="/"

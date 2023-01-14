@@ -10,14 +10,6 @@ export default function ThemeSwitcher() {
 
   useEffect(() => setMounded(true), []);
 
-  // workaround for daisyui theme
-  // https://daisyui.com/docs/themes/
-  // thing is next-themes supports how they do it ([data-theme="..."]])
-  // but tailwind does not.
-  useEffect(() => {
-    document.documentElement.dataset.theme = resolvedTheme;
-  }, [resolvedTheme]);
-
   // can't just check mounted inside button because then it will
   // show dark icon when reloading in light mode
   if (!mounted)
