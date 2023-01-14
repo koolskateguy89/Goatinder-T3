@@ -27,12 +27,12 @@ export const goatRouter = createTRPCRouter({
         hitsPerPage: z.number().int().nonnegative().default(24),
       })
     )
-    .query(async ({ ctx, input }) => {
+    .query(async ({ input }) => {
       const { query, page, filters, hitsPerPage } = input;
 
       const url = getAlgoliaUrl(
-        env.ALGOLIA_APPLICATION_ID,
-        env.ALGOLIA_API_KEY
+        env.NEXT_PUBLIC_ALGOLIA_APP_ID,
+        env.NEXT_PUBLIC_ALGOLIA_API_KEY
       );
 
       // TODO: try at most 5 times to get at least 15 shoes matching filters
@@ -49,7 +49,7 @@ export const goatRouter = createTRPCRouter({
           requests: [
             {
               indexName: "product_variants_v2",
-              params: `distinct=true&query=${query}&hitsPerPage=${hitsPerPage}&page=${page}`,
+              params: `distinct=true&query=${query}&hitsPerPage=${hitsPerPage}&page=${page}&facetFilters=product_category%3Ashoes&facets=brand_name`,
               // params: `highlightPreTag=%3Cais-highlight-0000000000%3E&highlightPostTag=%3C%2Fais-highlight-0000000000%3E&distinct=true&query=${query}&maxValuesPerFacet=30&page=${page}&facets=%5B%22product_category%22%2C%22instant_ship_lowest_price_cents%22%2C%22single_gender%22%2C%22presentation_size%22%2C%22shoe_condition%22%2C%22brand_name%22%2C%22color%22%2C%22silhouette%22%2C%22designer%22%2C%22upper_material%22%2C%22midsole%22%2C%22category%22%2C%22release_date_name%22%5D&tagFilters=&facetFilters=%5B%5B%22product_category%3Ashoes%22%5D%5D`,
             },
           ],
@@ -57,30 +57,6 @@ export const goatRouter = createTRPCRouter({
       );
 
       const { hits } = algoliaResult.results[0];
-
-      const createManyShoes = hits.map((shoe) =>
-        ctx.prisma.goatShoe.upsert({
-          where: {
-            searchSKU: shoe.search_sku,
-          },
-          create: {
-            searchSKU: shoe.search_sku,
-            json: JSON.stringify(shoe),
-            shoe: {
-              create: {},
-            },
-          },
-          update: {},
-          select: {
-            // don't want to return anything but select can't be empty
-            searchSKU: true,
-          },
-        })
-      );
-
-      Promise.all(createManyShoes)
-        .then(() => console.log("ALL done"))
-        .catch((e) => console.log("at least 1 failed", e));
 
       if (!filters) return hits;
 
@@ -97,27 +73,5 @@ export const goatRouter = createTRPCRouter({
       });
 
       return shoes;
-    }),
-
-  getShoeBySku: publicProcedure
-    .input(z.object({ sku: z.string() }))
-    .query(async ({ input }) => {
-      const { sku } = input;
-    }),
-
-  addLike: protectedProcedure
-    .input(
-      z.object({
-        searchSKU: z.string(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { searchSKU } = input;
-
-      const userID = ctx.session.user.id;
-
-      // TODO
-
-      // await ctx.prisma.
     }),
 });
