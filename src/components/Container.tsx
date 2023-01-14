@@ -4,7 +4,7 @@ export type ContainerProps = React.PropsWithChildren;
 
 export default function Container({ children }: ContainerProps) {
   return (
-    <div>
+    <div className="flex h-screen h-[100dvh] flex-col">
       <div
         // daisy:
         // className="sticky top-0 z-30 flex max-h-16 w-full justify-center bg-base-200 bg-opacity-30 text-base-content shadow-sm backdrop-blur transition-all duration-100"
@@ -16,7 +16,7 @@ export default function Container({ children }: ContainerProps) {
       >
         <NavBar />
       </div>
-      <div className="mx-6 my-1">{children}</div>
+      {children}
     </div>
   );
 }
