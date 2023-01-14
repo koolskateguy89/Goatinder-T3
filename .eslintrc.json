@@ -48,6 +48,8 @@
       "submit": true,
       "reset": true // idk why airbnb doesn't allow `type=reset`
     }],
+    "@typescript-eslint/no-unsafe-call": "off", // annoying when dealing with external libraries
+    "@typescript-eslint/no-unsafe-assignment": "off", // annoying when dealing with external libraries
 
     // my own rules
     "no-duplicate-imports": "error",
