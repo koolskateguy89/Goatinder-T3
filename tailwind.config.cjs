@@ -5,7 +5,11 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],
+  // prettier-ignore
+  plugins: [
+    require("@tailwindcss/line-clamp"),
+    require("daisyui"),
+  ],
 
   daisyui: {
     themes: ["light", "dark"],
