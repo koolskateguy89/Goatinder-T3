@@ -31,6 +31,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   next: 13.1.1
   next-auth: ^4.18.8
+  next-superjson-plugin: ^0.5.4
   next-themes: ^0.2.1
   postcss: ^8.4.21
   prettier: ^2.8.2
@@ -66,6 +67,7 @@ dependencies:
   daisyui: 2.46.1_by5iqycgvtroytm54ytclj4zzi
   next: 13.1.1_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.18.8_q76c2b4vyoegvsbrcwkfvimnai
+  next-superjson-plugin: 0.5.4_4jth3s7cpp4vevq7cz6bexafye
   next-themes: 0.2.1_q76c2b4vyoegvsbrcwkfvimnai
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -2095,6 +2097,12 @@ packages:
       nopt: 1.0.10
     dev: false
 
+  /hoist-non-react-statics/3.3.2:
+    resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
+    dependencies:
+      react-is: 16.13.1
+    dev: false
+
   /htm/3.1.1:
     resolution: {integrity: sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ==}
     dev: false
@@ -2499,6 +2507,17 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       uuid: 8.3.2
+    dev: false
+
+  /next-superjson-plugin/0.5.4_4jth3s7cpp4vevq7cz6bexafye:
+    resolution: {integrity: sha512-AUAqdL+yv/jqnkd583jffimRYbfbztkKkNf7qv0WhOVUGW0cIFYdtQHbOEseeCHK95hcPy7rDZY94nujjjRseQ==}
+    peerDependencies:
+      next: ^13
+      superjson: ^1
+    dependencies:
+      hoist-non-react-statics: 3.3.2
+      next: 13.1.1_biqbaboplfbrettd7655fr4n2y
+      superjson: 1.12.1
     dev: false
 
   /next-themes/0.2.1_q76c2b4vyoegvsbrcwkfvimnai:
@@ -2998,7 +3017,6 @@ packages:
 
   /react-is/16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-    dev: true
 
   /react-ssr-prepass/1.5.0_react@18.2.0:
     resolution: {integrity: sha512-yFNHrlVEReVYKsLI5lF05tZoHveA5pGzjFbFJY/3pOqqjGOmMmqx83N4hIjN2n6E1AOa+eQEUxs3CgRnPmT0RQ==}
