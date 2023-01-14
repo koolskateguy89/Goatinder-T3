@@ -50,9 +50,7 @@ export default function Profile() {
             </div>
           ) : (
             <div className="w-10 rounded-full bg-neutral-focus text-neutral-content">
-              <span className="uppercase">
-                {session.user.name?.[0] ?? "nah"}
-              </span>
+              <span className="uppercase">{session.user.name?.[0] ?? "?"}</span>
             </div>
           )}
         </div>

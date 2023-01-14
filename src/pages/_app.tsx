@@ -3,11 +3,10 @@ import Head from "next/head";
 import { Inter } from "@next/font/google";
 import type { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import algoliasearch from "algoliasearch/lite";
 import { ThemeProvider } from "next-themes";
 import { Toaster, ToastBar } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
-
-import algoliasearch from "algoliasearch/lite";
 import { InstantSearch } from "react-instantsearch-hooks-web";
 
 import { api } from "utils/api";
