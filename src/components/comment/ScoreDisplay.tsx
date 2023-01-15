@@ -22,8 +22,8 @@ export default function ScoreDisplay({
   const signedIn = session?.user != null;
 
   return (
-    <div className="flex flex-col items-center text-lg">
-      {/* TODO: icons that are filled */}
+    // TODO: icons that are filled
+    <div className="flex w-12 flex-col items-center gap-y-0.5 text-lg">
       <button
         type="button"
         onClick={handleUpvote}
@@ -42,7 +42,9 @@ export default function ScoreDisplay({
       >
         <BiUpvote />
       </button>
-      <span className="font-semibold">sCoRe: {score}</span>
+
+      <span className="font-semibold">{score}</span>
+
       <button
         type="button"
         onClick={handleDownvote}
