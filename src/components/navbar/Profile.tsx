@@ -1,13 +1,13 @@
-import Image from "next/image";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import clsx from "clsx";
 
-// TODO: rename: UserDropdown?
+import Avatar from "components/Avatar";
+
+// TODO: rename to UserDropdown?
 export default function Profile() {
   const { data: session, status } = useSession();
 
-  // TODO: use daisyUI loading shiny thingy
+  // TODO: use daisyUI loading shiny thingy(?)
   // should never show tho, since we're passing session to _app with getServerSideProps on every page
   if (status === "loading") {
     return (
@@ -31,29 +31,18 @@ export default function Profile() {
   };
 
   return (
-    // {/* <img src="https://placeimg.com/192/192/people" /> */}
     // maybe use a modal instead of dropdown on mobile?
-    // TODO: image fallback https://vercel.com/templates/next.js/image-fallback (customise component so that fallback is reactnode)
     <div className="dropdown-end dropdown" aria-haspopup="menu">
       <label tabIndex={0} className="flex cursor-pointer">
-        <div className={clsx("avatar", !session.user.image && "placeholder")}>
-          {session.user.image ? (
-            <div className="relative w-10">
-              <Image
-                alt={session.user.name ?? "Profile picture"}
-                src={session.user.image}
-                quality={100}
-                fill
-                sizes="2.5rem"
-                className="mask mask-circle"
-              />
-            </div>
-          ) : (
-            <div className="w-10 rounded-full bg-neutral-focus text-neutral-content">
-              <span className="uppercase">{session.user.name?.[0] ?? "?"}</span>
-            </div>
-          )}
-        </div>
+        <Avatar
+          image={session.user.image}
+          name={session.user.name}
+          className="[&>*]:w-10"
+          imageProps={{
+            quality: 100,
+            sizes: "2.5rem",
+          }}
+        />
       </label>
       {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events */}
       <ul
@@ -71,7 +60,7 @@ export default function Profile() {
         <li>
           <button
             type="button"
-            onClick={() => signOut({ callbackUrl: "/" })}
+            onClick={() => signOut()}
             className="font-semibold"
           >
             Sign out
