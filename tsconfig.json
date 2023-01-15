@@ -20,11 +20,7 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": "./src",
-    "plugins": [
-      {
-        "name": "next",
-      },
-    ],
+    "noErrorTruncation": true, // https://github.com/microsoft/vscode/issues/64566#issuecomment-590140308
   },
   "include": [
     "next-env.d.ts",
