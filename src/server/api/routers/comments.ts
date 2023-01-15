@@ -1,3 +1,4 @@
+import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
@@ -75,17 +76,28 @@ export const commentsRouter = createTRPCRouter({
     }),
 
   upvote: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(
+      z.object({
+        id: z.string(),
+        remove: z.boolean(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
-      const { id } = input;
+      const { id, remove } = input;
 
       const userId = ctx.session.user.id;
 
-      return ctx.prisma.shoeComment.update({
-        where: {
-          id,
-        },
-        data: {
+      let updateData: Prisma.ShoeCommentUpdateInput;
+      if (remove) {
+        updateData = {
+          upvoters: {
+            disconnect: {
+              id: userId,
+            },
+          },
+        };
+      } else {
+        updateData = {
           upvoters: {
             connect: {
               id: userId,
@@ -96,22 +108,40 @@ export const commentsRouter = createTRPCRouter({
               id: userId,
             },
           },
+        };
+      }
+
+      return ctx.prisma.shoeComment.update({
+        where: {
+          id,
         },
+        data: updateData,
       });
     }),
 
   downvote: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(
+      z.object({
+        id: z.string(),
+        remove: z.boolean(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
-      const { id } = input;
+      const { id, remove } = input;
 
       const userId = ctx.session.user.id;
 
-      return ctx.prisma.shoeComment.update({
-        where: {
-          id,
-        },
-        data: {
+      let updateData: Prisma.ShoeCommentUpdateInput;
+      if (remove) {
+        updateData = {
+          downvoters: {
+            disconnect: {
+              id: userId,
+            },
+          },
+        };
+      } else {
+        updateData = {
           downvoters: {
             connect: {
               id: userId,
@@ -122,7 +152,14 @@ export const commentsRouter = createTRPCRouter({
               id: userId,
             },
           },
+        };
+      }
+
+      return ctx.prisma.shoeComment.update({
+        where: {
+          id,
         },
+        data: updateData,
       });
     }),
 });
