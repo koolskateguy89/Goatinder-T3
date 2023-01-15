@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { MdDeleteForever } from "react-icons/md";
@@ -8,6 +8,49 @@ import { api } from "utils/api";
 import Avatar from "components/Avatar";
 import DateDisplay from "components/comment/DateDisplay";
 import ScoreDisplay from "components/comment/ScoreDisplay";
+
+type VoteState = {
+  userUpvoted: boolean;
+  userDownvoted: boolean;
+  score: number;
+};
+
+type VoteAction =
+  | { type: "upvote" }
+  | { type: "downvote" }
+  | { type: "removeUpvote" }
+  | { type: "removeDownvote" };
+
+function voteReducer(state: VoteState, action: VoteAction) {
+  switch (action.type) {
+    case "upvote":
+      return {
+        userUpvoted: true,
+        userDownvoted: false,
+        score: state.score + (state.userDownvoted ? 2 : 1),
+      };
+    case "downvote":
+      return {
+        userUpvoted: false,
+        userDownvoted: true,
+        score: state.score - (state.userUpvoted ? 2 : 1),
+      };
+    case "removeUpvote":
+      return {
+        userUpvoted: false,
+        userDownvoted: false,
+        score: state.score - 1,
+      };
+    case "removeDownvote":
+      return {
+        userUpvoted: false,
+        userDownvoted: false,
+        score: state.score + 1,
+      };
+    default:
+      return state;
+  }
+}
 
 export type CommentProps = {
   comment: CommentType;
@@ -35,11 +78,13 @@ export default function Comment({
 
   const isMyComment = session?.user?.id === author.id;
 
-  const [score, setScore] = useState(_count.upvoters - _count.downvoters);
+  const [voteState, dispatchVote] = useReducer(voteReducer, {
+    userUpvoted: _userUpvoted,
+    userDownvoted: _userDownvoted,
+    score: _count.upvoters - _count.downvoters,
+  });
 
-  const [userUpvoted, setUserUpvoted] = useState(_userUpvoted);
-
-  const [userDownvoted, setUserDownvoted] = useState(_userDownvoted);
+  const { score, userUpvoted, userDownvoted } = voteState;
 
   const deleteComment = api.comments.deleteComment.useMutation();
 
@@ -52,98 +97,20 @@ export default function Comment({
     onCommentDeleted(id);
   };
 
-  // could use useReducer instead of useState for upvote/downvote (?) explore this
-  // how do i do this
-  // copilot generated this:
-  // const [upvoteState, dispatchUpvote] = useReducer(upvoteReducer, {
-  //   userUpvoted: false,
-  //   userDownvoted: false,
-  //   score: 0,
-  // });
-  // type UpvoteState = {
-  //   userUpvoted: boolean;
-  //   userDownvoted: boolean;
-  //   score: number;
-  // };
-  // type UpvoteAction =
-  //   | { type: "upvote" }
-  //   | { type: "downvote" }
-  //   | { type: "removeUpvote" }
-  //   | { type: "removeDownvote" };
-  // function upvoteReducer(state: UpvoteState, action: UpvoteAction) {
-  //   switch (action.type) {
-  //     case "upvote":
-  //       return {
-  //         userUpvoted: true,
-  //         userDownvoted: false,
-  //         score: state.score + 1, //! not sure if this is correct, it depends on whether the user was downvoted or not (+1/2)
-  //       };
-  //     case "downvote":
-  //       return {
-  //         userUpvoted: false,
-  //         userDownvoted: true,
-  //         score: state.score - 1, //! not sure if this is correct, it depends on whether the user was upvoted or not (-1/2)
-  //       };
-  //     case "removeUpvote":
-  //       return {
-  //         userUpvoted: false,
-  //         userDownvoted: false,
-  //         score: state.score - 1,
-  //       };
-  //     case "removeDownvote":
-  //       return {
-  //         userUpvoted: false,
-  //         userDownvoted: false,
-  //         score: state.score + 1,
-  //       };
-  //     default:
-  //       return state;
-  //   }
-  // }
-
-  // could use useEffect to update score when userUpvoted or userDownvoted changes
-  // but useReducer might be better and will let me learn something new
-
-  // TODO: try and simplify logic in handleUpvote and handleDownvote
   const handleUpvote = () => {
-    console.log("upvote");
-    if (userUpvoted) {
-      console.log("remove upvote");
-      // remove upvote
-      setUserUpvoted(false);
-      setScore((prevScore) => prevScore - 1);
-    } else {
-      console.log("add upvote");
-      // add upvote
-      setUserUpvoted(true);
-      const wasDownvoted = userDownvoted;
-      setUserDownvoted(false);
-      setScore((prevScore) => prevScore + (wasDownvoted ? 2 : 1));
-    }
+    const removeUpvote = userUpvoted;
 
-    console.log("upvote.mutate({ id })");
-    // TODO: handle removing upvote
-    upvote.mutate({ id });
+    dispatchVote({ type: removeUpvote ? "removeUpvote" : "upvote" });
+
+    upvote.mutate({ id, remove: removeUpvote });
   };
 
   const handleDownvote = () => {
-    console.log("downvote");
-    if (userDownvoted) {
-      console.log("remove downvote");
-      // remove downvote
-      setUserDownvoted(false);
-      setScore((prevScore) => prevScore + 1);
-    } else {
-      console.log("add downvote");
-      // add downvote
-      setUserDownvoted(true);
-      const wasUpvoted = userUpvoted;
-      setUserUpvoted(false);
-      setScore((prevScore) => prevScore - (wasUpvoted ? 2 : 1));
-    }
+    const removeDownvote = userDownvoted;
 
-    console.log("downvote.mutate({ id })");
-    downvote.mutate({ id });
+    dispatchVote({ type: removeDownvote ? "removeDownvote" : "downvote" });
+
+    downvote.mutate({ id, remove: removeDownvote });
   };
 
   return (
@@ -181,7 +148,7 @@ export default function Comment({
 
         <DateDisplay date={datePosted} />
 
-        {/* TODO: clamp to line 4 lines and let user expand if they want */}
+        {/* TODO: clamp to like 4 lines and let user expand if they want */}
         <p>{content}</p>
       </div>
 
