@@ -14,6 +14,7 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+// TODO: delete this
 model Example {
     id        String   @id @default(cuid())
     createdAt DateTime @default(now())
@@ -49,17 +50,19 @@ model Session {
 }
 
 model User {
-    id            String         @id @default(cuid())
-    name          String?
-    email         String?        @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    profile       Profile?
-    disliked      Shoe[]         @relation("Dislikes")
-    liked         Shoe[]         @relation("Likes")
-    comments      ShoeComments[]
+    id                String        @id @default(cuid())
+    name              String?
+    email             String?       @unique
+    emailVerified     DateTime?
+    image             String?
+    accounts          Account[]
+    sessions          Session[]
+    profile           Profile?
+    disliked          Shoe[]        @relation("Dislikes")
+    liked             Shoe[]        @relation("Likes")
+    comments          ShoeComment[]
+    upvotedComments   ShoeComment[] @relation("Upvoters")
+    downvotedComments ShoeComment[] @relation("Downvoters")
 }
 
 model VerificationToken {
@@ -78,34 +81,24 @@ model Profile {
     user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// just what is returned from algolia
-model GoatShoe {
-    searchSKU String @id
-    json      String @unique
-    shoe      Shoe?
-}
-
-// 'actual' additional things about shoe
-// tbh might as well just put in GoatShoe? because it seems to be all relations
 model Shoe {
-    goatShoeSKU String         @id
-    goatShoe    GoatShoe       @relation(fields: [goatShoeSKU], references: [searchSKU])
-    dislikes    User[]         @relation("Dislikes")
-    likes       User[]         @relation("Likes")
-    comments    ShoeComments[]
+    searchSKU String        @id
+    dislikes  User[]        @relation("Dislikes")
+    likes     User[]        @relation("Likes")
+    comments  ShoeComment[]
 }
 
-// TODO: forum/comment kinda system for shoes
 // should we do notifications for comments? or smthn idk
 
-model ShoeComments {
+model ShoeComment {
     id          String   @id @default(cuid())
     shoeSKU     String
-    userId      String
+    authorId    String
+    content     String
     datePosted  DateTime @default(now())
     dateUpdated DateTime @updatedAt
-    upvotes     Int      @default(0)
-    downvotes   Int      @default(0)
-    shoe        Shoe     @relation(fields: [shoeSKU], references: [goatShoeSKU])
-    user        User     @relation(fields: [userId], references: [id])
+    shoe        Shoe     @relation(fields: [shoeSKU], references: [searchSKU])
+    author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+    upvoters    User[]   @relation("Upvoters")
+    downvoters  User[]   @relation("Downvoters")
 }
