@@ -92,8 +92,7 @@ export const commentsRouter = createTRPCRouter({
             },
           },
           downvoters: {
-            // deleteMany acts like deleteIfExists
-            deleteMany: {
+            disconnect: {
               id: userId,
             },
           },
@@ -119,7 +118,7 @@ export const commentsRouter = createTRPCRouter({
             },
           },
           upvoters: {
-            deleteMany: {
+            disconnect: {
               id: userId,
             },
           },
