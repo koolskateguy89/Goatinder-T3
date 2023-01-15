@@ -38,7 +38,6 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
   return (
     <>
       status = {JSON.stringify(status)}
-      {/* Your JSX */}
       <form onSubmit={handleSubmit} onReset={clear}>
         <div className="input-group [&_.btn]:text-2xl">
           <input
@@ -48,7 +47,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
             onChange={(event) => setQuery(event.currentTarget.value)}
             // onChange={(event) => refine(event.currentTarget.value)}
             aria-label="Search"
-            className="input-bordered input placeholder:text-base-content/60"
+            className="input-bordered input dark:placeholder:opacity-60"
           />
 
           {/* can't use before/after on input so using additional markup */}

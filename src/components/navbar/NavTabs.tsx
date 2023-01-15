@@ -29,7 +29,7 @@ export default function NavTabs() {
       aria-label="Main"
     >
       <NavTab href="/">Home</NavTab>
-      <NavTab href="/shoes">Shoes</NavTab>
+      <NavTab href="/shoes/search">Search</NavTab>
       <NavTab href="/about">About</NavTab>
       <NavTab href="/contact">Contact</NavTab>
     </nav>
