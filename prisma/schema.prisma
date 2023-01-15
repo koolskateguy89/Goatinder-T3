@@ -82,22 +82,22 @@ model Profile {
 }
 
 model Shoe {
-    searchSKU String        @id
-    dislikes  User[]        @relation("Dislikes")
-    likes     User[]        @relation("Likes")
-    comments  ShoeComment[]
+    objectId String        @id
+    dislikes User[]        @relation("Dislikes")
+    likes    User[]        @relation("Likes")
+    comments ShoeComment[]
 }
 
 // should we do notifications for comments? or smthn idk
 
 model ShoeComment {
     id          String   @id @default(cuid())
-    shoeSKU     String
+    shoeId      String
     authorId    String
     content     String
     datePosted  DateTime @default(now())
     dateUpdated DateTime @updatedAt
-    shoe        Shoe     @relation(fields: [shoeSKU], references: [searchSKU])
+    shoe        Shoe     @relation(fields: [shoeId], references: [objectId])
     author      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
     upvoters    User[]   @relation("Upvoters")
     downvoters  User[]   @relation("Downvoters")
