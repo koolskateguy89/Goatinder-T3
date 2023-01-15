@@ -42,7 +42,7 @@ import ThemedPoweredBy from "components/search/ThemedPoweredBy";
 const attributesToRetrieve = [
   "name",
   "brand_name",
-  "search_sku",
+  "objectID",
   "retail_price_cents_gbp",
   "grid_picture_url",
   "designer",
@@ -69,7 +69,7 @@ const ShoeHit = ({ hit }: { hit: HitShoe }) => {
       </figure>
       <div className="card-body items-center text-center max-md:-mt-10">
         <h2 className="link-hover link-primary link card-title">
-          <Link href={`/shoes/${hit.search_sku}`}>
+          <Link href={`/shoes/${hit.objectID}`}>
             {/* {hit.name} */}
             {/* TODO: not sure if actually want Highlight */}
             <Highlight
@@ -86,7 +86,7 @@ const ShoeHit = ({ hit }: { hit: HitShoe }) => {
         {/* TODO: change link color back to primary */}
         <div className="group/name relative">
           <h2 className="link-hover link-secondary link card-title">
-            <Link href={`/shoes/${hit.search_sku}`}>
+            <Link href={`/shoes/${hit.objectID}`}>
               {/* TODO: not sure if actually want Highlight */}
               <Highlight
                 hit={hit}
@@ -129,7 +129,7 @@ const ShoeHit = ({ hit }: { hit: HitShoe }) => {
 
         <p className="text-sm text-base-content/60">{hit.brand_name}</p>
 
-        <p>search_sku: {hit.search_sku}</p>
+        <p>objectID: {hit.objectID}</p>
 
         <p>
           Retail price:{" "}
@@ -276,18 +276,6 @@ const ShoesSearchPage: NextPage = () => {
                     }}
                     translations={{
                       resetButtonText: "Clear all filters",
-                    }}
-                  />
-
-                  <RefinementList
-                    attribute="search_sku"
-                    classNames={{
-                      item: "form-control",
-                      noRefinementRoot: "w-10 h-10 bg-red-500",
-                      label: "flex flex-row items-center",
-                      labelText: "ml-1 label",
-                      count: "badge badge-secondary ml-auto",
-                      checkbox: "checkbox checkbox-secondary checkbox-sm",
                     }}
                   />
 

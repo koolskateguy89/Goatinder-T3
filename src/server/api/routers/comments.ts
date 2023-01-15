@@ -6,12 +6,12 @@ export const commentsRouter = createTRPCRouter({
   addComment: protectedProcedure
     .input(
       z.object({
-        shoeSKU: z.string(),
-        content: z.string(),
+        shoeId: z.string(),
+        content: z.string().min(1),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { shoeSKU, content } = input;
+      const { shoeId, content } = input;
 
       const authorId = ctx.session.user.id;
 
@@ -21,10 +21,10 @@ export const commentsRouter = createTRPCRouter({
           shoe: {
             connectOrCreate: {
               where: {
-                searchSKU: shoeSKU,
+                objectId: shoeId,
               },
               create: {
-                searchSKU: shoeSKU,
+                objectId: shoeId,
               },
             },
           },
