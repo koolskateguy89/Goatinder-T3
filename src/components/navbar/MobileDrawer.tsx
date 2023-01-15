@@ -93,8 +93,17 @@ function Drawer({
         <main>
           <nav>
             <ul className="menu my-4 px-4">
+              <li className="menu-title">
+                <span>...</span>
+              </li>
               <MobileNavItem href="/">Home</MobileNavItem>
-              <MobileNavItem href="/shoes">Shoes</MobileNavItem>
+              <li className="menu-title">
+                <span>Shoes</span>
+              </li>
+              <MobileNavItem href="/shoes/search">Search</MobileNavItem>
+              <li className="menu-title">
+                <span>...</span>
+              </li>
               <MobileNavItem href="/contact">Contact</MobileNavItem>
               <MobileNavItem href="/about">About</MobileNavItem>
               {Array.from({ length: 20 }).map((_, i) => (

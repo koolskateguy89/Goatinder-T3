@@ -12,21 +12,21 @@ import type { GoatShoe } from "types/goat-shoe";
 import {
   // basics
   Configure,
-  SearchBox,
+  // SearchBox,
   // refinements
   RefinementList,
   ClearRefinements,
-  Menu, // for only picking 1 option, don't think will use
+  // Menu, // for only picking 1 option, don't think will use
   // results
   Hits,
-  InfiniteHits, // TODO: make another version of this page that uses this instead of pagination
+  // InfiniteHits, // TODO: make another version of this page that uses this instead of pagination (explore?)
   Highlight,
   Snippet, // not sure if gonna use
   // pagination
   Pagination,
   HitsPerPage, // lets use choose no of hits per page
   // metadata
-  PoweredBy,
+  // PoweredBy,
   // sorting
   SortBy, // FIXME?: isn't working, not sure if can fix
   // hooks
@@ -57,6 +57,8 @@ type HitShoe = AlgoliaHit<
   Pick<GoatShoe, (typeof attributesToRetrieve)[number]>
 >;
 
+// TODO: maybe don't show like & dislike button on this (search) page
+// and only on the tinder & shoe pages
 const ShoeHit = ({ hit }: { hit: HitShoe }) => {
   return (
     // using negative margins for image & body to get rid of the spacing in
@@ -184,10 +186,11 @@ and make a new request for next page of results
  * https://www.algolia.com/doc/guides/building-search-ui/ui-and-ux-patterns/autocomplete/react-hooks/
  *
  * This page will be like a search page where they can find any shoe they want basically.
- * TODO: change nav links to Search
- * TODO: change names from Shoes* to Search*
+ *
+ * TODO?: tbh this could just be /search not /shoes/search
  */
-const ShoesPage: NextPage = () => {
+// for performance, could move InstanstSearchProvider to here from _app.tsx
+const ShoesSearchPage: NextPage = () => {
   return (
     <>
       <Head>
@@ -318,7 +321,7 @@ const ShoesPage: NextPage = () => {
   );
 };
 
-export default ShoesPage;
+export default ShoesSearchPage;
 
 // TODO: getServerSideProps with initialData if query in url
 // look at https://www.algolia.com/doc/guides/building-search-ui/widgets/customize-an-existing-widget/react-hooks/#providing-an-initial-state
