@@ -13,18 +13,8 @@ import { authOptions } from "pages/api/auth/[...nextauth]";
 import { env } from "env/server.mjs";
 import type { GoatShoe } from "types/goat-shoe";
 import { prisma } from "server/db";
+import { api } from "utils/api";
 import CommentArea from "components/CommentArea";
-
-const attributesToRetrieve = [
-  "name",
-  "brand_name",
-  "slug",
-  "retail_price_cents_gbp",
-  "main_picture_url",
-  "designer",
-  "story_html",
-  "objectID",
-] as const;
 
 type ShoeComponentProps = {
   goatShoe: InferGetServerSidePropsType<typeof getServerSideProps>["goatShoe"];
@@ -41,6 +31,63 @@ const Shoe = ({
   userLiked,
   userDisliked,
 }: ShoeComponentProps) => {
+  const like = api.shoes.like.useMutation();
+  const dislike = api.shoes.dislike.useMutation();
+
+  // could use useReducer here to handle userLiked and userDisliked changes
+  // e.g.
+  // const [state, dispatch] = useReducer(reducer, {
+  //   numLikes,
+  //   numDislikes,
+  //   userLiked,
+  //   userDisliked,
+  // });
+  // and then in the reducer you could handle all the state changes
+  // e.g. (with types)
+  // type State = {
+  //   numLikes: number;
+  //   numDislikes: number;
+  //   userLiked: boolean;
+  //   userDisliked: boolean;
+  // };
+  // type Action =
+  //   | { type: "like" }
+  //   | { type: "dislike" }
+  //   | { type: "unlike" }
+  //   | { type: "undislike" };
+  // const reducer = (state: State, action: Action) => {
+  //   switch (action.type) {
+  //     case "like":
+  //       return {
+  //         ...state,
+  //         numLikes: state.numLikes + 1,
+  //         userLiked: true,
+  //         userDisliked: false,
+  //         // numDislikes: state.numDislikes - 1, //! need to check if userDisliked, here and in dislike
+  //       };
+  //     case "dislike":
+  //       return {
+  //         ...state,
+  //         numDislikes: state.numDislikes + 1,
+  //         userDisliked: true,
+  //       };
+  //     case "unlike":
+  //       return {
+  //         ...state,
+  //         numLikes: state.numLikes - 1,
+  //         userLiked: false,
+  //       };
+  //     case "undislike":
+  //       return {
+  //         ...state,
+  //         numDislikes: state.numDislikes - 1,
+  //         userDisliked: false,
+  //       };
+  //     default:
+  //       throw new Error();
+  //   }
+  // };
+
   return (
     // using negative margins for image & body to get rid of the spacing in
     // the image on smaller screens
@@ -136,14 +183,12 @@ export const getServerSideProps = (async (context) => {
     authOptions
   );
 
-  const id = context.params?.id;
+  const objectID = context.params?.objectID;
 
-  if (!id)
+  if (!objectID)
     return {
       notFound: true,
     };
-
-  type GoatShoeSubset = Pick<GoatShoe, (typeof attributesToRetrieve)[number]>;
 
   const client = algoliasearch(
     env.NEXT_PUBLIC_ALGOLIA_APP_ID,
@@ -152,14 +197,25 @@ export const getServerSideProps = (async (context) => {
 
   const index = client.initIndex("product_variants_v2");
 
+  const attributesToRetrieve = [
+    "name",
+    "brand_name",
+    "slug",
+    "retail_price_cents_gbp",
+    "main_picture_url",
+    "designer",
+    "story_html",
+    "objectID",
+  ] as const;
+
+  type GoatShoeSubset = Pick<GoatShoe, (typeof attributesToRetrieve)[number]>;
+
   const goatShoe = await index
-    .getObject<GoatShoeSubset>(id, {
+    .getObject<GoatShoeSubset>(objectID, {
       attributesToRetrieve,
     })
-    .catch(() => {
-      console.log("doesnt exist");
-      return null;
-    });
+    // doesn't exist
+    .catch(() => null);
 
   if (!goatShoe)
     return {
@@ -242,4 +298,4 @@ export const getServerSideProps = (async (context) => {
     },
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}) satisfies GetServerSideProps<any, { id: string }>;
+}) satisfies GetServerSideProps<any, { objectID: string }>;
