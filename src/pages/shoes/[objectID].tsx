@@ -14,7 +14,7 @@ import { env } from "env/server.mjs";
 import type { GoatShoe } from "types/goat-shoe";
 import { prisma } from "server/db";
 import { api } from "utils/api";
-import CommentArea from "components/CommentArea";
+import CommentSection from "components/CommentSection";
 
 type ShoeComponentProps = {
   goatShoe: InferGetServerSidePropsType<typeof getServerSideProps>["goatShoe"];
@@ -152,6 +152,7 @@ const ShoePage: NextPage<
 
   return (
     // TODO: maybe show recommended/related shoes in a column on the right
+    // if not, then show comments on the right instead of below
     <>
       <Head>
         <title>{title}</title>
@@ -165,10 +166,7 @@ const ShoePage: NextPage<
           userDisliked={(dbShoe?.dislikes?.length ?? 0) > 0}
         />
 
-        <CommentArea
-          shoeId={goatShoe.objectID}
-          comments={dbShoe?.comments ?? []}
-        />
+        <CommentSection shoeId={goatShoe.objectID} />
       </main>
     </>
   );
@@ -224,45 +222,9 @@ export const getServerSideProps = (async (context) => {
 
   const dbShoe = await prisma.shoe.findUnique({
     where: {
-      // searchSKU: goatShoe.search_sku,
       objectId: goatShoe.objectID,
     },
     select: {
-      comments: {
-        include: {
-          author: {
-            select: {
-              id: true,
-              name: true,
-              image: true,
-            },
-          },
-          // to check if user has upvoted
-          upvoters: {
-            where: {
-              id: session?.user?.id ?? "",
-            },
-            select: {
-              id: true,
-            },
-          },
-          // to check if user has downvoted
-          downvoters: {
-            where: {
-              id: session?.user?.id ?? "",
-            },
-            select: {
-              id: true,
-            },
-          },
-          _count: {
-            select: {
-              upvoters: true,
-              downvoters: true,
-            },
-          },
-        },
-      },
       // to check if user has liked
       likes: {
         where: {
