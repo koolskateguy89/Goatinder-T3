@@ -4,7 +4,12 @@ import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 
 export const shoesRouter = createTRPCRouter({
   like: protectedProcedure
-    .input(z.object({ objectId: z.string() }))
+    .input(
+      z.object({
+        // TODO: remove like
+        objectId: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const { objectId } = input;
       const userId = ctx.session.user.id;
@@ -13,7 +18,12 @@ export const shoesRouter = createTRPCRouter({
     }),
 
   dislike: protectedProcedure
-    .input(z.object({ objectId: z.string() }))
+    .input(
+      z.object({
+        // TODO: remove dislike
+        objectId: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const { objectId } = input;
       const userId = ctx.session.user.id;

@@ -1,90 +1,33 @@
-import { useReducer } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { MdDeleteForever } from "react-icons/md";
 
-import type { Comment as CommentType } from "types/comment";
-import { api } from "utils/api";
+import { api, type RouterOutputs } from "utils/api";
 import Avatar from "components/Avatar";
 import DateDisplay from "components/comment/DateDisplay";
 import ScoreDisplay from "components/comment/ScoreDisplay";
 
-type VoteState = {
-  userUpvoted: boolean;
-  userDownvoted: boolean;
-  score: number;
-};
-
-type VoteAction =
-  | { type: "upvote" }
-  | { type: "downvote" }
-  | { type: "removeUpvote" }
-  | { type: "removeDownvote" };
-
-function voteReducer(state: VoteState, action: VoteAction) {
-  switch (action.type) {
-    case "upvote":
-      return {
-        userUpvoted: true,
-        userDownvoted: false,
-        score: state.score + (state.userDownvoted ? 2 : 1),
-      };
-    case "downvote":
-      return {
-        userUpvoted: false,
-        userDownvoted: true,
-        score: state.score - (state.userUpvoted ? 2 : 1),
-      };
-    case "removeUpvote":
-      return {
-        userUpvoted: false,
-        userDownvoted: false,
-        score: state.score - 1,
-      };
-    case "removeDownvote":
-      return {
-        userUpvoted: false,
-        userDownvoted: false,
-        score: state.score + 1,
-      };
-    default:
-      return state;
-  }
-}
+type CommentType = RouterOutputs["comments"]["getComments"][number];
 
 export type CommentProps = {
   comment: CommentType;
-  userUpvoted: boolean;
-  userDownvoted: boolean;
   onCommentDeleted: (id: string) => void;
 };
 
 // TODO: MAYBE try to implement edit functionality
 // TODO: MAYBE a report feature?
-export default function Comment({
-  comment: {
+export default function Comment({ comment, onCommentDeleted }: CommentProps) {
+  const {
     id,
     content,
     datePosted,
     // dateUpdated,
     author,
-    _count,
-  },
-  userUpvoted: _userUpvoted,
-  userDownvoted: _userDownvoted,
-  onCommentDeleted,
-}: CommentProps) {
+  } = comment;
+
   const { data: session } = useSession();
 
   const isMyComment = session?.user?.id === author.id;
-
-  const [voteState, dispatchVote] = useReducer(voteReducer, {
-    userUpvoted: _userUpvoted,
-    userDownvoted: _userDownvoted,
-    score: _count.upvoters - _count.downvoters,
-  });
-
-  const { score, userUpvoted, userDownvoted } = voteState;
 
   const deleteComment = api.comments.deleteComment.useMutation();
 
@@ -98,17 +41,33 @@ export default function Comment({
   };
 
   const handleUpvote = () => {
-    const removeUpvote = userUpvoted;
+    const removeUpvote = comment.upvoted;
 
-    dispatchVote({ type: removeUpvote ? "removeUpvote" : "upvote" });
+    if (removeUpvote) {
+      comment.upvoted = false;
+      comment.score -= 1;
+    } else {
+      comment.upvoted = true;
+      const wasDownvoted = comment.downvoted;
+      comment.downvoted = false;
+      comment.score += wasDownvoted ? 2 : 1;
+    }
 
     upvote.mutate({ id, remove: removeUpvote });
   };
 
   const handleDownvote = () => {
-    const removeDownvote = userDownvoted;
+    const removeDownvote = comment.downvoted;
 
-    dispatchVote({ type: removeDownvote ? "removeDownvote" : "downvote" });
+    if (removeDownvote) {
+      comment.downvoted = false;
+      comment.score += 1;
+    } else {
+      comment.downvoted = true;
+      const wasUpvoted = comment.upvoted;
+      comment.upvoted = false;
+      comment.score -= wasUpvoted ? 2 : 1;
+    }
 
     downvote.mutate({ id, remove: removeDownvote });
   };
@@ -153,9 +112,9 @@ export default function Comment({
       </div>
 
       <ScoreDisplay
-        score={score}
-        userUpvoted={userUpvoted}
-        userDownvoted={userDownvoted}
+        score={comment.score}
+        userUpvoted={comment.upvoted}
+        userDownvoted={comment.downvoted}
         handleUpvote={handleUpvote}
         handleDownvote={handleDownvote}
       />
