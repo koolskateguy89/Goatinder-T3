@@ -51,6 +51,9 @@
     "@typescript-eslint/no-unsafe-call": "off", // annoying when dealing with external libraries
     "@typescript-eslint/no-unsafe-assignment": "off", // annoying when dealing with external libraries
     "react/require-default-props": "off", // annoying with TS
+    "no-promise-executor-return": "off",
+    "consistent-return": "off",
+    "@typescript-eslint/naming-convention": "off", // annoying when dealing with external libraries
 
     // my own rules
     "no-duplicate-imports": "error",
