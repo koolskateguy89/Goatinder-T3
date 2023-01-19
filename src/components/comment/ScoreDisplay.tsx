@@ -23,7 +23,7 @@ export default function ScoreDisplay({
 
   return (
     // TODO: icons that are filled
-    <div className="flex w-12 flex-col items-center gap-y-0.5 text-lg">
+    <div className="-mr-2 flex w-12 flex-col items-center gap-y-0.5 text-lg">
       <button
         type="button"
         onClick={handleUpvote}

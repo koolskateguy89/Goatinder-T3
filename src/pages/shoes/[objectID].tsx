@@ -28,14 +28,16 @@ const ShoePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="flex flex-grow flex-col items-center py-4 lg:flex-row lg:items-start lg:justify-center lg:gap-x-4 lg:px-4">
-        <Shoe
-          goatShoe={goatShoe}
-          numLikes={dbShoe?._count.likes ?? 0}
-          numDislikes={dbShoe?._count.dislikes ?? 0}
-          userLiked={(dbShoe?.likes?.length ?? 0) > 0}
-          userDisliked={(dbShoe?.dislikes?.length ?? 0) > 0}
-        />
+      <main className="flex flex-col items-center gap-4 py-4 lg:flex-row lg:items-start lg:justify-center lg:px-4">
+        <div className="top-20 lg:sticky">
+          <Shoe
+            goatShoe={goatShoe}
+            numLikes={dbShoe?._count.likes ?? 0}
+            numDislikes={dbShoe?._count.dislikes ?? 0}
+            userLiked={(dbShoe?.likes?.length ?? 0) > 0}
+            userDisliked={(dbShoe?.dislikes?.length ?? 0) > 0}
+          />
+        </div>
 
         <CommentSection shoeId={goatShoe.objectID} />
       </main>

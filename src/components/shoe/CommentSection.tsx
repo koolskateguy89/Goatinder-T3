@@ -209,7 +209,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
   };
 
   return (
-    <section className="w-full max-lg:px-4 lg:w-1/2">
+    <section className="w-full space-y-4 max-lg:px-4 lg:w-1/2">
       {/* TODO?: scroll header thingy */}
       <h2 className="text-2xl font-semibold">Comments</h2>
 
@@ -219,7 +219,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
         loading={commentsQuery.isInitialLoading}
       />
 
-      <ul className="lg:max-h-[calc(100vh-theme(spacing.10))] lg:overflow-y-auto lg:px-2">
+      <ul>
         {commentsQuery.isInitialLoading ? (
           <li>
             <div className="text-center">LOADING</div>
