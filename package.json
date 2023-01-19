@@ -33,6 +33,7 @@
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.7.1",
     "react-instantsearch-hooks-web": "^6.38.3",
+    "react-tabs": "^6.0.0",
     "sharp": "^0.31.3",
     "superjson": "1.12.1",
     "zod": "^3.20.2"
