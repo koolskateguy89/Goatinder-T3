@@ -21,6 +21,9 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
     }
   );
 
+  // How do we handle essentially updating the state of the comments? (`commentsQuery.data`)
+  // We can't use `useState` because we need to update the state based on the response from the API
+  // could use `useState` and then `useEffect` to update the state based on the response from the API, works :shrug:
   const [comments, setComments] = useState<CommentType[]>([]);
 
   // useMemo for sorting comments?
@@ -153,12 +156,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
 
   const deleteComment = api.comments.deleteComment.useMutation();
 
-  const upvote = api.comments.upvote.useMutation();
-  const downvote = api.comments.downvote.useMutation();
-
-  // How do we handle essentially updating the state of the comments? (`commentsQuery.data`)
-  // We can't use `useState` because we need to update the state based on the response from the API
-  // could use `useState` and then `useEffect` to update the state based on the response from the API
+  const voteMutation = api.comments.vote.useMutation();
 
   const onCommentAdded = (comment: CommentType) => {
     // add comment to the top of the list
@@ -191,7 +189,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
         comment.downvoted = false;
       }
 
-      upvote.mutate({ id, remove });
+      voteMutation.mutate({ id, vote, remove });
     } else {
       const remove = comment.downvoted;
 
@@ -206,7 +204,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
         comment.upvoted = false;
       }
 
-      downvote.mutate({ id, remove });
+      voteMutation.mutate({ id, vote, remove });
     }
   };
 

@@ -7,7 +7,7 @@ import {
   publicProcedure,
 } from "server/api/trpc";
 
-type CommentBase = Prisma.ShoeCommentGetPayload<{
+type ScoreStateCommentBase = Prisma.ShoeCommentGetPayload<{
   select: {
     // to check if user has upvoted
     upvoters: {
@@ -36,7 +36,9 @@ type CommentBase = Prisma.ShoeCommentGetPayload<{
  * @param comment The comment to add the properties to.
  * @returns
  */
-function toScoreStateComment<TComment extends CommentBase>(comment: TComment) {
+function toScoreStateComment<TComment extends ScoreStateCommentBase>(
+  comment: TComment
+) {
   const { upvoters, downvoters, _count, ...rest } = comment;
 
   return {
@@ -168,7 +170,11 @@ export const commentsRouter = createTRPCRouter({
     }),
 
   deleteComment: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(
+      z.object({
+        id: z.string(),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
 
@@ -179,22 +185,28 @@ export const commentsRouter = createTRPCRouter({
       });
     }),
 
-  upvote: protectedProcedure
+  vote: protectedProcedure
     .input(
       z.object({
         id: z.string(),
+        vote: z.enum(["up", "down"]),
         remove: z.boolean(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { id, remove } = input;
+      const { id, vote, remove } = input;
 
       const userId = ctx.session.user.id;
+
+      const votersToConnect: keyof Prisma.ShoeCommentUpdateInput =
+        vote === "up" ? "upvoters" : "downvoters";
+      const votersToDisconnect: keyof Prisma.ShoeCommentUpdateInput =
+        vote === "up" ? "downvoters" : "upvoters";
 
       let updateData: Prisma.ShoeCommentUpdateInput;
       if (remove) {
         updateData = {
-          upvoters: {
+          [votersToConnect]: {
             disconnect: {
               id: userId,
             },
@@ -202,56 +214,12 @@ export const commentsRouter = createTRPCRouter({
         };
       } else {
         updateData = {
-          upvoters: {
+          [votersToConnect]: {
             connect: {
               id: userId,
             },
           },
-          downvoters: {
-            disconnect: {
-              id: userId,
-            },
-          },
-        };
-      }
-
-      return ctx.prisma.shoeComment.update({
-        where: {
-          id,
-        },
-        data: updateData,
-      });
-    }),
-
-  downvote: protectedProcedure
-    .input(
-      z.object({
-        id: z.string(),
-        remove: z.boolean(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { id, remove } = input;
-
-      const userId = ctx.session.user.id;
-
-      let updateData: Prisma.ShoeCommentUpdateInput;
-      if (remove) {
-        updateData = {
-          downvoters: {
-            disconnect: {
-              id: userId,
-            },
-          },
-        };
-      } else {
-        updateData = {
-          downvoters: {
-            connect: {
-              id: userId,
-            },
-          },
-          upvoters: {
+          [votersToDisconnect]: {
             disconnect: {
               id: userId,
             },
