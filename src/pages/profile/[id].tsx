@@ -9,10 +9,12 @@ import { unstable_getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
+import { scoreStateInclude, toScoreStateComment } from "utils/comments";
+import Comment from "components/profile/Comment";
 
 const ProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ user, isMyProfile }) => {
+> = ({ user, isMyProfile, comments }) => {
   const title = `${user.name} - goaTinder`;
 
   return (
@@ -20,11 +22,10 @@ const ProfilePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <div className="flex flex-col items-center gap-4">
+      <main className="flex flex-col items-center gap-4">
         <h1 className="text-5xl font-extrabold underline underline-offset-4">
-          Profile
+          {user.name}
         </h1>
-        <h2 className="text-2xl font-semibold">{user.name}</h2>
         {user.image && (
           <div className="avatar">
             <div className="w-24 rounded-full">
@@ -44,7 +45,18 @@ const ProfilePage: NextPage<
             Edit Profile
           </button>
         )}
-      </div>
+
+        <section className="w-full max-w-5xl px-4">
+          <h2 className="text-2xl font-semibold">Comments</h2>
+          <ul>
+            {comments.map((comment) => (
+              <li key={comment.id}>
+                <Comment comment={comment} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      </main>
     </>
   );
 };
@@ -62,7 +74,7 @@ export const getServerSideProps = (async (context) => {
 
   const isMyProfile = session?.user?.id === userId;
 
-  // TODO: query db
+  // TODO!: query for "Profile" - if using
 
   const user = await prisma.user.findUnique({
     where: {
@@ -72,6 +84,20 @@ export const getServerSideProps = (async (context) => {
       name: true,
       image: true,
       profile: true,
+      comments: {
+        select: {
+          id: true,
+          // shoeId: true,
+          content: true,
+          datePosted: true,
+          shoe: true,
+          ...scoreStateInclude(userId),
+        },
+        orderBy: {
+          // newest comments first
+          datePosted: "desc",
+        },
+      },
     },
   });
 
@@ -80,11 +106,14 @@ export const getServerSideProps = (async (context) => {
       notFound: true,
     };
 
+  const { comments, ...restOfUser } = user;
+
   return {
     props: {
       session,
-      user,
+      user: restOfUser,
       isMyProfile,
+      comments: comments.map(toScoreStateComment),
     },
   };
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

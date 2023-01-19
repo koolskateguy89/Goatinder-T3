@@ -6,8 +6,8 @@ export type ScoreDisplayProps = {
   score: number;
   userUpvoted: boolean;
   userDownvoted: boolean;
-  handleUpvote: () => void;
-  handleDownvote: () => void;
+  handleUpvote?: () => void;
+  handleDownvote?: () => void;
 };
 
 export default function ScoreDisplay({
@@ -38,7 +38,7 @@ export default function ScoreDisplay({
           userUpvoted ? "text-green-500" : "text-gray-500",
           !signedIn && "cursor-not-allowed"
         )}
-        disabled={!signedIn}
+        disabled={!signedIn || handleDownvote === undefined}
       >
         <BiUpvote />
       </button>
@@ -59,7 +59,7 @@ export default function ScoreDisplay({
           userDownvoted ? "text-red-500" : "text-gray-500",
           !signedIn && "cursor-not-allowed"
         )}
-        disabled={!signedIn}
+        disabled={!signedIn || handleDownvote === undefined}
       >
         <BiDownvote />
       </button>
