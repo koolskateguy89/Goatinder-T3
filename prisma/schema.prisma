@@ -82,10 +82,12 @@ model Profile {
 }
 
 model Shoe {
-    objectId String        @id
-    dislikes User[]        @relation("Dislikes")
-    likes    User[]        @relation("Likes")
-    comments ShoeComment[]
+    objectId         String        @id
+    name             String
+    main_picture_url String
+    dislikes         User[]        @relation("Dislikes")
+    likes            User[]        @relation("Likes")
+    comments         ShoeComment[]
 }
 
 // should we do notifications for comments? or smthn idk
