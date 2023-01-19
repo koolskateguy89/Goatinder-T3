@@ -51,7 +51,7 @@ export default function NewCommentForm({
         {
           position: "bottom-center",
           style: {
-            // seems to not work
+            // FIXME: seems to not work
             minWidth: "200px",
           },
         }
@@ -74,45 +74,42 @@ export default function NewCommentForm({
   };
 
   return (
-    <div className="card">
-      <form onSubmit={handleAddComment} className="card-body px-0">
-        <div className="group/fc form-control">
-          <label className="label" htmlFor={textAreaId}>
-            <span className="label-text">Voice your opinion</span>
-            {!signedIn && (
-              <span className="label-text-alt">
-                You need to be signed in to comment
-              </span>
-            )}
-          </label>
-          {/* TODO: markdown? mdx? */}
-          <textarea
-            id={textAreaId}
-            // TODO: change height to be responsive to breakpoints
-            className="textarea-bordered textarea h-24 dark:placeholder:opacity-60"
-            placeholder="An opinion is like a nose, everyone has one."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            title={signedIn ? undefined : "You need to be signed in to comment"}
-            disabled={!signedIn || addingComment || loading}
-          />
-        </div>
-
-        <div className="card-actions justify-end">
-          <button
-            type="submit"
-            className={clsx("btn-primary btn", addingComment && "loading")}
-            disabled={
-              !signedIn || // not signed in
-              content.replaceAll("\n", "").replaceAll(" ", "").length === 0 || // only entered whitespace
-              addingComment || // already adding comment
-              loading // comments haven't loaded yet, so don't allow adding comment
-            }
-          >
-            {addingComment ? "Posting..." : "Post"}
-          </button>
-        </div>
-      </form>
-    </div>
+    <form onSubmit={handleAddComment} className="space-y-2">
+      <div className="form-control">
+        <label className="label" htmlFor={textAreaId}>
+          <span className="label-text">Voice your opinion</span>
+          {!signedIn && (
+            <span className="label-text-alt">
+              You need to be signed in to comment
+            </span>
+          )}
+        </label>
+        {/* TODO: markdown? mdx? */}
+        <textarea
+          id={textAreaId}
+          // TODO: change height to be responsive to breakpoints
+          className="textarea-bordered textarea h-24 dark:placeholder:opacity-60"
+          placeholder="An opinion is like a nose, everyone has one."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          title={signedIn ? undefined : "You need to be signed in to comment"}
+          disabled={!signedIn || addingComment || loading}
+        />
+      </div>
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className={clsx("btn-primary btn", addingComment && "loading")}
+          disabled={
+            !signedIn || // not signed in
+            content.replaceAll("\n", "").replaceAll(" ", "").length === 0 || // only entered whitespace
+            addingComment || // already adding comment
+            loading // comments haven't loaded yet, so don't allow adding comment
+          }
+        >
+          {addingComment ? "Posting..." : "Post"}
+        </button>
+      </div>
+    </form>
   );
 }

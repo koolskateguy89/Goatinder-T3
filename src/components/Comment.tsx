@@ -37,8 +37,8 @@ export default function Comment({ comment, onDelete, onVote }: CommentProps) {
   const handleDownvote = () => onVote(id, "down");
 
   return (
-    <div className="flex h-40 items-start gap-2 p-2 outline">
-      <div className="flex flex-col items-center gap-2">
+    <div className="grid min-h-[theme(spacing.40)] grid-cols-[auto,1fr,auto] border-2 border-gray-500 p-2">
+      <div className="mr-2 flex flex-col items-center gap-2">
         <Link href={`/profile/${author.id}`}>
           <Avatar
             image={author.image}
@@ -61,7 +61,7 @@ export default function Comment({ comment, onDelete, onVote }: CommentProps) {
         )}
       </div>
 
-      <div className="flex flex-grow flex-col">
+      <div className="flex flex-col">
         <Link
           href={`/profile/${author.id}`}
           className="link w-fit font-semibold"
