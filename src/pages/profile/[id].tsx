@@ -47,7 +47,7 @@ const ProfilePage: NextPage<
           </button>
         )}
 
-        <section className="w-full max-w-5xl px-4">
+        <section className="w-full max-w-5xl space-y-2 px-4">
           <h2 className="text-2xl font-semibold">Comments</h2>
           <ul>
             {comments.map((comment) => (

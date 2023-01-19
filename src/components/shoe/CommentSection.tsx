@@ -209,7 +209,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
   };
 
   return (
-    <section className="w-full space-y-4 max-lg:px-4 lg:w-1/2">
+    <section className="w-full space-y-4 lg:w-1/2">
       {/* TODO?: scroll header thingy */}
       <h2 className="text-2xl font-semibold">Comments</h2>
 
