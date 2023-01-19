@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { api, type RouterOutputs } from "utils/api";
-import Comment from "components/Comment";
-import NewCommentForm from "components/comment/NewCommentForm";
+import NewCommentForm from "components/shoe/NewCommentForm";
+import Comment from "components/shoe/Comment";
 
 type CommentType = RouterOutputs["comments"]["getComments"][number];
 
