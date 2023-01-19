@@ -5,144 +5,15 @@ import type {
 } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Head from "next/head";
-import Image from "next/image";
+// TODO: import client from utils/algolia
 import algoliasearch from "algoliasearch";
-import { MdClose, MdFavorite } from "react-icons/md";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { env } from "env/server.mjs";
 import type { GoatShoe } from "types/goat-shoe";
 import { prisma } from "server/db";
-import { api } from "utils/api";
-import CommentSection from "components/CommentSection";
-
-type ShoeComponentProps = {
-  goatShoe: InferGetServerSidePropsType<typeof getServerSideProps>["goatShoe"];
-  numLikes: number;
-  numDislikes: number;
-  userLiked: boolean;
-  userDisliked: boolean;
-};
-
-const Shoe = ({
-  goatShoe,
-  numLikes,
-  numDislikes,
-  userLiked,
-  userDisliked,
-}: ShoeComponentProps) => {
-  const like = api.shoes.like.useMutation();
-  const dislike = api.shoes.dislike.useMutation();
-
-  // could use useReducer here to handle userLiked and userDisliked changes
-  // e.g.
-  // const [state, dispatch] = useReducer(reducer, {
-  //   numLikes,
-  //   numDislikes,
-  //   userLiked,
-  //   userDisliked,
-  // });
-  // and then in the reducer you could handle all the state changes
-  // e.g. (with types)
-  // type State = {
-  //   numLikes: number;
-  //   numDislikes: number;
-  //   userLiked: boolean;
-  //   userDisliked: boolean;
-  // };
-  // type Action =
-  //   | { type: "like" }
-  //   | { type: "dislike" }
-  //   | { type: "unlike" }
-  //   | { type: "undislike" };
-  // const reducer = (state: State, action: Action) => {
-  //   switch (action.type) {
-  //     case "like":
-  //       return {
-  //         ...state,
-  //         numLikes: state.numLikes + 1,
-  //         userLiked: true,
-  //         userDisliked: false,
-  //         // numDislikes: state.numDislikes - 1, //! need to check if userDisliked, here and in dislike
-  //       };
-  //     case "dislike":
-  //       return {
-  //         ...state,
-  //         numDislikes: state.numDislikes + 1,
-  //         userDisliked: true,
-  //       };
-  //     case "unlike":
-  //       return {
-  //         ...state,
-  //         numLikes: state.numLikes - 1,
-  //         userLiked: false,
-  //       };
-  //     case "undislike":
-  //       return {
-  //         ...state,
-  //         numDislikes: state.numDislikes - 1,
-  //         userDisliked: false,
-  //       };
-  //     default:
-  //       throw new Error();
-  //   }
-  // };
-
-  return (
-    // using negative margins for image & body to get rid of the spacing in
-    // the image on smaller screens
-    <article className="card overflow-hidden ring-2 ring-primary">
-      <figure className="relative mx-auto h-60 w-60 max-md:-mt-10 md:h-60 md:w-60">
-        <Image
-          src={goatShoe.main_picture_url}
-          alt={goatShoe.name}
-          fill
-          sizes="15rem"
-          priority
-        />
-      </figure>
-      <div className="card-body items-center pt-0 text-center">
-        <h1 className="link-hover link-primary link card-title">
-          <a
-            href={`https://www.goat.com/sneakers/${goatShoe.slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {goatShoe.name}
-          </a>
-        </h1>
-
-        {/* TODO: decide what to do about story_html */}
-
-        {goatShoe.designer && <p>Designer: {goatShoe.designer}</p>}
-
-        <p className="text-sm text-base-content/60">{goatShoe.brand_name}</p>
-
-        <p>objectID: {goatShoe.objectID}</p>
-
-        <p>
-          Retail price:{" "}
-          <span className="text-accent">
-            £{goatShoe.retail_price_cents_gbp * 0.01}
-          </span>
-        </p>
-        <div className="card-actions [&>*]:gap-1 [&>*>svg]:text-lg">
-          {/* TODO: how to signal the user has liked/disliked already */}
-          <button type="button" className="btn-error btn">
-            {numDislikes}
-            <MdClose />
-            userDisliked: {JSON.stringify(userDisliked)}
-          </button>
-          <button type="button" className="btn-success btn">
-            {numLikes}
-            <MdFavorite />
-            userLiked: {JSON.stringify(userLiked)}
-          </button>
-        </div>
-      </div>
-    </article>
-  );
-};
+import CommentSection from "components/shoe/CommentSection";
+import Shoe from "components/shoe/Shoe";
 
 // TODO: use https://www.algolia.com/doc/ui-libraries/recommend/introduction/what-is-recommend/
 const ShoePage: NextPage<
@@ -152,12 +23,12 @@ const ShoePage: NextPage<
 
   return (
     // TODO: maybe show recommended/related shoes in a column on the right
-    // if not, then show comments on the right instead of below
+    // if not, then show comments on the right instead of below (currently doing this on lg screens)
     <>
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="flex flex-grow flex-col items-center justify-center py-4">
+      <main className="flex flex-grow flex-col items-center py-4 lg:flex-row lg:items-start lg:justify-center lg:gap-x-4 lg:px-4">
         <Shoe
           goatShoe={goatShoe}
           numLikes={dbShoe?._count.likes ?? 0}
