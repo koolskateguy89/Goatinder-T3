@@ -21,8 +21,6 @@ export default function ScoreDisplay({
 
   const signedIn = session?.user != null;
 
-  // TODO: handle handleUpvote and handleDownvote being undefined in title & cursor
-
   return (
     // TODO: icons that are filled
     <div className="-mr-2 flex w-12 flex-col items-center gap-y-0.5 text-lg">
@@ -30,15 +28,16 @@ export default function ScoreDisplay({
         type="button"
         onClick={onUpvote}
         title={
-          signedIn
+          onUpvote &&
+          (signedIn
             ? userUpvoted
               ? "Remove upvote"
               : "Upvote"
-            : "You must be signed in to vote"
+            : "You must be signed in to vote")
         }
         className={clsx(
           userUpvoted ? "text-green-500" : "text-gray-500",
-          !signedIn && "cursor-not-allowed"
+          onUpvote && !signedIn && "cursor-not-allowed"
         )}
         disabled={!signedIn || onUpvote === undefined}
       >
@@ -53,15 +52,16 @@ export default function ScoreDisplay({
         type="button"
         onClick={onDownvote}
         title={
-          signedIn
+          onDownvote &&
+          (signedIn
             ? userDownvoted
               ? "Remove downvote"
               : "Downvote"
-            : "You must be signed in to vote"
+            : "You must be signed in to vote")
         }
         className={clsx(
           userDownvoted ? "text-red-500" : "text-gray-500",
-          !signedIn && "cursor-not-allowed"
+          onDownvote && !signedIn && "cursor-not-allowed"
         )}
         disabled={!signedIn || onDownvote === undefined}
       >
