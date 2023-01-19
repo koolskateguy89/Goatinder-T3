@@ -45,7 +45,9 @@ export default function ScoreDisplay({
         <BiUpvote />
       </button>
 
-      <span className="font-semibold">{score}</span>
+      <span className="font-semibold text-base-content/70 dark:text-base-content">
+        {score}
+      </span>
 
       <button
         type="button"
