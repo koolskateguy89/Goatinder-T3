@@ -17,6 +17,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
       refetchOnWindowFocus: false,
       // TODO: implement optimistic updates, but idrk how to with react-query
       // _optimisticResults: "optimistic",
+      // kinda implemented with `useState` below
     }
   );
 
@@ -150,6 +151,11 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
     setComments(commentsQuery.data ?? []);
   }, [commentsQuery.data]);
 
+  const deleteComment = api.comments.deleteComment.useMutation();
+
+  const upvote = api.comments.upvote.useMutation();
+  const downvote = api.comments.downvote.useMutation();
+
   // How do we handle essentially updating the state of the comments? (`commentsQuery.data`)
   // We can't use `useState` because we need to update the state based on the response from the API
   // could use `useState` and then `useEffect` to update the state based on the response from the API
@@ -160,7 +166,48 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
   };
 
   const onCommentDeleted = (id: string) => {
+    // TODO?: error handling
+    deleteComment.mutate({ id });
+
     setComments((prev) => prev.filter((comm) => comm.id !== id));
+  };
+
+  const onVote = (id: string, vote: "up" | "down") => {
+    const comment = comments.find((comm) => comm.id === id);
+
+    if (!comment) return;
+
+    if (vote === "up") {
+      const remove = comment.upvoted;
+
+      if (remove) {
+        // remove upvote
+        comment.upvoted = false;
+        comment.score -= 1;
+      } else {
+        // add upvote
+        comment.upvoted = true;
+        comment.score += comment.downvoted ? 2 : 1;
+        comment.downvoted = false;
+      }
+
+      upvote.mutate({ id, remove });
+    } else {
+      const remove = comment.downvoted;
+
+      if (remove) {
+        // remove downvote
+        comment.downvoted = false;
+        comment.score += 1;
+      } else {
+        // add downvote
+        comment.downvoted = true;
+        comment.score -= comment.upvoted ? 2 : 1;
+        comment.upvoted = false;
+      }
+
+      downvote.mutate({ id, remove });
+    }
   };
 
   return (
@@ -182,7 +229,11 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
         ) : (
           comments.map((comment) => (
             <li key={comment.id}>
-              <Comment comment={comment} onCommentDeleted={onCommentDeleted} />
+              <Comment
+                comment={comment}
+                onDelete={onCommentDeleted}
+                onVote={onVote}
+              />
             </li>
           ))
         )}
