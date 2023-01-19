@@ -49,7 +49,6 @@ export default function NewCommentForm({
           error: "Failed to add comment",
         },
         {
-          position: "bottom-center",
           style: {
             // FIXME: seems to not work
             minWidth: "200px",
