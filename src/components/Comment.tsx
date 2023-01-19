@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { MdDeleteForever } from "react-icons/md";
 
-import { api, type RouterOutputs } from "utils/api";
+import type { RouterOutputs } from "utils/api";
 import Avatar from "components/Avatar";
 import DateDisplay from "components/comment/DateDisplay";
 import ScoreDisplay from "components/comment/ScoreDisplay";
@@ -11,12 +11,13 @@ type CommentType = RouterOutputs["comments"]["getComments"][number];
 
 export type CommentProps = {
   comment: CommentType;
-  onCommentDeleted: (id: string) => void;
+  onDelete: (id: string) => void;
+  onVote: (id: string, vote: "up" | "down") => void;
 };
 
 // TODO: MAYBE try to implement edit functionality
 // TODO: MAYBE a report feature?
-export default function Comment({ comment, onCommentDeleted }: CommentProps) {
+export default function Comment({ comment, onDelete, onVote }: CommentProps) {
   const {
     id,
     content,
@@ -29,48 +30,11 @@ export default function Comment({ comment, onCommentDeleted }: CommentProps) {
 
   const isMyComment = session?.user?.id === author.id;
 
-  const deleteComment = api.comments.deleteComment.useMutation();
+  const handleDelete = () => onDelete(id);
 
-  const upvote = api.comments.upvote.useMutation();
-  const downvote = api.comments.downvote.useMutation();
+  const handleUpvote = () => onVote(id, "up");
 
-  const handleDelete = () => {
-    // TODO: error handling
-    deleteComment.mutate({ id });
-    onCommentDeleted(id);
-  };
-
-  const handleUpvote = () => {
-    const removeUpvote = comment.upvoted;
-
-    if (removeUpvote) {
-      comment.upvoted = false;
-      comment.score -= 1;
-    } else {
-      comment.upvoted = true;
-      const wasDownvoted = comment.downvoted;
-      comment.downvoted = false;
-      comment.score += wasDownvoted ? 2 : 1;
-    }
-
-    upvote.mutate({ id, remove: removeUpvote });
-  };
-
-  const handleDownvote = () => {
-    const removeDownvote = comment.downvoted;
-
-    if (removeDownvote) {
-      comment.downvoted = false;
-      comment.score += 1;
-    } else {
-      comment.downvoted = true;
-      const wasUpvoted = comment.upvoted;
-      comment.upvoted = false;
-      comment.score -= wasUpvoted ? 2 : 1;
-    }
-
-    downvote.mutate({ id, remove: removeDownvote });
-  };
+  const handleDownvote = () => onVote(id, "down");
 
   return (
     <div className="flex h-40 items-start gap-2 p-2 outline">
