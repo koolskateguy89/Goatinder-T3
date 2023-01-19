@@ -72,7 +72,7 @@ export default function Comment({ comment, onDelete, onVote }: CommentProps) {
         <DateDisplay date={datePosted} />
 
         {/* TODO: clamp to like 4 lines and let user expand if they want */}
-        <p className="break-all">{content}</p>
+        <p className="whitespace-pre-wrap break-all">{content}</p>
       </div>
 
       <ScoreDisplay
