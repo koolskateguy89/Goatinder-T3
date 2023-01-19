@@ -6,48 +6,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "server/api/trpc";
-
-type ScoreStateCommentBase = Prisma.ShoeCommentGetPayload<{
-  select: {
-    // to check if user has upvoted
-    upvoters: {
-      select: {
-        id: true;
-      };
-    };
-    // to check if user has downvoted
-    downvoters: {
-      select: {
-        id: true;
-      };
-    };
-    _count: {
-      select: {
-        upvoters: true;
-        downvoters: true;
-      };
-    };
-  };
-}>;
-
-/**
- * Adds the score and upvoted/downvoted properties to a comment.
- *
- * @param comment The comment to add the properties to.
- * @returns
- */
-function toScoreStateComment<TComment extends ScoreStateCommentBase>(
-  comment: TComment
-) {
-  const { upvoters, downvoters, _count, ...rest } = comment;
-
-  return {
-    ...rest,
-    upvoted: upvoters.length > 0,
-    downvoted: downvoters.length > 0,
-    score: _count.upvoters - _count.downvoters,
-  };
-}
+import { scoreStateInclude, toScoreStateComment } from "utils/comments";
 
 export const commentsRouter = createTRPCRouter({
   getComments: publicProcedure
@@ -73,30 +32,7 @@ export const commentsRouter = createTRPCRouter({
               image: true,
             },
           },
-          // to check if user has upvoted
-          upvoters: {
-            where: {
-              id: userId ?? "",
-            },
-            select: {
-              id: true,
-            },
-          },
-          // to check if user has downvoted
-          downvoters: {
-            where: {
-              id: userId ?? "",
-            },
-            select: {
-              id: true,
-            },
-          },
-          _count: {
-            select: {
-              upvoters: true,
-              downvoters: true,
-            },
-          },
+          ...scoreStateInclude(userId),
         },
         orderBy: {
           // newest comments first
@@ -124,13 +60,8 @@ export const commentsRouter = createTRPCRouter({
           data: {
             content,
             shoe: {
-              connectOrCreate: {
-                where: {
-                  objectId: shoeId,
-                },
-                create: {
-                  objectId: shoeId,
-                },
+              connect: {
+                objectId: shoeId,
               },
             },
             author: {

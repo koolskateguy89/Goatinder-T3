@@ -32,10 +32,10 @@ const ShoePage: NextPage<
         <div className="top-20 lg:sticky">
           <Shoe
             goatShoe={goatShoe}
-            numLikes={dbShoe?._count.likes ?? 0}
-            numDislikes={dbShoe?._count.dislikes ?? 0}
-            userLiked={(dbShoe?.likes?.length ?? 0) > 0}
-            userDisliked={(dbShoe?.dislikes?.length ?? 0) > 0}
+            numLikes={dbShoe._count.likes}
+            numDislikes={dbShoe._count.dislikes}
+            userLiked={dbShoe.likes.length > 0}
+            userDisliked={dbShoe.dislikes.length > 0}
           />
         </div>
 
@@ -93,9 +93,16 @@ export const getServerSideProps = (async (context) => {
       notFound: true,
     };
 
-  const dbShoe = await prisma.shoe.findUnique({
+  // using upsert to create if it doesn't exist
+  const dbShoe = await prisma.shoe.upsert({
     where: {
       objectId: goatShoe.objectID,
+    },
+    update: {}, // don't need to update anything
+    create: {
+      objectId: goatShoe.objectID,
+      name: goatShoe.name,
+      main_picture_url: goatShoe.main_picture_url,
     },
     select: {
       // to check if user has liked
