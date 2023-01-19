@@ -79,8 +79,8 @@ export default function Comment({ comment, onDelete, onVote }: CommentProps) {
         score={comment.score}
         userUpvoted={comment.upvoted}
         userDownvoted={comment.downvoted}
-        handleUpvote={handleUpvote}
-        handleDownvote={handleDownvote}
+        onUpvote={handleUpvote}
+        onDownvote={handleDownvote}
       />
     </div>
   );
