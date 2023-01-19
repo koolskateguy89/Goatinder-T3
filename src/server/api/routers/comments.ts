@@ -53,7 +53,7 @@ export const commentsRouter = createTRPCRouter({
   getComments: publicProcedure
     .input(
       z.object({
-        shoeId: z.string(),
+        shoeId: z.string().min(1),
       })
     )
     .query(async ({ ctx, input }) => {
@@ -110,7 +110,7 @@ export const commentsRouter = createTRPCRouter({
   addComment: protectedProcedure
     .input(
       z.object({
-        shoeId: z.string(),
+        shoeId: z.string().min(1),
         content: z.string().min(1),
       })
     )
@@ -172,7 +172,7 @@ export const commentsRouter = createTRPCRouter({
   deleteComment: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        id: z.string().cuid(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -188,7 +188,7 @@ export const commentsRouter = createTRPCRouter({
   vote: protectedProcedure
     .input(
       z.object({
-        id: z.string(),
+        id: z.string().cuid(),
         vote: z.enum(["up", "down"]),
         remove: z.boolean(),
       })
