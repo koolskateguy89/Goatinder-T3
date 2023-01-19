@@ -40,6 +40,7 @@ const ProfilePage: NextPage<
             </div>
           </div>
         )}
+
         {isMyProfile && (
           <button type="button" className="btn-secondary btn w-fit">
             Edit Profile
@@ -70,15 +71,17 @@ export const getServerSideProps = (async (context) => {
     authOptions
   );
 
-  const userId = context.params?.id;
+  const userId = session?.user?.id;
 
-  const isMyProfile = session?.user?.id === userId;
+  const profileId = context.params?.id;
+
+  const isMyProfile = userId === profileId;
 
   // TODO!: query for "Profile" - if using
 
   const user = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id: profileId,
     },
     select: {
       name: true,
