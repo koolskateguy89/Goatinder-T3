@@ -7,7 +7,7 @@ export const shoesRouter = createTRPCRouter({
     .input(
       z.object({
         // TODO: remove like
-        objectId: z.string(),
+        objectId: z.string().min(1),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -21,7 +21,7 @@ export const shoesRouter = createTRPCRouter({
     .input(
       z.object({
         // TODO: remove dislike
-        objectId: z.string(),
+        objectId: z.string().min(1),
       })
     )
     .mutation(async ({ ctx, input }) => {
