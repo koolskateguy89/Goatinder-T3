@@ -5,11 +5,9 @@ import type {
 } from "next";
 import { unstable_getServerSession } from "next-auth";
 import Head from "next/head";
-// TODO: import client from utils/algolia
-import algoliasearch from "algoliasearch";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
-import { env } from "env/server.mjs";
+import { fullClient } from "utils/algolia";
 import type { GoatShoe } from "types/goat-shoe";
 import { prisma } from "server/db";
 import CommentSection from "components/shoe/CommentSection";
@@ -28,7 +26,7 @@ const ShoePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="flex flex-col items-center gap-4 py-4 lg:flex-row lg:items-start lg:justify-center lg:px-4">
+      <main className="flex flex-col items-center gap-4 py-4 max-lg:px-4 lg:flex-row lg:items-start lg:justify-center">
         <div className="top-20 lg:sticky">
           <Shoe
             goatShoe={goatShoe}
@@ -61,12 +59,7 @@ export const getServerSideProps = (async (context) => {
       notFound: true,
     };
 
-  const client = algoliasearch(
-    env.NEXT_PUBLIC_ALGOLIA_APP_ID,
-    env.NEXT_PUBLIC_ALGOLIA_API_KEY
-  );
-
-  const index = client.initIndex("product_variants_v2");
+  const index = fullClient.initIndex("product_variants_v2");
 
   const attributesToRetrieve = [
     "name",
