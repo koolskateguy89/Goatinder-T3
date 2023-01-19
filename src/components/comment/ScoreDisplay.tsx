@@ -21,7 +21,7 @@ export default function ScoreDisplay({
 
   const signedIn = session?.user != null;
 
-  // TODO: handle handleUpvote and handleDownvote being undefined in title
+  // TODO: handle handleUpvote and handleDownvote being undefined in title & cursor
 
   return (
     // TODO: icons that are filled
