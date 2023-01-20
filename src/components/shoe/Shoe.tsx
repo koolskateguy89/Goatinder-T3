@@ -1,8 +1,8 @@
-import { useReducer } from "react";
 import type { InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { MdClose, MdFavorite } from "react-icons/md";
+import { type ImmerReducer, useImmerReducer } from "use-immer";
 
 import { api } from "utils/api";
 import type { getServerSideProps } from "pages/shoes/[objectID]";
@@ -19,39 +19,38 @@ type LikeAction =
   | { type: "unlike" }
   | { type: "undislike" };
 
-// TODO: use Immer
-function likeReducer(state: LikeState, action: LikeAction): LikeState {
+const likeReducer: ImmerReducer<LikeState, LikeAction> = (draft, action) => {
   switch (action.type) {
     case "like":
-      return {
-        ...state,
-        numLikes: state.numLikes + 1,
-        // TODO: if userDisliked, then numDislikes should be decremented
-        userLiked: true,
-        userDisliked: false,
-      };
+      draft.numLikes += 1;
+      draft.userLiked = true;
+      if (draft.userDisliked) {
+        // if was disliked, then undislike
+        draft.numDislikes -= 1;
+        draft.userDisliked = false;
+      }
+      break;
     case "dislike":
-      return {
-        ...state,
-        numDislikes: state.numDislikes + 1,
-        userDisliked: true,
-      };
+      draft.numDislikes += 1;
+      draft.userDisliked = true;
+      if (draft.userLiked) {
+        // if was liked, then unlike
+        draft.numLikes -= 1;
+        draft.userLiked = false;
+      }
+      break;
     case "unlike":
-      return {
-        ...state,
-        numLikes: state.numLikes - 1,
-        userLiked: false,
-      };
+      draft.numLikes -= 1;
+      draft.userLiked = false;
+      break;
     case "undislike":
-      return {
-        ...state,
-        numDislikes: state.numDislikes - 1,
-        userDisliked: false,
-      };
+      draft.numDislikes -= 1;
+      draft.userDisliked = false;
+      break;
     default:
-      return state;
+      break;
   }
-}
+};
 
 export type ShoeProps = {
   goatShoe: InferGetServerSidePropsType<typeof getServerSideProps>["goatShoe"];
@@ -71,7 +70,7 @@ export default function Shoe({
   const { data: session } = useSession();
   const isSignedIn = session?.user !== undefined;
 
-  const [likeState, dispatchLikeAction] = useReducer(likeReducer, {
+  const [likeState, dispatchLikeAction] = useImmerReducer(likeReducer, {
     numLikes,
     numDislikes,
     userLiked,
@@ -159,7 +158,7 @@ export default function Shoe({
         </p>
         <div className="card-actions [&>*]:gap-1 [&>*>svg]:text-lg">
           {/* TODO: how to signal the user has liked/disliked already */}
-          {/* TODO: disable if not signed in & title */}
+          {/* TODO: disable if not signed in & show title */}
           <button
             type="button"
             onClick={handleDislike}
