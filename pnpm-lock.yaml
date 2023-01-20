@@ -29,6 +29,7 @@ specifiers:
   eslint-config-prettier: ^8.6.0
   eslint-plugin-react: ^7.32.1
   eslint-plugin-react-hooks: ^4.6.0
+  immer: ^9.0.18
   next: 13.1.2
   next-auth: ^4.18.8
   next-superjson-plugin: ^0.5.4
@@ -49,6 +50,7 @@ specifiers:
   ts-node: ^10.9.1
   type-fest: ^3.5.2
   typescript: ^4.9.4
+  use-immer: ^0.8.1
   zod: ^3.20.2
 
 dependencies:
@@ -66,6 +68,7 @@ dependencies:
   axios: 1.2.3
   clsx: 1.2.1
   daisyui: 2.47.0_by5iqycgvtroytm54ytclj4zzi
+  immer: 9.0.18
   next: 13.1.2_biqbaboplfbrettd7655fr4n2y
   next-auth: 4.18.8_7jnwqgtpcnwg4nzft4b6xlzlfi
   next-superjson-plugin: 0.5.4_oe5pfohefqdudnfua55gwjyoje
@@ -78,6 +81,7 @@ dependencies:
   react-tabs: 6.0.0_react@18.2.0
   sharp: 0.31.3
   superjson: 1.12.2
+  use-immer: 0.8.1_immer@9.0.18+react@18.2.0
   zod: 3.20.2
 
 devDependencies:
@@ -2139,6 +2143,10 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /immer/9.0.18:
+    resolution: {integrity: sha512-eAPNpsj7Ax1q6Y/3lm2PmlwRcFzpON7HSNQ3ru5WQH1/PSpnyed/HpNOELl2CxLKoj4r+bAHgdyKqW5gc2Se1A==}
+    dev: false
+
   /import-fresh/3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==}
     engines: {node: '>=6'}
@@ -3574,6 +3582,16 @@ packages:
     dependencies:
       punycode: 2.3.0
     dev: true
+
+  /use-immer/0.8.1_immer@9.0.18+react@18.2.0:
+    resolution: {integrity: sha512-OfTFf1pL+ICjjcLPn9+ZnaJO/Yg4MBzYZtACEe2mZ/W2A5col28PNUnwowOAaBuOogACOK/37TU17KgsIhUpOw==}
+    peerDependencies:
+      immer: '>=2.0.0'
+      react: ^16.8.0 || ^17.0.1 || ^18.0.0
+    dependencies:
+      immer: 9.0.18
+      react: 18.2.0
+    dev: false
 
   /use-sync-external-store/1.2.0_react@18.2.0:
     resolution: {integrity: sha512-eEgnFxGQ1Ife9bzYs6VLi8/4X6CObHMw9Qr9tPY43iKwsPw8xE8+EFsf/2cFZ5S3esXgpWgtSCtLNS41F+sKPA==}
