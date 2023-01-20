@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Image, { type ImageProps } from "next/image";
 import clsx from "clsx";
 
@@ -5,12 +6,18 @@ export type AvatarProps = {
   image: string | null | undefined;
   name: string | null | undefined;
   className: string;
-  imageProps?: Partial<Omit<ImageProps, "src" | "className" | "fill">> &
+  imageProps?: Partial<
+    Omit<ImageProps, "src" | "className" | "fill" | "onError">
+  > &
     Required<Pick<ImageProps, "sizes">>;
 };
 
 /**
  * Avatar component with placeholder fallback.
+ * The placeholder is a circle with the first letter of the name.
+ * Shows the image if it exists and loads successfully,
+ *  otherwise shows the placeholder.
+ *
  * Uses daisyUI's avatar.
  *
  * Need to specify width of inner div so the `Image` fills it.
@@ -38,24 +45,27 @@ export default function Avatar({
   className,
   imageProps,
 }: AvatarProps) {
+  const [error, setError] = useState(false);
+
+  const usePlaceholder = !image || error;
+
   return (
     // <img src="https://placeimg.com/192/192/people" /> (could use for seeding)
-    // TODO: image fallback https://vercel.com/templates/next.js/image-fallback (customise component so that fallback is reactnode)
-    <div className={clsx("avatar", !image && "placeholder", className)}>
-      {image ? (
+    <div className={clsx("avatar", usePlaceholder && "placeholder", className)}>
+      {usePlaceholder ? (
+        <div className="rounded-full bg-neutral-focus text-neutral-content">
+          <span className="uppercase">{name?.[0] ?? "?"}</span>
+        </div>
+      ) : (
         <div className="relative">
-          {/* TODO: actual Image with fallback */}
           <Image
             alt={name ?? "Profile picture"}
             src={image}
             fill
             className="mask mask-circle"
+            onError={() => setError(true)}
             {...imageProps}
           />
-        </div>
-      ) : (
-        <div className="rounded-full bg-neutral-focus text-neutral-content">
-          <span className="uppercase">{name?.[0] ?? "?"}</span>
         </div>
       )}
     </div>
