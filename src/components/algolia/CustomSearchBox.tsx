@@ -63,8 +63,7 @@ export default function CustomSearchBox({
             )}
             aria-hidden
           >
-            {/* TODO: using spacing 4.5 once done in tailwind config */}
-            <div className="absolute left-[calc(-1*(theme(spacing.4)+theme(spacing[0.5])))] translate-y-full">
+            <div className="absolute -left-4.5 translate-y-full">
               <CgSpinner className="motion-safe:animate-spin" />
             </div>
           </div>
