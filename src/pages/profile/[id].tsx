@@ -10,7 +10,7 @@ import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
 import { scoreStateInclude, toScoreStateComment } from "utils/comments";
-import Comment from "components/profile/Comment";
+import ProfilePageTabs from "components/profile/Tabs";
 
 const ProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -22,7 +22,7 @@ const ProfilePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="flex flex-col items-center gap-4">
+      <main className="flex flex-col items-center gap-4 pb-4">
         <h1 className="text-5xl font-extrabold underline underline-offset-4">
           {user.name}
         </h1>
@@ -47,15 +47,12 @@ const ProfilePage: NextPage<
           </button>
         )}
 
-        <section className="w-full max-w-5xl space-y-2 px-4">
-          <h2 className="text-2xl font-semibold">Comments</h2>
-          <ul>
-            {comments.map((comment) => (
-              <li key={comment.id}>
-                <Comment comment={comment} />
-              </li>
-            ))}
-          </ul>
+        <section className="w-full max-w-5xl px-4">
+          <ProfilePageTabs
+            comments={comments}
+            disliked={user.disliked}
+            liked={user.liked}
+          />
         </section>
       </main>
     </>
@@ -87,6 +84,16 @@ export const getServerSideProps = (async (context) => {
       name: true,
       image: true,
       profile: true,
+      disliked: {
+        include: {
+          _count: true,
+        },
+      },
+      liked: {
+        include: {
+          _count: true,
+        },
+      },
       comments: {
         select: {
           id: true,
