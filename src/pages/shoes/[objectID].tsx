@@ -26,7 +26,7 @@ const ShoePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="flex flex-col items-center gap-4 py-4 max-lg:px-4 lg:flex-row lg:items-start lg:justify-center">
+      <main className="container flex flex-col items-center gap-4 py-4 max-lg:px-4 lg:flex-row lg:items-start lg:justify-center">
         <div className="top-20 lg:sticky">
           <Shoe
             goatShoe={goatShoe}
