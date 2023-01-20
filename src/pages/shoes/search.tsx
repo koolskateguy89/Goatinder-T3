@@ -31,7 +31,7 @@ import {
 import InstantSearchProvider from "components/algolia/InstantSearchProvider";
 import EmptyQueryBoundary from "components/algolia/EmptyQueryBoundary";
 import NoResultsBoundary from "components/algolia/NoResultsBoundary";
-import CustomSearchBox from "components/search/CustomSearchBox";
+import CustomSearchBox from "components/algolia/CustomSearchBox";
 import ThemedPoweredBy from "components/search/ThemedPoweredBy";
 import ShoeHit from "components/search/ShoeHit";
 
@@ -108,7 +108,7 @@ const ShoesSearchPage: NextPage = () => {
 
           <ThemedPoweredBy />
 
-          <CustomSearchBox />
+          <CustomSearchBox placeholder="Start typing to search" />
 
           <div className="flex w-full flex-col gap-y-4">
             <Pagination

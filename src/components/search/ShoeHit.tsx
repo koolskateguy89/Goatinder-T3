@@ -1,22 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import clsx from "clsx";
-
-import type { GoatShoe } from "types/goat-shoe";
-
 // not sure if gonna use Snippet
 import { Highlight, Snippet } from "react-instantsearch-hooks-web";
 
+import type { GoatShoe } from "types/goat-shoe";
 import type { AlgoliaHit } from "types/algolia";
-
 import type { attributesToRetrieve } from "pages/shoes/search";
 
 type HitShoe = AlgoliaHit<
   Pick<GoatShoe, (typeof attributesToRetrieve)[number]>
 >;
 
-// TODO: maybe don't show like & dislike button on this (search) page
-// and only on the tinder & shoe pages
 export default function ShoeHit({ hit }: { hit: HitShoe }) {
   return (
     // using negative margins for image & body to get rid of the spacing in
