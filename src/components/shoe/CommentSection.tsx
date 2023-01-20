@@ -182,6 +182,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
               "tab tab-bordered",
               commentsState.sort === "best" && "tab-active"
             )}
+            disabled
           >
             Best
           </button>
@@ -208,10 +209,21 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
         </div>
       </div>
 
-      <ul className="rounded-box divide-y-2 divide-gray-500 ring-2 ring-gray-500 empty:ring-0">
+      <ul
+        className={clsx(
+          commentsState.comments.length > 0 &&
+            "rounded-box divide-y-2 divide-gray-500 ring-2 ring-gray-500 empty:ring-0"
+        )}
+      >
         {commentsQuery.isInitialLoading ? (
           <li>
-            <div className="text-center">LOADING</div>
+            {/* TODO */}
+            <div className="mt-8 text-center">LOADING</div>
+          </li>
+        ) : commentsState.comments.length === 0 ? (
+          <li className="mt-8 text-center text-lg">
+            No comments yet
+            <div className="mt-0.5 text-sm opacity-50 motion-safe:animate-bounce">{`It's quite empty in here`}</div>
           </li>
         ) : (
           commentsState.comments.map((comment) => (
