@@ -50,7 +50,7 @@ export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
             // using clsx to logically group classnames because prettier basically scrambles them
             className={clsx(
               "absolute left-1/2 top-full z-10 -translate-x-1/2",
-              "rounded-box mx-2 w-[theme(spacing.72)]",
+              "rounded-box mx-2 w-72",
               "border-4 border-base-200 bg-base-100 p-2 text-base dark:border-base-100 dark:bg-neutral",
               // need pointer-events-none to stop the hover from triggering
               // hovering over the title will keep it open
