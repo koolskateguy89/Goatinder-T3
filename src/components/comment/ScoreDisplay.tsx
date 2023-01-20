@@ -21,25 +21,40 @@ export default function ScoreDisplay({
 
   const signedIn = session?.user != null;
 
+  const upvoteButtonTitle = onUpvote
+    ? signedIn
+      ? userUpvoted
+        ? "Remove upvote"
+        : "Upvote"
+      : "You must be signed in to vote"
+    : userUpvoted
+    ? "Upvoted by you"
+    : undefined;
+
+  const downvoteButtonTitle = onDownvote
+    ? signedIn
+      ? userDownvoted
+        ? "Remove downvote"
+        : "Downvote"
+      : "You must be signed in to vote"
+    : userDownvoted
+    ? "Downvoted by you"
+    : undefined;
+
   return (
     // TODO: icons that are filled
     <div className="-mr-2 flex w-12 flex-col items-center gap-y-0.5 text-lg">
       <button
         type="button"
         onClick={onUpvote}
-        title={
-          onUpvote &&
-          (signedIn
-            ? userUpvoted
-              ? "Remove upvote"
-              : "Upvote"
-            : "You must be signed in to vote")
-        }
         className={clsx(
           userUpvoted ? "text-green-500" : "text-gray-500",
           onUpvote && !signedIn && "cursor-not-allowed"
         )}
+        title={upvoteButtonTitle}
+        aria-label={upvoteButtonTitle}
         disabled={!signedIn || onUpvote === undefined}
+        aria-hidden={onUpvote === undefined}
       >
         <BiUpvote />
       </button>
@@ -51,19 +66,14 @@ export default function ScoreDisplay({
       <button
         type="button"
         onClick={onDownvote}
-        title={
-          onDownvote &&
-          (signedIn
-            ? userDownvoted
-              ? "Remove downvote"
-              : "Downvote"
-            : "You must be signed in to vote")
-        }
         className={clsx(
           userDownvoted ? "text-red-500" : "text-gray-500",
           onDownvote && !signedIn && "cursor-not-allowed"
         )}
+        title={downvoteButtonTitle}
+        aria-label={downvoteButtonTitle}
         disabled={!signedIn || onDownvote === undefined}
+        aria-hidden={onDownvote === undefined}
       >
         <BiDownvote />
       </button>
