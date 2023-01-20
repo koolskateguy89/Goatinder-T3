@@ -1,11 +1,11 @@
 import type { InferGetServerSidePropsType } from "next";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { MdClose, MdFavorite } from "react-icons/md";
 import { type ImmerReducer, useImmerReducer } from "use-immer";
 
 import { api } from "utils/api";
 import type { getServerSideProps } from "pages/shoes/[objectID]";
+import ShoeCard from "components/ShoeCard";
 
 type LikeState = {
   numLikes: number;
@@ -119,66 +119,59 @@ export default function Shoe({
   };
 
   return (
-    // using negative margins for image & body to get rid of the spacing in
-    // the image on smaller screens
-    <article className="card overflow-hidden ring-2 ring-primary">
-      <figure className="relative mx-auto h-60 w-60 max-md:-mt-10 md:h-60 md:w-60">
-        <Image
-          src={goatShoe.main_picture_url}
-          alt={goatShoe.name}
-          fill
-          sizes="15rem"
-          priority
-        />
-      </figure>
-      <div className="card-body items-center pt-0 text-center">
-        <h1 className="link-hover link-primary link card-title">
-          <a
-            href={`https://www.goat.com/sneakers/${goatShoe.slug}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {goatShoe.name}
-          </a>
-        </h1>
+    <ShoeCard
+      shoe={goatShoe}
+      imageProps={{
+        priority: true,
+      }}
+    >
+      <h1 className="link-hover link-primary link card-title">
+        <a
+          href={`https://www.goat.com/sneakers/${goatShoe.slug}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {goatShoe.name}
+        </a>
+      </h1>
 
-        {/* TODO: decide what to do about story_html */}
+      {/* TODO: decide what to do about story_html */}
 
-        {goatShoe.designer && <p>Designer: {goatShoe.designer}</p>}
+      {goatShoe.designer && <p>Designer: {goatShoe.designer}</p>}
 
-        <p className="text-sm text-base-content/60">{goatShoe.brand_name}</p>
+      <p className="text-sm text-base-content/60">{goatShoe.brand_name}</p>
 
-        <p>objectID: {goatShoe.objectID}</p>
+      <p>objectID: {goatShoe.objectID}</p>
 
-        <p>
-          Retail price:{" "}
-          <span className="text-accent">
-            £{goatShoe.retail_price_cents_gbp * 0.01}
-          </span>
-        </p>
-        <div className="card-actions [&>*]:gap-1 [&>*>svg]:text-lg">
-          {/* TODO: how to signal the user has liked/disliked already */}
-          {/* TODO: disable if not signed in & show title */}
-          <button
-            type="button"
-            onClick={handleDislike}
-            className="btn-error btn"
-          >
-            {likeState.numDislikes}
-            <MdClose />
-            userDisliked: {JSON.stringify(likeState.userDisliked)}
-          </button>
-          <button
-            type="button"
-            onClick={handleLike}
-            className="btn-success btn"
-          >
-            {likeState.numLikes}
-            <MdFavorite />
-            userLiked: {JSON.stringify(likeState.userLiked)}
-          </button>
-        </div>
+      <p>
+        Retail price:{" "}
+        <span className="text-accent">
+          £{goatShoe.retail_price_cents_gbp * 0.01}
+        </span>
+      </p>
+
+      <div className="card-actions [&>*>svg]:text-lg">
+        {/* TODO: how to signal the user has liked/disliked already */}
+        {/* TODO: disable if not signed in & show title */}
+        <button
+          type="button"
+          onClick={handleDislike}
+          className="btn-error btn gap-1"
+        >
+          {likeState.numDislikes}
+          <MdClose />
+          userDisliked: {JSON.stringify(likeState.userDisliked)}
+        </button>
+        <button
+          type="button"
+          onClick={handleLike}
+          className="btn-success btn gap-1"
+        >
+          {likeState.numLikes}
+          <MdFavorite />
+          userLiked: {JSON.stringify(likeState.userLiked)}
+        </button>
       </div>
-    </article>
+    </ShoeCard>
   );
 }

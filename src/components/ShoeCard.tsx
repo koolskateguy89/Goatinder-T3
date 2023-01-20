@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { type ImageProps } from "next/image";
 
 import type { GoatShoe } from "types/goat-shoe";
 
@@ -14,13 +14,16 @@ export type ShoeCardProps = {
           grid_picture_url: GoatShoe["grid_picture_url"];
         }
     );
-  // (Pick<GoatShoe, "main_picture_url"> | Pick<GoatShoe, "grid_picture_url">);
-  actions?: React.ReactNode; // card actions
+  imageProps?: Omit<ImageProps, "src" | "alt" | "fill" | "sizes">;
   children: React.ReactNode; // body of the card
 };
 
 // TODO?: maybe don't use daisyUI's card, just style it myself
-export default function ShoeCard({ shoe, actions, children }: ShoeCardProps) {
+export default function ShoeCard({
+  shoe,
+  imageProps,
+  children,
+}: ShoeCardProps) {
   return (
     <article className="card h-full overflow-hidden bg-black/[0.02] ring-2 ring-black/10 dark:bg-white/[0.02] dark:ring-white/10">
       <figure className="relative mx-auto -mt-5 h-40 w-40 md:mt-0 lg:h-60 lg:w-60">
@@ -29,13 +32,11 @@ export default function ShoeCard({ shoe, actions, children }: ShoeCardProps) {
           alt={shoe.name}
           fill
           sizes="(min-width: 1024px): 15rem, 10rem"
+          {...imageProps}
         />
       </figure>
 
-      <div className="card-body items-center pt-0 text-center">
-        {children}
-        {actions && <div className="card-actions [&>*]:text-lg">{actions}</div>}
-      </div>
+      <div className="card-body items-center pt-0 text-center">{children}</div>
     </article>
   );
 }
