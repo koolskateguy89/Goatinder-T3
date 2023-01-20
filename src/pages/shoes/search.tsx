@@ -96,7 +96,7 @@ const ShoesSearchPage: NextPage = () => {
         <meta name="description" content="Search for shoes" />
       </Head>
       <InstantSearchProvider>
-        <main className="mx-12 mt-3 flex flex-col items-center gap-y-4 pb-4">
+        <main className="container mx-auto flex flex-col items-center gap-y-4 px-12 py-4">
           <Configure
             analytics={false}
             filters="product_category:shoes" // only return shoes
