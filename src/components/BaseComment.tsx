@@ -39,7 +39,7 @@ export default function BaseComment({
 
   // TODO
   return (
-    <article className="grid min-h-[theme(spacing.40)] grid-cols-[auto,1fr,auto] border-2 border-gray-500 p-2">
+    <article className="grid min-h-[theme(spacing.40)] grid-cols-[auto,1fr,auto] p-2">
       <div>{image}</div>
 
       <div className="flex flex-col">
