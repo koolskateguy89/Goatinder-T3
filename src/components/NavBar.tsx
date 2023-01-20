@@ -10,7 +10,7 @@ import Profile from "components/navbar/Profile";
 export default function NavBar() {
   return (
     // https://daisyui.com/components/navbar/#responsive-dropdown-menu-on-small-screen-center-menu-on-large-screen
-    <header className="navbar items-stretch py-0">
+    <header className="container navbar items-stretch py-0">
       <div className="navbar-start">
         <MobileDrawer />
         <Link
