@@ -55,6 +55,7 @@
     "consistent-return": "off",
     "@typescript-eslint/naming-convention": "off", // annoying when dealing with external libraries
     "@typescript-eslint/no-floating-promises": "warn", // annoying as error during development
+    "react/jsx-no-useless-fragment": "warn", // annoying as error during development
 
     // my own rules
     "no-duplicate-imports": "error",
