@@ -24,6 +24,7 @@
     "axios": "^1.2.3",
     "clsx": "^1.2.1",
     "daisyui": "^2.47.0",
+    "immer": "^9.0.18",
     "next": "13.1.2",
     "next-auth": "^4.18.8",
     "next-superjson-plugin": "^0.5.4",
@@ -36,6 +37,7 @@
     "react-tabs": "^6.0.0",
     "sharp": "^0.31.3",
     "superjson": "1.12.2",
+    "use-immer": "^0.8.1",
     "zod": "^3.20.2"
   },
   "devDependencies": {
