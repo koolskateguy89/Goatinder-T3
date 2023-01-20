@@ -16,9 +16,14 @@ idk
 but don't think want it to visually be an actual button yk
 */
 
-export type CustomSearchBoxProps = UseSearchBoxProps;
+export type CustomSearchBoxProps = UseSearchBoxProps & {
+  placeholder: string;
+};
 
-export default function CustomSearchBox(props: UseSearchBoxProps) {
+export default function CustomSearchBox({
+  placeholder,
+  ...props
+}: CustomSearchBoxProps) {
   // 'idle' | 'loading' | 'stalled' | 'error'
   const { status } = useInstantSearch();
   // TODO: might have to use algoliaQuery instead of query once routing is set up, idrk
@@ -42,7 +47,7 @@ export default function CustomSearchBox(props: UseSearchBoxProps) {
         <div className="input-group [&_.btn]:text-2xl">
           <input
             type="search"
-            placeholder="Start typing to explore"
+            placeholder={placeholder}
             value={query}
             onChange={(event) => setQuery(event.currentTarget.value)}
             // onChange={(event) => refine(event.currentTarget.value)}
