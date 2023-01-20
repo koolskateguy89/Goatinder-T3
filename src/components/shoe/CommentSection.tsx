@@ -219,7 +219,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
         loading={commentsQuery.isInitialLoading}
       />
 
-      <ul>
+      <ul className="rounded-box divide-y-2 divide-gray-500 ring-2 ring-gray-500 empty:ring-0">
         {commentsQuery.isInitialLoading ? (
           <li>
             <div className="text-center">LOADING</div>
