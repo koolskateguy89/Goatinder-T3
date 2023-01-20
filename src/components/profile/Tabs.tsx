@@ -90,6 +90,7 @@ export default function ProfilePageTabs({
         ) : (
           <div className="pt-10 text-center text-lg">
             This user has not made any comments yet :/
+            <div className="-rotate-6 transform text-sm opacity-50">{`maybe they're shy`}</div>
           </div>
         )}
       </TabPanel>
