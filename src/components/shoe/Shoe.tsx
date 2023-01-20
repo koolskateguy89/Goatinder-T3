@@ -69,6 +69,7 @@ export default function Shoe({
   userDisliked,
 }: ShoeProps) {
   const { data: session } = useSession();
+  const isSignedIn = session?.user !== undefined;
 
   const [likeState, dispatchLikeAction] = useReducer(likeReducer, {
     numLikes,
@@ -81,27 +82,41 @@ export default function Shoe({
   const dislike = api.shoes.dislike.useMutation();
 
   const handleLike = async () => {
-    if (likeState.userLiked) {
-      // unlike
-      // await dislike.mutateAsync({ objectId: goatShoe.objectID });
+    const unlike = likeState.userLiked;
+
+    if (unlike) {
       dispatchLikeAction({ type: "unlike" });
     } else {
-      // like
-      // await like.mutateAsync({ objectId: goatShoe.objectID });
       dispatchLikeAction({ type: "like" });
     }
+
+    like.mutate({
+      shoe: {
+        objectID: goatShoe.objectID,
+        name: goatShoe.name,
+        main_picture_url: goatShoe.main_picture_url,
+      },
+      remove: unlike,
+    });
   };
 
   const handleDislike = async () => {
-    if (likeState.userDisliked) {
-      // undislike
-      // await dislike.mutateAsync({ objectId: goatShoe.objectID });
+    const undislike = likeState.userDisliked;
+
+    if (undislike) {
       dispatchLikeAction({ type: "undislike" });
     } else {
-      // dislike
-      // await dislike.mutateAsync({ objectId: goatShoe.objectID });
       dispatchLikeAction({ type: "dislike" });
     }
+
+    dislike.mutate({
+      shoe: {
+        objectID: goatShoe.objectID,
+        name: goatShoe.name,
+        main_picture_url: goatShoe.main_picture_url,
+      },
+      remove: undislike,
+    });
   };
 
   return (
@@ -144,7 +159,7 @@ export default function Shoe({
         </p>
         <div className="card-actions [&>*]:gap-1 [&>*>svg]:text-lg">
           {/* TODO: how to signal the user has liked/disliked already */}
-          {/* TODO: disable if not signed in */}
+          {/* TODO: disable if not signed in & title */}
           <button
             type="button"
             onClick={handleDislike}
