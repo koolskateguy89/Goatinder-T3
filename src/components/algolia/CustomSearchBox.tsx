@@ -1,4 +1,3 @@
-import { useState } from "react";
 import clsx from "clsx";
 import { MdClose, MdSearch } from "react-icons/md";
 import { CgSpinner } from "react-icons/cg";
@@ -29,11 +28,12 @@ export default function CustomSearchBox({
   // TODO: might have to use algoliaQuery instead of query once routing is set up, idrk
   const { query: algoliaQuery, refine, clear } = useSearchBox(searchBoxProps);
 
-  const [query, setQuery] = useState(algoliaQuery);
-
-  // could switch to using an uncontrolled input
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const query = (
+      e.currentTarget.elements.namedItem("query") as HTMLInputElement
+    ).value;
 
     refine(query);
   };
@@ -46,12 +46,11 @@ export default function CustomSearchBox({
       <div className="input-group [&_.btn]:text-2xl">
         <input
           type="search"
+          name="query"
           placeholder={placeholder}
-          value={query}
-          onChange={(event) => setQuery(event.currentTarget.value)}
-          // onChange={(event) => refine(event.currentTarget.value)}
-          aria-label="Search"
+          defaultValue={algoliaQuery}
           className="input-bordered input dark:placeholder:opacity-60"
+          aria-label="Search"
         />
 
         {/* can't use before/after on input so using additional markup */}
