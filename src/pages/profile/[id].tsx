@@ -4,12 +4,12 @@ import type {
   NextPage,
 } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import { unstable_getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
 import { scoreStateInclude, toScoreStateComment } from "utils/comments";
+import Avatar from "components/Avatar";
 import ProfilePageTabs from "components/profile/Tabs";
 
 /**
@@ -30,20 +30,17 @@ const ProfilePage: NextPage<
         <h1 className="text-5xl font-extrabold underline underline-offset-4">
           {user.name}
         </h1>
-        {user.image && (
-          <div className="avatar">
-            <div className="w-24 rounded-full">
-              <Image
-                alt={user.name ?? "Profile picture"}
-                src={user.image}
-                width={96}
-                height={96}
-                quality={100}
-                priority
-              />
-            </div>
-          </div>
-        )}
+
+        <Avatar
+          image={user.image}
+          name={user.name}
+          className="[&>*]:w-24"
+          imageProps={{
+            quality: 100,
+            sizes: "6rem",
+            priority: true,
+          }}
+        />
 
         {isMyProfile && (
           <button type="button" className="btn-secondary btn w-fit">
