@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useDebouncedState } from "@mantine/hooks";
 import clsx from "clsx";
 import { MdClose } from "react-icons/md";
 import { CgSpinner } from "react-icons/cg";
@@ -12,36 +14,35 @@ export type CustomSearchBoxProps = UseSearchBoxProps & {
   debounceDelay?: number;
 };
 
-// TODO: debounce the refine function
 export default function CustomInstantSearchBox({
   placeholder,
-  debounceDelay = 0, // TODO: use this
+  debounceDelay = 200,
   ...searchBoxProps
 }: CustomSearchBoxProps) {
-  // 'idle' | 'loading' | 'stalled' | 'error'
   const { status } = useInstantSearch();
   const { query, refine, clear } = useSearchBox(searchBoxProps);
 
-  // could switch to using an uncontrolled input
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const [debouncedQuery, setDebouncedQuery] = useDebouncedState(
+    query,
+    debounceDelay
+  );
 
-    refine(query);
-  };
+  useEffect(() => {
+    refine(debouncedQuery);
+  }, [debouncedQuery, refine]);
 
   const loadingOrStalled = status === "loading" || status === "stalled";
 
   return (
-    <form onSubmit={handleSubmit} onReset={clear}>
-      status = {JSON.stringify(status)}
-      <div className="input-group [&_.btn]:text-2xl">
+    <form onSubmit={(e) => e.preventDefault()} onReset={clear}>
+      <div className="input-group [&>.btn]:text-2xl">
         <input
           type="search"
           placeholder={placeholder}
-          value={query}
-          onChange={(event) => refine(event.currentTarget.value)}
-          aria-label="Search"
+          defaultValue={query}
+          onChange={(event) => setDebouncedQuery(event.currentTarget.value)}
           className="input-bordered input dark:placeholder:opacity-60"
+          aria-label="Search"
         />
 
         {/* can't use before/after on input so using additional markup */}
@@ -59,7 +60,7 @@ export default function CustomInstantSearchBox({
 
         <button
           type="reset"
-          title="Reset the search"
+          title="Reset refinement"
           className="btn-secondary btn-square btn"
         >
           <MdClose />
