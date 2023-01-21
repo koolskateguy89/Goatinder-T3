@@ -128,7 +128,7 @@ const ShoesSearchPage: NextPage = () => {
              */}
             <EmptyQueryBoundary fallback={<NoQuery />}>
               <NoResultsBoundary fallback={<NoResults />}>
-                <div className="flex flex-row gap-x-4">
+                <div className="flex gap-x-4">
                   {/*
                 TODO:
                 aside hidden on mobile
@@ -187,7 +187,7 @@ const ShoesSearchPage: NextPage = () => {
                       attribute="brand_name"
                       classNames={{
                         item: "form-control",
-                        label: "flex flex-row items-center",
+                        label: "flex items-center",
                         labelText: "ml-1 label",
                         count: "badge badge-secondary ml-auto",
                         checkbox: "checkbox checkbox-secondary checkbox-sm",
