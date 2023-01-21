@@ -174,7 +174,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
       />
 
       <div className="flex justify-end">
-        <div className="tabs">
+        <div className="tabs [&>:disabled]:cursor-default">
           <button
             type="button"
             onClick={() => handleSortOrderChange("best")}
@@ -182,7 +182,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
               "tab tab-bordered",
               commentsState.sort === "best" && "tab-active"
             )}
-            disabled
+            disabled={commentsState.comments.length === 0}
           >
             Best
           </button>
@@ -193,6 +193,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
               "tab tab-bordered",
               commentsState.sort === "newest" && "tab-active"
             )}
+            disabled={commentsState.comments.length === 0}
           >
             Newest
           </button>
@@ -203,6 +204,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
               "tab tab-bordered",
               commentsState.sort === "oldest" && "tab-active"
             )}
+            disabled={commentsState.comments.length === 0}
           >
             Oldest
           </button>
