@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import clsx from "clsx";
 import { BiDownvote, BiUpvote } from "react-icons/bi";
+import { ImArrowUp, ImArrowDown } from "react-icons/im";
 
 export type ScoreDisplayProps = {
   score: number;
@@ -42,7 +43,6 @@ export default function ScoreDisplay({
     : undefined;
 
   return (
-    // TODO: icons that are filled
     <div className="-mr-2 flex w-12 flex-col items-center gap-y-0.5 text-lg">
       <button
         type="button"
@@ -56,7 +56,7 @@ export default function ScoreDisplay({
         disabled={!signedIn || onUpvote === undefined}
         aria-hidden={onUpvote === undefined}
       >
-        <BiUpvote />
+        {userUpvoted ? <ImArrowUp /> : <BiUpvote />}
       </button>
 
       <span className="font-semibold text-base-content/70 dark:text-base-content">
@@ -75,7 +75,7 @@ export default function ScoreDisplay({
         disabled={!signedIn || onDownvote === undefined}
         aria-hidden={onDownvote === undefined}
       >
-        <BiDownvote />
+        {userDownvoted ? <ImArrowDown /> : <BiDownvote />}
       </button>
     </div>
   );

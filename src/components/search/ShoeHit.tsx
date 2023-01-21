@@ -28,7 +28,6 @@ export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
           />
         </Link>
       </h2>
-      {/* TODO: toolip on hover displaying the story */}
       {/* TODO: change link color back to primary */}
       <div className="group/name relative">
         <h2 className="link-hover link-secondary link card-title">

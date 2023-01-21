@@ -33,15 +33,15 @@ export default function NewCommentForm({
   const handleAddComment = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    setAddingComment(true);
+    const trimmedContent = content.trim();
 
-    // TODO: strip whitespace from content
+    setAddingComment(true);
 
     try {
       const newComment = await toast.promise(
         addComment.mutateAsync({
           shoeId,
-          content,
+          content: trimmedContent,
         }),
         {
           loading: "Adding comment...",
@@ -50,7 +50,6 @@ export default function NewCommentForm({
         },
         {
           style: {
-            // FIXME: seems to not work
             minWidth: "200px",
           },
         }
@@ -86,7 +85,6 @@ export default function NewCommentForm({
         {/* TODO: markdown? mdx? */}
         <textarea
           id={textAreaId}
-          // TODO: change height to be responsive to breakpoints
           className="textarea-bordered textarea h-24 dark:placeholder:opacity-60"
           placeholder="An opinion is like a nose, everyone has one."
           value={content}
@@ -101,7 +99,7 @@ export default function NewCommentForm({
           className={clsx("btn-primary btn", addingComment && "loading")}
           disabled={
             !signedIn || // not signed in
-            content.replaceAll("\n", "").replaceAll(" ", "").length === 0 || // only entered whitespace
+            content.trim().length === 0 || // only entered whitespace
             addingComment || // already adding comment
             loading // comments haven't loaded yet, so don't allow adding comment
           }
