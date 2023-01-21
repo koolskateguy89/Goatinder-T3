@@ -12,6 +12,10 @@ import { prisma } from "server/db";
 import { scoreStateInclude, toScoreStateComment } from "utils/comments";
 import ProfilePageTabs from "components/profile/Tabs";
 
+/**
+ * Will want to show their bio? (if they have one)
+ * ^ will need to be made on welcome page, and then can be edited on this page
+ */
 const ProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ user, isMyProfile, comments }) => {
@@ -22,7 +26,7 @@ const ProfilePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="flex flex-col items-center gap-4 pb-4">
+      <main className="container flex flex-col items-center gap-4 pb-4">
         <h1 className="text-5xl font-extrabold underline underline-offset-4">
           {user.name}
         </h1>
@@ -32,8 +36,8 @@ const ProfilePage: NextPage<
               <Image
                 alt={user.name ?? "Profile picture"}
                 src={user.image}
-                width={128}
-                height={128}
+                width={96}
+                height={96}
                 quality={100}
                 priority
               />
@@ -47,7 +51,7 @@ const ProfilePage: NextPage<
           </button>
         )}
 
-        <section className="w-full max-w-5xl px-4">
+        <section className="w-full max-w-6xl px-4">
           <ProfilePageTabs
             comments={comments}
             disliked={user.disliked}
