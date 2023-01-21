@@ -33,8 +33,8 @@ export default function ThemeSwitcher() {
         "navbar-icon-btn swap grid motion-safe:swap-rotate",
         resolvedTheme === "light" && "swap-active"
       )}
+      aria-label="Toggle Theme"
     >
-      <span className="sr-only">Toggle Theme</span>
       <MdOutlineLightMode className="swap-on" />
       <MdOutlineDarkMode className="swap-off" />
     </button>
