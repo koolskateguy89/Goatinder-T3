@@ -4,9 +4,10 @@ import {
   type UseInfiniteHitsProps,
 } from "react-instantsearch-hooks-web";
 
-import ExploreShoeHit from "components/search/ShoeHit";
+import ShoeHit from "components/search/ShoeHit";
+import OnVisible from "components/OnVisible";
 
-type THit = React.ComponentProps<typeof ExploreShoeHit>["hit"];
+type THit = React.ComponentProps<typeof ShoeHit>["hit"];
 
 export default function CustomInfiniteHits(props: UseInfiniteHitsProps<THit>) {
   const { hits, isLastPage, showMore } = useInfiniteHits(props);
@@ -16,22 +17,18 @@ export default function CustomInfiniteHits(props: UseInfiniteHitsProps<THit>) {
       <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {hits.map((hit) => (
           <li key={hit.objectID}>
-            <ExploreShoeHit hit={hit} />
+            <ShoeHit hit={hit} />
           </li>
         ))}
       </ul>
 
       {!isLastPage && (
-        // TODO: basically once this spinner is visible, load more
-        // NOTE: is only clickable for debugging purposes
-        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-        <span className="flex cursor-pointer justify-center" onClick={showMore}>
-          {/* isLastPage */}
-          <CgSpinner className="hidden text-2xl motion-safe:inline motion-safe:animate-spin" />
-          <span className="hidden text-lg motion-reduce:inline">
-            Loading...
+        <OnVisible callback={showMore}>
+          <span className="flex justify-center">
+            <CgSpinner className="text-4xl motion-safe:animate-spin motion-reduce:hidden" />
+            <span className="text-lg motion-safe:sr-only">Loading...</span>
           </span>
-        </span>
+        </OnVisible>
       )}
     </div>
   );
