@@ -47,7 +47,7 @@ export const commentsRouter = createTRPCRouter({
     .input(
       z.object({
         shoeId: z.string().min(1),
-        content: z.string().min(1),
+        content: z.string().trim().min(1),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -109,7 +109,7 @@ export const commentsRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
 
-      return ctx.prisma.shoeComment.delete({
+      await ctx.prisma.shoeComment.delete({
         where: {
           id,
         },
@@ -158,7 +158,7 @@ export const commentsRouter = createTRPCRouter({
         };
       }
 
-      return ctx.prisma.shoeComment.update({
+      await ctx.prisma.shoeComment.update({
         where: {
           id,
         },

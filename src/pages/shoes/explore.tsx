@@ -41,19 +41,9 @@ function NoResults() {
   );
 }
 
-// TODO: make infinite scroll seamless, like auto load more when you get to the bottom
-// might have to simulate the button click
-
 /**
- * Need to make like a shoes showcase page.
- * Maybe show the most liked shoes?
- * Or recommended?
- *
- * Need to make a shoes expore page.
- * Very similar to this but with infinite scroll.
- *
- * TODO: look at using AutoComplete in navbar (lg screens only)
- * https://www.algolia.com/doc/guides/building-search-ui/ui-and-ux-patterns/autocomplete/react-hooks/
+ * Very similar to search page but with infinite scroll and shows shoes even
+ * with no search query.
  */
 const ExplorePage: NextPage = () => {
   return (
@@ -81,11 +71,7 @@ const ExplorePage: NextPage = () => {
 
           <NoResultsBoundary fallback={<NoResults />}>
             <div className="flex flex-row gap-x-4">
-              {/*
-                TODO:
-                aside hidden on mobile
-                make it a drawer?
-                */}
+              {/* TODO: aside hidden on mobile, make it a drawer? */}
               <aside className="w-1/4 space-y-4">
                 <ClearRefinements
                   classNames={{
