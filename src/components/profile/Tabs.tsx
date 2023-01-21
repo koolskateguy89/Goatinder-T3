@@ -1,8 +1,8 @@
 import type { InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { Tab } from "@headlessui/react";
 import { MdClose, MdFavorite, MdModeComment } from "react-icons/md";
-import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 
 import type { getServerSideProps } from "pages/profile/[id]";
 import Comment from "components/profile/Comment";
@@ -55,73 +55,78 @@ export default function ProfilePageTabs({
   liked,
 }: ProfilePageTabsProps) {
   return (
-    <Tabs selectedTabClassName="tab-active">
-      <TabList className="tabs [&>*]:basis-1/3 [&>*]:tab [&>*]:tab-bordered">
-        <Tab>Comments</Tab>
-        <Tab>Likes</Tab>
-        <Tab>Dislikes</Tab>
-      </TabList>
+    <Tab.Group>
+      <Tab.List className="tabs">
+        <Tab className="tab tab-bordered basis-1/3 focus:outline-none ui-selected:tab-active">
+          Comments
+        </Tab>
+        <Tab className="tab tab-bordered basis-1/3 focus:outline-none ui-selected:tab-active">
+          Likes
+        </Tab>
+        <Tab className="tab tab-bordered basis-1/3 focus:outline-none ui-selected:tab-active">
+          Dislikes
+        </Tab>
+      </Tab.List>
+      <Tab.Panels className="mt-2">
+        <Tab.Panel className="space-y-2">
+          {comments.length > 0 ? (
+            <>
+              <h2 className="text-2xl font-semibold">Comments</h2>
 
-      <TabPanel className="mt-2 space-y-2">
-        {comments.length > 0 ? (
-          <>
-            <h2 className="text-2xl font-semibold">Comments</h2>
+              <CommentsList>
+                {comments.map((comment) => (
+                  <li key={comment.id}>
+                    <Comment comment={comment} />
+                  </li>
+                ))}
+              </CommentsList>
+            </>
+          ) : (
+            <div className="pt-8 text-center text-lg">
+              This user has not made any comments yet :/
+              <div className="-rotate-6 transform text-sm opacity-50">{`maybe they're shy`}</div>
+            </div>
+          )}
+        </Tab.Panel>
+        <Tab.Panel className="space-y-2">
+          {liked.length > 0 ? (
+            <>
+              <h2 className="text-2xl font-semibold">Liked shoes</h2>
 
-            <CommentsList>
-              {comments.map((comment) => (
-                <li key={comment.id}>
-                  <Comment comment={comment} />
-                </li>
-              ))}
-            </CommentsList>
-          </>
-        ) : (
-          <div className="pt-8 text-center text-lg">
-            This user has not made any comments yet :/
-            <div className="-rotate-6 transform text-sm opacity-50">{`maybe they're shy`}</div>
-          </div>
-        )}
-      </TabPanel>
+              <ul className="rounded-box divide-y-2 divide-success ring-2 ring-success dark:divide-opacity-60 dark:ring-opacity-60">
+                {liked.map((shoe) => (
+                  <li key={shoe.objectId}>
+                    <ShoeComponent {...shoe} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <div className="pt-8 text-center text-lg">
+              This user has not liked any shoes yet!
+            </div>
+          )}
+        </Tab.Panel>
+        <Tab.Panel className="space-y-2">
+          {disliked.length > 0 ? (
+            <>
+              <h2 className="text-2xl font-semibold">Disliked shoes</h2>
 
-      <TabPanel className="mt-2 space-y-2">
-        {liked.length > 0 ? (
-          <>
-            <h2 className="text-2xl font-semibold">Liked shoes</h2>
-
-            <ul className="rounded-box divide-y-2 divide-success ring-2 ring-success dark:divide-opacity-60 dark:ring-opacity-60">
-              {liked.map((shoe) => (
-                <li key={shoe.objectId}>
-                  <ShoeComponent {...shoe} />
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : (
-          <div className="pt-8 text-center text-lg">
-            This user has not liked any shoes yet!
-          </div>
-        )}
-      </TabPanel>
-
-      <TabPanel className="mt-2 space-y-2">
-        {disliked.length > 0 ? (
-          <>
-            <h2 className="text-2xl font-semibold">Disliked shoes</h2>
-
-            <ul className="rounded-box divide-y-2 divide-error ring-2 ring-error">
-              {disliked.map((shoe) => (
-                <li key={shoe.objectId}>
-                  <ShoeComponent {...shoe} />
-                </li>
-              ))}
-            </ul>
-          </>
-        ) : (
-          <div className="pt-8 text-center text-lg">
-            This user has not disliked any shoes yet!
-          </div>
-        )}
-      </TabPanel>
-    </Tabs>
+              <ul className="rounded-box divide-y-2 divide-error ring-2 ring-error">
+                {disliked.map((shoe) => (
+                  <li key={shoe.objectId}>
+                    <ShoeComponent {...shoe} />
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <div className="pt-8 text-center text-lg">
+              This user has not disliked any shoes yet!
+            </div>
+          )}
+        </Tab.Panel>
+      </Tab.Panels>
+    </Tab.Group>
   );
 }
