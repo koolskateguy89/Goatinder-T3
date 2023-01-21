@@ -13,10 +13,7 @@ export default function ThemeSwitcher() {
   // can't just check mounted inside button because then it will
   // show dark icon when reloading in light mode
   if (!mounted)
-    return (
-      // eslint-disable-next-line jsx-a11y/control-has-associated-label
-      <button type="button" className="navbar-icon-btn" />
-    );
+    return <button type="button" className="navbar-icon-btn" aria-hidden />;
 
   const active = resolvedTheme === "light";
 

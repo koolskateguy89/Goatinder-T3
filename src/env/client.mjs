@@ -2,7 +2,6 @@
 // eslint-disable-next-line import/extensions
 import { clientEnv, clientSchema } from "./schema.mjs";
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const _clientEnv = clientSchema.safeParse(clientEnv);
 
 export const formatErrors = (
