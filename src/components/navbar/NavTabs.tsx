@@ -24,7 +24,7 @@ function NavTab({ href, children }: React.PropsWithChildren<{ href: string }>) {
 export default function NavTabs() {
   return (
     <nav
-      className="flex h-full flex-row items-stretch"
+      className="flex h-full items-stretch"
       role="navigation"
       aria-label="Main"
     >

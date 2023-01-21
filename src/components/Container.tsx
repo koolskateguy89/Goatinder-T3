@@ -4,11 +4,11 @@ export type ContainerProps = React.PropsWithChildren;
 
 export default function Container({ children }: ContainerProps) {
   return (
-    <div className="flex h-screen h-[100dvh] flex-col">
+    <>
       <div className="sticky top-0 z-40 w-full flex-none border-b border-base-300 bg-transparent backdrop-blur transition-colors dark:border-white/5 lg:z-50">
         <NavBar />
       </div>
       {children}
-    </div>
+    </>
   );
 }

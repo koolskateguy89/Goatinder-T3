@@ -44,7 +44,7 @@ function Drawer({
     // TODO: keyboard navigable - currently hard to get inside the drawer
     <div
       className={clsx(
-        "group/drawer fixed inset-0 z-50 flex-row overflow-y-auto lg:hidden",
+        "group/drawer fixed inset-0 z-50 overflow-y-auto lg:hidden",
         !open && "invisible"
       )}
       tabIndex={0}
@@ -70,7 +70,7 @@ function Drawer({
       >
         {/* drawer content here */}
 
-        <header className="flex flex-row items-center gap-1 border-b border-base-300 px-4 pb-4 pt-3 dark:border-white/20">
+        <header className="flex items-center gap-1 border-b border-base-300 px-4 pb-4 pt-3 dark:border-white/20">
           <Link href="/" className="btn-ghost btn-sm btn text-xl normal-case">
             <Brand />
           </Link>

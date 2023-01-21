@@ -1,7 +1,6 @@
 import type { InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import clsx from "clsx";
 import { MdClose, MdFavorite, MdModeComment } from "react-icons/md";
 import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 
@@ -12,20 +11,9 @@ import CommentsList from "components/comment/CommentsList";
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 type Shoe = Props["user"]["liked"][number];
 
-function ShoeComponent({
-  shoe: { objectId, name, main_picture_url, _count },
-  className,
-}: {
-  shoe: Shoe;
-  className?: string;
-}) {
+function ShoeComponent({ objectId, name, main_picture_url, _count }: Shoe) {
   return (
-    <article
-      className={clsx(
-        "flex h-32 flex-row items-center overflow-hidden px-4",
-        className
-      )}
-    >
+    <article className="flex h-32 items-center overflow-hidden px-4">
       <figure className="absolute h-28 w-28">
         <Image src={main_picture_url} alt={name} fill sizes="7rem" />
       </figure>
@@ -103,7 +91,7 @@ export default function ProfilePageTabs({
             <ul className="rounded-box divide-y-2 divide-success ring-2 ring-success dark:divide-opacity-60 dark:ring-opacity-60">
               {liked.map((shoe) => (
                 <li key={shoe.objectId}>
-                  <ShoeComponent shoe={shoe} className="ring-success" />
+                  <ShoeComponent {...shoe} />
                 </li>
               ))}
             </ul>
@@ -123,7 +111,7 @@ export default function ProfilePageTabs({
             <ul className="rounded-box divide-y-2 divide-error ring-2 ring-error">
               {disliked.map((shoe) => (
                 <li key={shoe.objectId}>
-                  <ShoeComponent shoe={shoe} className="ring-error" />
+                  <ShoeComponent {...shoe} />
                 </li>
               ))}
             </ul>

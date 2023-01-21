@@ -70,7 +70,7 @@ const ExplorePage: NextPage = () => {
           <CustomInstantSearchBox placeholder="Refine your exploration" />
 
           <NoResultsBoundary fallback={<NoResults />}>
-            <div className="flex flex-row gap-x-4">
+            <div className="flex gap-x-4">
               {/* TODO: aside hidden on mobile, make it a drawer? */}
               <aside className="w-1/4 space-y-4">
                 <ClearRefinements
@@ -88,7 +88,7 @@ const ExplorePage: NextPage = () => {
                   attribute="brand_name"
                   classNames={{
                     item: "form-control",
-                    label: "flex flex-row items-center",
+                    label: "flex items-center",
                     labelText: "ml-1 label",
                     count: "badge badge-secondary ml-auto",
                     checkbox: "checkbox checkbox-secondary checkbox-sm",
