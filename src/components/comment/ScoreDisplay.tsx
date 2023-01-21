@@ -22,7 +22,11 @@ export default function ScoreDisplay({
 
   const signedIn = session?.user != null;
 
-  const upvoteButtonTitle = onUpvote
+  // If upvote and downvote callbacks are provided, the score is interactive
+  // and the user must be signed in to vote
+  const interactive = onUpvote !== undefined && onDownvote !== undefined;
+
+  const upvoteButtonTitle = interactive
     ? signedIn
       ? userUpvoted
         ? "Remove upvote"
@@ -32,7 +36,7 @@ export default function ScoreDisplay({
     ? "Upvoted by you"
     : undefined;
 
-  const downvoteButtonTitle = onDownvote
+  const downvoteButtonTitle = interactive
     ? signedIn
       ? userDownvoted
         ? "Remove downvote"
@@ -46,15 +50,16 @@ export default function ScoreDisplay({
     <div className="-mr-2 flex w-12 flex-col items-center gap-y-0.5 text-lg">
       <button
         type="button"
-        onClick={onUpvote}
+        onClick={interactive ? onUpvote : undefined}
         className={clsx(
           userUpvoted ? "text-green-500" : "text-gray-500",
-          onUpvote && !signedIn && "cursor-not-allowed"
+          interactive && !userUpvoted && "hover:text-green-500",
+          interactive && !signedIn && "cursor-not-allowed"
         )}
         title={upvoteButtonTitle}
         aria-label={upvoteButtonTitle}
-        disabled={!signedIn || onUpvote === undefined}
-        aria-hidden={onUpvote === undefined}
+        disabled={!signedIn || !interactive}
+        aria-hidden={!interactive}
       >
         {userUpvoted ? <ImArrowUp /> : <BiUpvote />}
       </button>
@@ -65,15 +70,16 @@ export default function ScoreDisplay({
 
       <button
         type="button"
-        onClick={onDownvote}
+        onClick={interactive ? onDownvote : undefined}
         className={clsx(
           userDownvoted ? "text-red-500" : "text-gray-500",
-          onDownvote && !signedIn && "cursor-not-allowed"
+          interactive && !userDownvoted && "hover:text-red-500",
+          interactive && !signedIn && "cursor-not-allowed"
         )}
         title={downvoteButtonTitle}
         aria-label={downvoteButtonTitle}
-        disabled={!signedIn || onDownvote === undefined}
-        aria-hidden={onDownvote === undefined}
+        disabled={!signedIn || !interactive}
+        aria-hidden={!interactive}
       >
         {userDownvoted ? <ImArrowDown /> : <BiDownvote />}
       </button>
