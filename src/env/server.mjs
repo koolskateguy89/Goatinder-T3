@@ -8,7 +8,6 @@ import { serverSchema } from "./schema.mjs";
 // eslint-disable-next-line import/extensions
 import { env as clientEnv, formatErrors } from "./client.mjs";
 
-// eslint-disable-next-line @typescript-eslint/naming-convention
 const _serverEnv = serverSchema.safeParse(process.env);
 
 if (!_serverEnv.success) {
