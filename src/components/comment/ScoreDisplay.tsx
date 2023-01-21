@@ -51,17 +51,22 @@ export default function ScoreDisplay({
       <button
         type="button"
         onClick={interactive ? onUpvote : undefined}
-        className={clsx(
-          userUpvoted ? "text-green-500" : "text-gray-500",
-          interactive && !userUpvoted && "hover:text-green-500",
-          interactive && !signedIn && "cursor-not-allowed"
-        )}
+        className={clsx(interactive && !signedIn && "cursor-not-allowed")}
         title={upvoteButtonTitle}
         aria-label={upvoteButtonTitle}
         disabled={!signedIn || !interactive}
         aria-hidden={!interactive}
       >
-        {userUpvoted ? <ImArrowUp /> : <BiUpvote />}
+        {userUpvoted ? (
+          <ImArrowUp className="text-green-500" />
+        ) : (
+          <BiUpvote
+            className={clsx(
+              "text-gray-500",
+              interactive && signedIn && "hover:text-green-500"
+            )}
+          />
+        )}
       </button>
 
       <span className="font-semibold text-base-content/70 dark:text-base-content">
@@ -71,17 +76,22 @@ export default function ScoreDisplay({
       <button
         type="button"
         onClick={interactive ? onDownvote : undefined}
-        className={clsx(
-          userDownvoted ? "text-red-500" : "text-gray-500",
-          interactive && !userDownvoted && "hover:text-red-500",
-          interactive && !signedIn && "cursor-not-allowed"
-        )}
+        className={clsx(interactive && !signedIn && "cursor-not-allowed")}
         title={downvoteButtonTitle}
         aria-label={downvoteButtonTitle}
         disabled={!signedIn || !interactive}
         aria-hidden={!interactive}
       >
-        {userDownvoted ? <ImArrowDown /> : <BiDownvote />}
+        {userDownvoted ? (
+          <ImArrowDown className="text-red-500" />
+        ) : (
+          <BiDownvote
+            className={clsx(
+              "text-gray-500",
+              interactive && signedIn && "hover:text-red-500"
+            )}
+          />
+        )}
       </button>
     </div>
   );
