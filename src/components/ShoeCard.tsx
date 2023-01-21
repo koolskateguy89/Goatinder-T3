@@ -19,13 +19,15 @@ export type ShoeCardProps = {
 };
 
 // TODO?: maybe don't use daisyUI's card, just style it myself
+// // TODO: update to be more like TailwindUI's card
+// TODO?: make more like Tailwind's landing page example card
 export default function ShoeCard({
   shoe,
   imageProps,
   children,
 }: ShoeCardProps) {
   return (
-    <article className="card h-full overflow-hidden bg-black/[0.02] ring-2 ring-black/10 dark:bg-white/[0.02] dark:ring-white/10">
+    <article className="card h-full overflow-hidden bg-black/[0.02] ring-2 ring-base-300 dark:bg-white/[0.02] dark:ring-white/10">
       <figure className="relative mx-auto -mt-5 h-40 w-40 md:mt-0 lg:h-60 lg:w-60">
         <Image
           src={shoe.grid_picture_url ?? shoe.main_picture_url}
