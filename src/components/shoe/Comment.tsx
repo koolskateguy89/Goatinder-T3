@@ -54,12 +54,14 @@ export default function Comment({ comment, onDelete, onVote }: CommentProps) {
         </div>
       }
       title={
-        <Link
-          href={`/profile/${author.id}`}
-          className="link w-fit font-semibold"
-        >
-          {author.name}
-        </Link>
+        <div className="flex items-center gap-x-2 font-semibold">
+          <Link href={`/profile/${author.id}`} className="link">
+            {author.name}
+          </Link>
+          {isMyComment && (
+            <span className="badge-primary badge badge-sm">you</span>
+          )}
+        </div>
       }
     />
   );
