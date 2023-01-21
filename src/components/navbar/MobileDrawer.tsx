@@ -101,6 +101,7 @@ function Drawer({
                 <span>Shoes</span>
               </li>
               <MobileNavItem href="/shoes/search">Search</MobileNavItem>
+              <MobileNavItem href="/shoes/explore">Explore</MobileNavItem>
               <li className="menu-title">
                 <span>...</span>
               </li>

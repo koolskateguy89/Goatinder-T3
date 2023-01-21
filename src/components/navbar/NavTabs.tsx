@@ -30,6 +30,7 @@ export default function NavTabs() {
     >
       <NavTab href="/">Home</NavTab>
       <NavTab href="/shoes/search">Search</NavTab>
+      <NavTab href="/shoes/explore">Explore</NavTab>
       <NavTab href="/about">About</NavTab>
       <NavTab href="/contact">Contact</NavTab>
     </nav>
