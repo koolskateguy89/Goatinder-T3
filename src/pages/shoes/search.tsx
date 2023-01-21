@@ -1,9 +1,6 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
-
-import { authOptions } from "pages/api/auth/[...nextauth]";
-
 import {
   // basics
   Configure,
@@ -28,6 +25,7 @@ import {
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
 
+import { authOptions } from "pages/api/auth/[...nextauth]";
 import InstantSearchProvider from "components/algolia/InstantSearchProvider";
 import EmptyQueryBoundary from "components/algolia/EmptyQueryBoundary";
 import NoResultsBoundary from "components/algolia/NoResultsBoundary";
@@ -199,7 +197,7 @@ const ShoesSearchPage: NextPage = () => {
                   <Hits
                     hitComponent={ShoeHit}
                     classNames={{
-                      list: "grid grid-cols-1 grid-rows-[auto] gap-4 sm:grid-cols-2 lg:grid-cols-3",
+                      list: "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3",
                       // TODO: use component instead of classes for empty
                       emptyRoot:
                         "relative h-80 w-80 bg-gradient-to-br from-primary to-secondary before:absolute before:text-white before:content-['empty_results!']",

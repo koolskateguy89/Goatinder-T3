@@ -125,8 +125,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
 
   useEffect(() => {
     dispatchComments({ type: "set", payload: commentsQuery.data ?? [] });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [commentsQuery.data]);
+  }, [dispatchComments, commentsQuery.data]);
 
   const deleteComment = api.comments.deleteComment.useMutation();
 
