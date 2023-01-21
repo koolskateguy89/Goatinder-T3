@@ -7,6 +7,7 @@ import { Tabs, TabList, Tab, TabPanel } from "react-tabs";
 
 import type { getServerSideProps } from "pages/profile/[id]";
 import Comment from "components/profile/Comment";
+import CommentsList from "components/comment/CommentsList";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
 type Shoe = Props["user"]["liked"][number];
@@ -73,34 +74,33 @@ export default function ProfilePageTabs({
         <Tab>Dislikes</Tab>
       </TabList>
 
-      <TabPanel className="space-y-2">
+      <TabPanel className="mt-2 space-y-2">
         {comments.length > 0 ? (
           <>
-            {/* should heading be sr-only? */}
             <h2 className="text-2xl font-semibold">Comments</h2>
 
-            <ul className="rounded-box divide-y-2 divide-gray-500 ring-2 ring-gray-500">
+            <CommentsList>
               {comments.map((comment) => (
                 <li key={comment.id}>
                   <Comment comment={comment} />
                 </li>
               ))}
-            </ul>
+            </CommentsList>
           </>
         ) : (
-          <div className="pt-10 text-center text-lg">
+          <div className="pt-8 text-center text-lg">
             This user has not made any comments yet :/
             <div className="-rotate-6 transform text-sm opacity-50">{`maybe they're shy`}</div>
           </div>
         )}
       </TabPanel>
 
-      <TabPanel className="space-y-2">
+      <TabPanel className="mt-2 space-y-2">
         {liked.length > 0 ? (
           <>
             <h2 className="text-2xl font-semibold">Liked shoes</h2>
 
-            <ul className="rounded-box divide-y-2 divide-success ring-2 ring-success">
+            <ul className="rounded-box divide-y-2 divide-success ring-2 ring-success dark:divide-opacity-60 dark:ring-opacity-60">
               {liked.map((shoe) => (
                 <li key={shoe.objectId}>
                   <ShoeComponent shoe={shoe} className="ring-success" />
@@ -109,13 +109,13 @@ export default function ProfilePageTabs({
             </ul>
           </>
         ) : (
-          <div className="pt-10 text-center text-lg">
+          <div className="pt-8 text-center text-lg">
             This user has not liked any shoes yet!
           </div>
         )}
       </TabPanel>
 
-      <TabPanel className="space-y-2">
+      <TabPanel className="mt-2 space-y-2">
         {disliked.length > 0 ? (
           <>
             <h2 className="text-2xl font-semibold">Disliked shoes</h2>
@@ -129,7 +129,7 @@ export default function ProfilePageTabs({
             </ul>
           </>
         ) : (
-          <div className="pt-10 text-center text-lg">
+          <div className="pt-8 text-center text-lg">
             This user has not disliked any shoes yet!
           </div>
         )}
