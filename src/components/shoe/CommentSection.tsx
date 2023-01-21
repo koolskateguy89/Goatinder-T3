@@ -4,6 +4,7 @@ import { type ImmerReducer, useImmerReducer } from "use-immer";
 
 import { api, type RouterOutputs } from "utils/api";
 import NewCommentForm from "components/shoe/NewCommentForm";
+import CommentsList from "components/comment/CommentsList";
 import Comment from "components/shoe/Comment";
 
 type CommentType = RouterOutputs["comments"]["getComments"][number];
@@ -218,7 +219,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
           <div className="mt-0.5 text-sm opacity-50 motion-safe:animate-bounce">{`It's quite empty in here`}</div>
         </div>
       ) : (
-        <ol className="rounded-box divide-y-2 divide-gray-500 ring-2 ring-gray-500 empty:ring-0">
+        <CommentsList ordered>
           {commentsState.comments.map((comment) => (
             <li key={comment.id}>
               <Comment
@@ -228,7 +229,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
               />
             </li>
           ))}
-        </ol>
+        </CommentsList>
       )}
     </section>
   );
