@@ -5,6 +5,7 @@ import type {
 } from "next";
 import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
+import clsx from "clsx";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
@@ -12,10 +13,6 @@ import { scoreStateInclude, toScoreStateComment } from "utils/comments";
 import Avatar from "components/Avatar";
 import ProfilePageTabs from "components/profile/Tabs";
 
-/**
- * Will want to show their bio? (if they have one)
- * ^ will need to be made on welcome page, and then can be edited on this page
- */
 const ProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ user, isMyProfile, comments }) => {
@@ -26,9 +23,9 @@ const ProfilePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container flex flex-col items-center gap-4 pb-4">
+      <main className="container flex max-w-6xl flex-col items-center gap-y-4 px-4 pt-2 pb-4">
         <h1 className="text-5xl font-extrabold underline underline-offset-4">
-          {user.name}
+          {user.name ?? "An unnamed user"}
         </h1>
 
         <Avatar
@@ -43,12 +40,33 @@ const ProfilePage: NextPage<
         />
 
         {isMyProfile && (
-          <button type="button" className="btn-secondary btn w-fit">
+          <button type="button" className="btn-primary btn">
             Edit Profile
           </button>
         )}
 
-        <section className="w-full max-w-6xl px-4">
+        <section className="flex w-full flex-col items-center gap-y-2">
+          <h2 className="text-xl font-semibold">
+            {user.name ? `${user.name}'s b` : "B"}
+            io
+          </h2>
+          <textarea
+            value={
+              user.profile?.bio ??
+              `${
+                user.name ? `${user.name} hasn't` : "This user hasn't"
+              } written a bio yet.`
+            }
+            className={clsx(
+              "textarea-bordered textarea h-32 w-full md:h-52",
+              !user.profile?.bio &&
+                "text-base-content/70 dark:text-base-content/50"
+            )}
+            readOnly
+          />
+        </section>
+
+        <section className="w-full">
           <ProfilePageTabs
             comments={comments}
             disliked={user.disliked}

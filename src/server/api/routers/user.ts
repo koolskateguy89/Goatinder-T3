@@ -6,6 +6,7 @@ export const userRouter = createTRPCRouter({
   createProfile: protectedProcedure
     .input(
       z.object({
+        // TODO: whatever fields are in the Profile model
         bio: z.string().trim().min(1),
       })
     )
