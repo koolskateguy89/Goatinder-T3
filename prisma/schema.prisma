@@ -66,12 +66,11 @@ model VerificationToken {
     @@unique([identifier, token])
 }
 
-// TODO
-// decide what to show
-// decide if necessary
+// TODO: add other fields, like shoe size(?), etc.
 model Profile {
-    userId String @id
-    user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String  @id
+    bio    String?
+    user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Shoe {
