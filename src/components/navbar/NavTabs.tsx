@@ -23,11 +23,7 @@ function NavTab({ href, children }: React.PropsWithChildren<{ href: string }>) {
 
 export default function NavTabs() {
   return (
-    <nav
-      className="flex h-full items-stretch"
-      role="navigation"
-      aria-label="Main"
-    >
+    <nav className="flex h-full items-stretch" aria-label="Main">
       <NavTab href="/">Home</NavTab>
       <NavTab href="/shoes/search">Search</NavTab>
       <NavTab href="/shoes/explore">Explore</NavTab>
