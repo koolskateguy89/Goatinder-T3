@@ -1,3 +1,4 @@
+import { useId, useState } from "react";
 import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
@@ -5,37 +6,95 @@ import type {
 } from "next";
 import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
+import toast from "react-hot-toast";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
-import { useSession } from "next-auth/react";
-
-// TODO: get them to create a profile?
+import { prisma } from "server/db";
+import { api } from "utils/api";
+import Brand from "components/Brand";
+import SessionData from "components/welcome/SessionData";
 
 const WelcomePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = () => {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const session = useSession().data!;
+> = ({ profileExists }) => {
+  const bioId = useId();
 
-  const sessionJsonLines = JSON.stringify(session, null, 2).split("\n");
+  const [canAddBio, setCanAddBio] = useState(!profileExists);
+
+  const createProfile = api.user.createProfile.useMutation();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const bioElem = e.currentTarget.elements.namedItem(
+      bioId
+    ) as HTMLTextAreaElement;
+
+    console.log(bioElem);
+
+    const bio = bioElem.value.trim();
+
+    if (!bio) {
+      toast.error("Bio cannot be empty");
+      return;
+    }
+
+    setCanAddBio(false);
+
+    toast
+      .promise(
+        createProfile.mutateAsync({
+          bio,
+        }),
+        {
+          loading: "Creating profile...",
+          success: "Profile created!",
+          error: "Failed to create profile",
+        }
+      )
+      .catch(() => setCanAddBio(true));
+  };
 
   return (
     <>
       <Head>
         <title>Welcome - goaTinder</title>
       </Head>
-      <main>
-        <span>Welcome to goaTinder!</span>
-        <div className="mockup-code">
-          <pre data-prefix="$">
-            <code>console.log(JSON.stringify(session, null, 2));</code>
-          </pre>
-          {sessionJsonLines.map((line) => (
-            <pre key={line} data-prefix=">">
-              <code>{line}</code>
-            </pre>
-          ))}
-        </div>
+      <main className="container max-w-6xl space-y-4 p-4">
+        <h1 className="text-center text-4xl font-semibold">
+          Welcome to <Brand />!
+        </h1>
+
+        <form
+          onSubmit={handleSubmit}
+          className="mx-auto flex w-full flex-col items-stretch"
+        >
+          <div className="form-control">
+            <label htmlFor={bioId} className="label">
+              <span className="label-text">Create your bio</span>
+            </label>
+            <textarea
+              id={bioId}
+              className="textarea-bordered textarea h-32 w-full placeholder:text-base-content/90 md:h-52"
+              placeholder={
+                profileExists
+                  ? "You already have a bio, check your profile ;)"
+                  : "Be creative!"
+              }
+              readOnly={!canAddBio}
+              disabled={profileExists}
+            />
+          </div>
+          <button
+            type="submit"
+            className="btn-primary btn mt-3"
+            disabled={!canAddBio}
+          >
+            Create Profile
+          </button>
+        </form>
+
+        <SessionData />
       </main>
     </>
   );
@@ -58,9 +117,17 @@ export const getServerSideProps = (async (context) => {
       },
     };
 
+  // should be 0 or 1
+  const numberOfProfiles = await prisma.profile.count({
+    where: {
+      userId: session.user.id,
+    },
+  });
+
   return {
     props: {
       session,
+      profileExists: numberOfProfiles > 0,
     },
   };
 }) satisfies GetServerSideProps;
