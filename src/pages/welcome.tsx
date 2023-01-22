@@ -60,7 +60,7 @@ const WelcomePage: NextPage<
       <Head>
         <title>Welcome - goaTinder</title>
       </Head>
-      <main className="container max-w-6xl space-y-4 p-4">
+      <main className="container space-y-4 p-4">
         <h1 className="text-center text-4xl font-semibold">
           Welcome to <Brand />!
         </h1>

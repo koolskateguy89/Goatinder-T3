@@ -23,7 +23,7 @@ const ProfilePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container flex max-w-6xl flex-col items-center gap-y-4 px-4 pt-2 pb-4">
+      <main className="container flex flex-col items-center gap-y-4 px-4 pt-2 pb-4">
         <h1 className="text-5xl font-extrabold underline underline-offset-4">
           {user.name ?? "An unnamed user"}
         </h1>
@@ -45,7 +45,7 @@ const ProfilePage: NextPage<
           </button>
         )}
 
-        <section className="flex w-full flex-col items-center gap-y-2">
+        <section className="flex w-full flex-col items-center gap-y-2 lg:max-w-5xl">
           <h2 className="text-xl font-semibold">
             {user.name ? `${user.name}'s b` : "B"}
             io
