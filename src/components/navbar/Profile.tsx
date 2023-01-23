@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
 
@@ -8,9 +9,9 @@ import Avatar from "components/Avatar";
 // TODO: rename to UserDropdown?
 export default function Profile() {
   const { data: session, status } = useSession();
+  const router = useRouter();
 
-  // TODO: use daisyUI loading shiny thingy(?)
-  // should never show, because we're passing session to _app with getServerSideProps on every page
+  // should never show - we're passing `session` to `_app` with `getServerSideProps` on every page
   if (status === "loading") {
     return (
       <button type="button" className="btn-primary btn-sm btn md:btn-md">
@@ -20,15 +21,25 @@ export default function Profile() {
   }
 
   if (!session || !session.user) {
+    const isDynamicRoute = router.pathname.includes("/[");
+
     return (
-      <Link href="/signin" className="btn-primary btn-sm btn md:btn-md">
+      <Link
+        href={{
+          pathname: "/signin",
+          query: {
+            callbackUrl: isDynamicRoute ? router.asPath : undefined,
+          },
+        }}
+        as="/signin"
+        className="btn-primary btn-sm btn md:btn-md"
+      >
         Sign in
       </Link>
     );
   }
 
   return (
-    // maybe use a modal instead of dropdown on mobile?
     <Menu as="div" className="relative flex">
       <Menu.Button className="my-auto h-10">
         <Avatar

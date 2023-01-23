@@ -139,8 +139,14 @@ export const getServerSideProps = (async (context) => {
   const errorType =
     (context.query.error as SignInErrorTypes | undefined) ?? null;
 
-  const callbackUrl =
-    (context.query.callbackUrl as string | undefined) ?? "/welcome";
+  // /welcome will handle redirecting to the callbackUrl
+  const callbackUrl = `/welcome${
+    context.query.callbackUrl
+      ? `?callbackUrl=${encodeURIComponent(
+          context.query.callbackUrl as string
+        )}`
+      : ""
+  }`;
 
   return {
     props: {
