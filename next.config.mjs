@@ -28,6 +28,11 @@ const config = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
+      {
+        // only in dev/preview
+        protocol: "https",
+        hostname: "placeimg.com",
+      },
     ],
   },
   experimental: {
