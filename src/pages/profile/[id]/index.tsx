@@ -4,6 +4,7 @@ import type {
   NextPage,
 } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { unstable_getServerSession } from "next-auth";
 import clsx from "clsx";
 
@@ -40,9 +41,17 @@ const ProfilePage: NextPage<
         />
 
         {isMyProfile && (
-          <button type="button" className="btn-primary btn">
-            Edit Profile
-          </button>
+          <>
+            <button type="button" className="btn-primary btn">
+              Edit Profile
+            </button>
+            <Link href="edit" className="btn-primary btn">
+              Edit
+            </Link>
+            <button type="button" className="btn-error btn">
+              Delete Account
+            </button>
+          </>
         )}
 
         <section className="flex w-full flex-col items-center gap-y-2 lg:max-w-5xl">
@@ -92,8 +101,6 @@ export const getServerSideProps = (async (context) => {
   const profileId = context.params?.id;
 
   const isMyProfile = userId === profileId;
-
-  // TODO!: query for "Profile" - if using
 
   const user = await prisma.user.findUnique({
     where: {
