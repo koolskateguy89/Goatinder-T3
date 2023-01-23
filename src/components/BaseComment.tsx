@@ -37,7 +37,6 @@ export default function BaseComment({
 
   const handleDownvote = () => onVote?.(id, "down");
 
-  // TODO
   return (
     <article className="grid min-h-[theme(spacing.40)] grid-cols-[auto,1fr,auto] p-2">
       <div>{image}</div>
@@ -48,6 +47,8 @@ export default function BaseComment({
         <DateDisplay date={datePosted} />
 
         {/* TODO: clamp to like 4 lines and let user expand if they want */}
+        {/* maybe can use DaisyUI's collapse https://daisyui.com/components/collapse/ */}
+        {/* but defo HeadlessUI's disclosure */}
         <p className="whitespace-pre-wrap break-all">{content}</p>
       </div>
 

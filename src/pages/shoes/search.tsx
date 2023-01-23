@@ -2,25 +2,24 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
 import {
-  // basics
+  //// basics
   Configure,
   // SearchBox,
-  // refinements
+  //// refinements
   RefinementList,
   ClearRefinements,
   // Menu, // for only picking 1 option, don't think will use
-  // results
+  //// results
   Hits,
-  // InfiniteHits, // infinite scroll
   // Highlight,
   // Snippet, // not sure if gonna use
-  // pagination
+  //// pagination
   Pagination,
   HitsPerPage, // lets use choose no of hits per page
-  // metadata
+  //// metadata
   // PoweredBy,
-  // sorting
-  SortBy, // FIXME?: isn't working, not sure if can fix
+  //// sorting
+  // SortBy, // FIXME?: isn't working, not sure if can fix
   // hooks
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
@@ -63,19 +62,12 @@ function NoResults() {
   );
 }
 
-/*
-would like to have like an infinite scolling functionality, where
-the page will be increased by 1 when the user scrolls to the bottom
-and make a new request for next page of results
-*/
-
 /**
  * Need to make like a shoes showcase page.
  * Maybe show the most liked shoes?
  * Or recommended?
  *
- * Need to make a shoes expore page.
- * Very similar to this but with infinite scroll.
+ * TODO: Because there are going to be quite a few search/explore-like shoes pages, in NavTabs make a dropdown
  *
  * Need to make an actual tinder page that shows a random shoe they haven't liked/disliked
  *
@@ -106,7 +98,10 @@ const ShoesSearchPage: NextPage = () => {
 
           <ThemedPoweredBy />
 
-          <CustomSearchBox placeholder="Start typing to search" />
+          <div className="flex">
+            <CustomSearchBox placeholder="Start typing to search" />
+            {/* TODO: settings button to open refinements modal/whatever */}
+          </div>
 
           <div className="flex w-full flex-col gap-y-4">
             <Pagination
@@ -146,25 +141,6 @@ const ShoesSearchPage: NextPage = () => {
                         },
                         { label: "48 shoes per page", value: 48 },
                         { label: "96 shoes per page", value: 96 },
-                      ]}
-                      classNames={{
-                        select:
-                          "select select-bordered select-secondary w-full",
-                      }}
-                    />
-
-                    {/* isn't working :( */}
-                    <SortBy
-                      items={[
-                        {
-                          // don't think this is actually doing anything rn
-                          label: "Sort by retail price",
-                          value: "retail_price_cents_gbp",
-                        },
-                        // { // gives error brand_name isn't an index
-                        //   label: "Sort by brand name,
-                        //   value: "brand_name",
-                        // },
                       ]}
                       classNames={{
                         select:

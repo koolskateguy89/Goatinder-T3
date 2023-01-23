@@ -7,6 +7,10 @@ import MobileDrawer from "components/navbar/MobileDrawer";
 import NavTabs from "components/navbar/NavTabs";
 import Profile from "components/navbar/Profile";
 
+// TODO: implement/remove search (algolia auto complete?)
+// will need to sync with MobileDrawer.tsx
+// TODO?: remove notifications?
+// will need to sync with MobileDrawer.tsx
 export default function NavBar() {
   return (
     // https://daisyui.com/components/navbar/#responsive-dropdown-menu-on-small-screen-center-menu-on-large-screen

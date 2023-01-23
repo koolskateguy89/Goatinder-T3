@@ -26,6 +26,8 @@ export default function Comment({ comment, onDelete, onVote }: CommentProps) {
   const handleDelete = () => onDelete(comment.id);
 
   return (
+    // TODO?: make collapsible - can use DaisyUI's collapse https://daisyui.com/components/collapse/
+    // or HeadlessUI's Disclosure https://headlessui.dev/react/disclosure
     <BaseComment
       comment={comment}
       onVote={onVote}
