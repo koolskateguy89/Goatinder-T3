@@ -30,8 +30,6 @@ const WelcomePage: NextPage<
       bioId
     ) as HTMLTextAreaElement;
 
-    console.log(bioElem);
-
     const bio = bioElem.value.trim();
 
     if (!bio) {
@@ -117,6 +115,8 @@ export const getServerSideProps = (async (context) => {
       },
     };
 
+  const callbackUrl = context.query.callbackUrl as string | undefined;
+
   // should be 0 or 1
   const numberOfProfiles = await prisma.profile.count({
     where: {
@@ -124,10 +124,22 @@ export const getServerSideProps = (async (context) => {
     },
   });
 
+  const profileExists = numberOfProfiles > 0;
+
+  // If user has already made a profile and a callbackUrl is provided, redirect to the callbackUrl
+  if (profileExists && callbackUrl) {
+    return {
+      redirect: {
+        destination: callbackUrl,
+        permanent: false,
+      },
+    };
+  }
+
   return {
     props: {
       session,
-      profileExists: numberOfProfiles > 0,
+      profileExists,
     },
   };
 }) satisfies GetServerSideProps;
