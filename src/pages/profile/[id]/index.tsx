@@ -6,11 +6,13 @@ import type {
 import Head from "next/head";
 import Link from "next/link";
 import { unstable_getServerSession } from "next-auth";
+import { signOut } from "next-auth/react";
 import clsx from "clsx";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
 import { scoreStateInclude, toScoreStateComment } from "utils/comments";
+import { api } from "utils/api";
 import Avatar from "components/Avatar";
 import ProfilePageTabs from "components/profile/Tabs";
 
@@ -18,6 +20,17 @@ const ProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ user, isMyProfile, comments }) => {
   const title = `${user.name} - goaTinder`;
+
+  const deleteAcc = api.user.deleteAccount.useMutation();
+
+  const deleteAccount = async () => {
+    // TODO: something similar to github, where you have to type your username to confirm (maybe use email)
+    // eslint-disable-next-line no-restricted-globals, no-alert
+    if (confirm("Are you sure you want to delete your account?")) {
+      deleteAcc.mutate();
+      await signOut({ callbackUrl: "/" });
+    }
+  };
 
   return (
     <>
@@ -41,29 +54,34 @@ const ProfilePage: NextPage<
         />
 
         {isMyProfile && (
-          <>
-            <button type="button" className="btn-primary btn">
+          <div className="flex gap-x-4 [&>*]:w-48">
+            <Link href={`/profile/${user.id}/edit`} className="btn-primary btn">
               Edit Profile
-            </button>
-            <Link href="edit" className="btn-primary btn">
-              Edit
             </Link>
-            <button type="button" className="btn-error btn">
+            <button
+              type="button"
+              onClick={deleteAccount}
+              className="btn-primary btn"
+            >
               Delete Account
             </button>
-          </>
+          </div>
         )}
 
         <section className="flex w-full flex-col items-center gap-y-2 lg:max-w-5xl">
           <h2 className="text-xl font-semibold">
-            {user.name ? `${user.name}'s b` : "B"}
+            {isMyProfile ? "My b" : user.name ? `${user.name}'s b` : "B"}
             io
           </h2>
           <textarea
             value={
               user.profile?.bio ??
               `${
-                user.name ? `${user.name} hasn't` : "This user hasn't"
+                isMyProfile
+                  ? "You haven't"
+                  : user.name
+                  ? `${user.name} hasn't`
+                  : "This user hasn't"
               } written a bio yet.`
             }
             className={clsx(
@@ -73,6 +91,8 @@ const ProfilePage: NextPage<
             )}
             readOnly
           />
+          {/* TODO: add link to /welcome so user so user can set profile if not already made */}
+          {/* actually, profile stuff should probably be in /profile/[id]/edit, /welcome can point the user there */}
         </section>
 
         <section className="w-full">
@@ -107,6 +127,7 @@ export const getServerSideProps = (async (context) => {
       id: profileId,
     },
     select: {
+      id: true,
       name: true,
       image: true,
       profile: true,
