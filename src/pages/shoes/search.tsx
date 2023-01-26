@@ -6,8 +6,8 @@ import {
   Configure,
   // SearchBox,
   //// refinements
-  RefinementList,
-  ClearRefinements,
+  // RefinementList,
+  // ClearRefinements,
   // Menu, // for only picking 1 option, don't think will use
   //// results
   Hits,
@@ -15,7 +15,7 @@ import {
   // Snippet, // not sure if gonna use
   //// pagination
   Pagination,
-  HitsPerPage, // lets use choose no of hits per page
+  // HitsPerPage, // lets use choose no of hits per page
   //// metadata
   // PoweredBy,
   //// sorting
@@ -29,7 +29,7 @@ import InstantSearchProvider from "components/algolia/InstantSearchProvider";
 import EmptyQueryBoundary from "components/algolia/EmptyQueryBoundary";
 import NoResultsBoundary from "components/algolia/NoResultsBoundary";
 import CustomSearchBox from "components/algolia/CustomSearchBox";
-import ThemedPoweredBy from "components/search/ThemedPoweredBy";
+import Refinements from "components/search/Refinements";
 import ShoeHit from "components/search/ShoeHit";
 
 export const attributesToRetrieve = [
@@ -96,8 +96,6 @@ const ShoesSearchPage: NextPage = () => {
             attributesToSnippet={attributesToSnippet}
           />
 
-          <ThemedPoweredBy />
-
           <div className="flex">
             <CustomSearchBox placeholder="Start typing to search" />
             {/* TODO: settings button to open refinements modal/whatever */}
@@ -123,60 +121,16 @@ const ShoesSearchPage: NextPage = () => {
              */}
             <EmptyQueryBoundary fallback={<NoQuery />}>
               <NoResultsBoundary fallback={<NoResults />}>
-                <div className="flex gap-x-4">
-                  {/*
-                TODO:
-                aside hidden on mobile
-                make it a drawer?
-                */}
-                  <aside className="w-1/4 space-y-4">
-                    <HitsPerPage
-                      items={[
-                        { label: "1 shoe per page", value: 1 },
-                        { label: "12 shoes per page", value: 12 },
-                        {
-                          label: "24 shoes per page",
-                          value: 24,
-                          default: true,
-                        },
-                        { label: "48 shoes per page", value: 48 },
-                        { label: "96 shoes per page", value: 96 },
-                      ]}
-                      classNames={{
-                        select:
-                          "select select-bordered select-secondary w-full",
-                      }}
-                    />
+                <div className="flex flex-col gap-4 max-lg:items-center lg:flex-row">
+                  <Refinements />
 
-                    <ClearRefinements
-                      classNames={{
-                        button: "btn btn-secondary btn-block normal-case",
-                        disabledButton: "btn-disabled",
-                      }}
-                      translations={{
-                        resetButtonText: "Clear all filters",
-                      }}
-                    />
-
-                    {/* TODO: make own UI that each RefinementList is collapsible, if possible */}
-                    <RefinementList
-                      attribute="brand_name"
-                      classNames={{
-                        item: "form-control",
-                        label: "flex items-center",
-                        labelText: "ml-1 label",
-                        count: "badge badge-secondary ml-auto",
-                        checkbox: "checkbox checkbox-secondary checkbox-sm",
-                      }}
-                    />
-                  </aside>
                   <Hits
                     hitComponent={ShoeHit}
                     classNames={{
                       list: "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3",
-                      // TODO: use component instead of classes for empty
-                      emptyRoot:
-                        "relative h-80 w-80 bg-gradient-to-br from-primary to-secondary before:absolute before:text-white before:content-['empty_results!']",
+                      // TODO: customise NoResultsBoundary component instead of classes for empty
+                      // emptyRoot:
+                      //   "relative h-80 w-80 bg-gradient-to-br from-primary to-secondary before:absolute before:text-white before:content-['empty_results!']",
                     }}
                   />
                 </div>
