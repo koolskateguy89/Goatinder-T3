@@ -4,7 +4,6 @@ import { unstable_getServerSession } from "next-auth";
 import {
   Configure,
   Hits,
-  Pagination,
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
 
@@ -13,6 +12,7 @@ import InstantSearchProvider from "components/algolia/InstantSearchProvider";
 import EmptyQueryBoundary from "components/algolia/EmptyQueryBoundary";
 import NoResultsBoundary from "components/algolia/NoResultsBoundary";
 import CustomSearchBox from "components/algolia/CustomSearchBox";
+import CustomPagination from "components/algolia/CustomPagination";
 import Refinements from "components/search/Refinements";
 import ShoeHit from "components/search/ShoeHit";
 
@@ -57,7 +57,7 @@ const ShoesSearchPage: NextPage = () => {
         <meta name="description" content="Search for shoes" />
       </Head>
       <InstantSearchProvider>
-        <main className="container flex flex-col items-center gap-y-4 px-12 py-4">
+        <main className="container flex flex-col items-center gap-y-4 px-2 py-4 lg:px-12">
           <Configure
             analytics={false}
             filters="product_category:shoes" // only return shoes
@@ -69,18 +69,7 @@ const ShoesSearchPage: NextPage = () => {
           <CustomSearchBox placeholder="Start typing to search" />
 
           <div className="flex w-full flex-col items-center gap-y-4">
-            <Pagination
-              classNames={{
-                list: "btn-group",
-                item: "btn active:btn-secondary [&>a]:active:btn-secondary p-0 border-0",
-                // workaround to essentially make the link the button
-                link: "btn bg-transparent border-transparent",
-                disabledItem: "btn-disabled",
-                selectedItem: "btn-secondary [&>a]:btn-secondary",
-                noRefinementRoot:
-                  "[&_.btn-secondary]:!bg-neutral [&_.btn-secondary>a]:btn",
-              }}
-            />
+            <CustomPagination />
 
             {/* it still makes the request :/ but ntd
             TODO: have a look at https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react-hooks/
@@ -93,7 +82,7 @@ const ShoesSearchPage: NextPage = () => {
                   <Hits
                     hitComponent={ShoeHit}
                     classNames={{
-                      list: "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3",
+                      list: "grid grid-cols-2 gap-2 lg:grid-cols-3 lg:gap-4",
                     }}
                   />
                 </div>

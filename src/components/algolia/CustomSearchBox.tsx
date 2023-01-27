@@ -7,14 +7,6 @@ import {
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
 
-/*
-would like it to look pretty much the same
-apart from the reset button
-reset button needs to be red text, maybe that fades into view?
-idk
-but don't think want it to visually be an actual button yk
-*/
-
 export type CustomSearchBoxProps = UseSearchBoxProps & {
   placeholder: string;
 };
@@ -23,7 +15,6 @@ export default function CustomSearchBox({
   placeholder,
   ...searchBoxProps
 }: CustomSearchBoxProps) {
-  // 'idle' | 'loading' | 'stalled' | 'error'
   const { status } = useInstantSearch();
   // TODO: might have to use algoliaQuery instead of query once routing is set up, idrk
   const { query: algoliaQuery, refine, clear } = useSearchBox(searchBoxProps);
@@ -42,7 +33,6 @@ export default function CustomSearchBox({
 
   return (
     <form onSubmit={handleSubmit} onReset={clear}>
-      status = {JSON.stringify(status)}
       <div className="input-group [&_.btn]:text-2xl">
         <input
           type="search"
