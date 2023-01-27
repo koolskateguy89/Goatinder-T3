@@ -74,14 +74,14 @@ export default function MobileDrawer() {
             <div className="h-screen h-[100dvh]">
               <Transition.Child
                 as={Fragment}
-                enter="relative ease-out motion-safe:duration-300"
+                enter="ease-out motion-safe:duration-300"
                 enterFrom="opacity-80 -translate-x-full"
                 enterTo="opacity-100 translate-0"
                 leave="ease-in motion-safe:duration-200"
                 leaveFrom="opacity-100 translate-0"
                 leaveTo="opacity-80 -translate-x-full"
               >
-                <Dialog.Panel as="aside" className="w-80 bg-base-100">
+                <Dialog.Panel as="aside" className="h-full w-80 bg-base-100">
                   <Dialog.Title className="sr-only">
                     Sidebar with main navigation
                   </Dialog.Title>
@@ -112,9 +112,9 @@ export default function MobileDrawer() {
                   <main>
                     <nav>
                       <ul className="menu my-4 px-4">
-                        <li className="menu-title">
+                        {/* <li className="menu-title">
                           <span>...</span>
-                        </li>
+                        </li> */}
                         <MobileNavItem href="/">Home</MobileNavItem>
                         <li className="menu-title">
                           <span>Shoes</span>
@@ -128,14 +128,7 @@ export default function MobileDrawer() {
                         <li className="menu-title">
                           <span>...</span>
                         </li>
-                        <MobileNavItem href="/contact">Contact</MobileNavItem>
                         <MobileNavItem href="/about">About</MobileNavItem>
-                        {Array.from({ length: 20 }).map((_, i) => (
-                          // eslint-disable-next-line react/no-array-index-key
-                          <li key={i}>
-                            <span>{i + 1}</span>
-                          </li>
-                        ))}
                       </ul>
                     </nav>
                   </main>

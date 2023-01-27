@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MdOutlineNotifications, MdSearch } from "react-icons/md";
+import { MdSearch } from "react-icons/md";
 
 import Brand from "components/Brand";
 import ThemeSwitcher from "components/ThemeSwitcher";
@@ -7,10 +7,11 @@ import MobileDrawer from "components/navbar/MobileDrawer";
 import NavTabs from "components/navbar/NavTabs";
 import Profile from "components/navbar/Profile";
 
-// TODO: implement/remove search (algolia auto complete?)
-// will need to sync with MobileDrawer.tsx
-// TODO?: remove notifications?
-// will need to sync with MobileDrawer.tsx
+/*
+ * TODO: look at using AutoComplete in navbar (lg screens only)
+ * https://www.algolia.com/doc/guides/building-search-ui/ui-and-ux-patterns/autocomplete/react-hooks/
+ */
+
 export default function NavBar() {
   return (
     // https://daisyui.com/components/navbar/#responsive-dropdown-menu-on-small-screen-center-menu-on-large-screen
@@ -30,24 +31,19 @@ export default function NavBar() {
       </div>
 
       <div className="navbar-end">
-        <button type="button" className="navbar-icon-btn" aria-label="Search">
+        <Link
+          href="/shoes/search"
+          className="navbar-icon-btn"
+          aria-label="Search"
+        >
           <span>
             <MdSearch />
           </span>
-        </button>
+        </Link>
 
-        <button
-          type="button"
-          className="navbar-icon-btn"
-          aria-label="Notifications"
-        >
-          <div className="indicator">
-            <MdOutlineNotifications />
-            <span className="badge-primary badge badge-xs indicator-item" />
-          </div>
-        </button>
-
-        <ThemeSwitcher />
+        <div className="hidden lg:block">
+          <ThemeSwitcher />
+        </div>
 
         <Profile />
       </div>

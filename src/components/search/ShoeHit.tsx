@@ -1,6 +1,5 @@
 import Link from "next/link";
 import clsx from "clsx";
-import { Highlight } from "react-instantsearch-hooks-web";
 
 import type { GoatShoe } from "types/goat-shoe";
 import type { attributesToRetrieve } from "pages/shoes/search";
@@ -14,34 +13,10 @@ type HitShoe = AlgoliaHit<
 export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
   return (
     <ShoeCard shoe={hit}>
-      <h2 className="link-hover link-primary link card-title">
-        <Link href={`/shoes/${hit.objectID}`}>
-          {/* {hit.name} */}
-          {/* TODO: not sure if actually want Highlight */}
-          <Highlight
-            hit={hit}
-            attribute="name"
-            classNames={{
-              root: "",
-              // highlighted: "bg-secondary text-secondary-content",
-            }}
-          />
-        </Link>
-      </h2>
       {/* TODO: change link color back to primary */}
       <div className="group/name relative">
         <h2 className="link-hover link-secondary link card-title">
-          <Link href={`/shoes/${hit.objectID}`}>
-            {/* TODO: not sure if actually want Highlight */}
-            <Highlight
-              hit={hit}
-              attribute="name"
-              classNames={{
-                root: "",
-                // highlighted: "bg-secondary text-secondary-content",
-              }}
-            />
-          </Link>
+          <Link href={`/shoes/${hit.objectID}`}>{hit.name}</Link>
         </h2>
         {hit.story_html && (
           <div
@@ -66,16 +41,22 @@ export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
 
       {hit.designer && <p>Designer: {hit.designer}</p>}
 
-      <p className="text-sm text-base-content/60">{hit.brand_name}</p>
+      {hit.brand_name && (
+        <p className="text-sm text-base-content/60">{hit.brand_name}</p>
+      )}
 
-      <p>objectID: {hit.objectID}</p>
+      {process.env.NODE_ENV === "development" && (
+        <p>objectID: {hit.objectID}</p>
+      )}
 
-      <p>
-        Retail price:{" "}
-        <span className="text-accent">
-          £{hit.retail_price_cents_gbp * 0.01}
-        </span>
-      </p>
+      {hit.retail_price_cents_gbp !== 0 && (
+        <p>
+          Retail price:{" "}
+          <span className="text-accent">
+            £{(hit.retail_price_cents_gbp * 0.01).toFixed(2)}
+          </span>
+        </p>
+      )}
     </ShoeCard>
   );
 }

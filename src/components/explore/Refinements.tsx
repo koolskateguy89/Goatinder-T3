@@ -2,7 +2,6 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import {
   ClearRefinements,
-  HitsPerPage,
   RefinementList,
 } from "react-instantsearch-hooks-web";
 
