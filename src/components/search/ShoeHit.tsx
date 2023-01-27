@@ -33,9 +33,9 @@ export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
               "line-clamp-4",
               "opacity-0 transition-opacity delay-100 group-hover/name:opacity-100 group-hover/name:delay-700"
             )}
-          >
-            {hit.story_html.replace("<p>", "").replace("</p>", "")}
-          </div>
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={{ __html: hit.story_html }}
+          />
         )}
       </div>
 
