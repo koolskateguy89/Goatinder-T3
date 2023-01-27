@@ -14,6 +14,7 @@ module.exports = {
   },
   // prettier-ignore
   plugins: [
+    require('@tailwindcss/typography'),
     require("@tailwindcss/line-clamp"),
     require('@headlessui/tailwindcss'),
     require("daisyui"),
