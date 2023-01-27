@@ -150,27 +150,41 @@ export default function Shoe({
         </span>
       </p>
 
-      <div className="card-actions [&>*>svg]:text-lg">
-        {/* TODO: how to signal the user has liked/disliked already */}
-        {/* TODO: disable if not signed in & show title */}
+      <div className="grid grid-cols-2 gap-x-2 gap-y-1 [&>*>svg]:text-lg">
         <button
           type="button"
           onClick={handleDislike}
-          className="btn-error btn gap-1"
+          title={isSignedIn ? undefined : "Sign in to dislike"}
+          className="btn btn-error w-24 gap-1 disabled:btn-error"
+          disabled={!isSignedIn}
         >
-          {likeState.numDislikes}
+          <span>
+            <span className="sr-only">Number of dislikes:</span>
+            {likeState.numDislikes}
+          </span>
           <MdClose />
-          userDisliked: {JSON.stringify(likeState.userDisliked)}
         </button>
         <button
           type="button"
           onClick={handleLike}
-          className="btn-success btn gap-1"
+          title={isSignedIn ? undefined : "Sign in to like"}
+          className="btn btn-success w-24 gap-1 disabled:btn-success"
+          disabled={!isSignedIn}
         >
-          {likeState.numLikes}
+          <span>
+            <span className="sr-only">Number of likes:</span>
+            {likeState.numLikes}
+          </span>
           <MdFavorite />
-          userLiked: {JSON.stringify(likeState.userLiked)}
         </button>
+
+        {(likeState.userDisliked || likeState.userLiked) && (
+          <p className="col-span-2 text-center text-sm opacity-60">
+            You
+            {likeState.userDisliked ? " disliked " : " liked "}
+            this shoe
+          </p>
+        )}
       </div>
     </ShoeCard>
   );
