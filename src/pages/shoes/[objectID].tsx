@@ -13,14 +13,14 @@ import { prisma } from "server/db";
 import CommentSection from "components/shoe/CommentSection";
 import Shoe from "components/shoe/Shoe";
 
-// TODO: use https://www.algolia.com/doc/ui-libraries/recommend/introduction/what-is-recommend/
 const ShoePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ goatShoe, dbShoe }) => {
   const title = `${goatShoe.name} - goaTinder`;
 
   return (
-    // TODO: maybe show recommended/related shoes in a column on the right
+    // TODO?: maybe show recommended/related shoes in a column on the right
+    // https://www.algolia.com/doc/ui-libraries/recommend/introduction/what-is-recommend/w
     // if not, then show comments on the right instead of below (currently doing this on lg screens)
     <>
       <Head>

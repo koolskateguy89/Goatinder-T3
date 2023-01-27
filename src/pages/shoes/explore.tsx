@@ -8,23 +8,12 @@ import { BiArrowToTop } from "react-icons/bi";
 import { Configure, useInstantSearch } from "react-instantsearch-hooks-web";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
+import { attributesToRetrieve } from "pages/shoes/search";
 import InstantSearchProvider from "components/algolia/InstantSearchProvider";
 import NoResultsBoundary from "components/algolia/NoResultsBoundary";
 import CustomInstantSearchBox from "components/algolia/CustomInstantSearchBox";
 import CustomInfiniteHits from "components/explore/CustomInfiniteHits";
 import Refinements from "components/explore/Refinements";
-
-export const attributesToRetrieve = [
-  "name",
-  "brand_name",
-  "objectID",
-  "retail_price_cents_gbp",
-  "grid_picture_url",
-  "designer",
-  "story_html",
-] as const;
-
-const attributesToHighlight = ["name"];
 
 const attributesToSnippet = ["designer"];
 
@@ -56,7 +45,7 @@ function BackToTop() {
           !visible && "invisible opacity-0"
         )}
       >
-        <a href="#top" className="btn-primary btn max-lg:btn-circle">
+        <a href="#top" className="btn btn-primary max-lg:btn-circle">
           <BiArrowToTop className="text-2xl lg:hidden" />
           <span className="max-lg:sr-only">Back to top</span>
         </a>
@@ -84,7 +73,6 @@ const ExplorePage: NextPage = () => {
             hitsPerPage={12}
             distinct
             attributesToRetrieve={attributesToRetrieve}
-            attributesToHighlight={attributesToHighlight}
             attributesToSnippet={attributesToSnippet}
           />
 
