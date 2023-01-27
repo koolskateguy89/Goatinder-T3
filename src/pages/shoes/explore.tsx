@@ -32,11 +32,9 @@ function NoResults() {
   const { indexUiState } = useInstantSearch();
 
   return (
-    <div>
-      <p>
-        No results for <q>{indexUiState.query}</q>.
-      </p>
-    </div>
+    <p>
+      No results for <q>{indexUiState.query}</q>.
+    </p>
   );
 }
 
@@ -51,17 +49,18 @@ function BackToTop() {
   return (
     <>
       <span id="top" className="absolute top-0" />
-      {/* FIXME: moves to the right upon click on <lg screens, it seems the translation is getting undone */}
-      <a
-        href="#top"
+      <div
         className={clsx(
-          "btn-primary btn fixed bottom-4 max-lg:left-1/2 max-lg:-translate-x-1/2 max-lg:btn-circle lg:right-4",
-          !visible && "hidden"
+          "fixed bottom-4 max-lg:left-1/2 max-lg:-translate-x-1/2 lg:right-4",
+          "transition-all ease-in-out",
+          !visible && "invisible opacity-0"
         )}
       >
-        <BiArrowToTop className="text-2xl lg:hidden" />
-        <span className="max-lg:sr-only">Back to top</span>
-      </a>
+        <a href="#top" className="btn-primary btn max-lg:btn-circle">
+          <BiArrowToTop className="text-2xl lg:hidden" />
+          <span className="max-lg:sr-only">Back to top</span>
+        </a>
+      </div>
     </>
   );
 }

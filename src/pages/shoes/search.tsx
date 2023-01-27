@@ -2,25 +2,9 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
 import {
-  //// basics
   Configure,
-  // SearchBox,
-  //// refinements
-  // RefinementList,
-  // ClearRefinements,
-  // Menu, // for only picking 1 option, don't think will use
-  //// results
   Hits,
-  // Highlight,
-  // Snippet, // not sure if gonna use
-  //// pagination
   Pagination,
-  // HitsPerPage, // lets use choose no of hits per page
-  //// metadata
-  // PoweredBy,
-  //// sorting
-  // SortBy, // FIXME?: isn't working, not sure if can fix
-  // hooks
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
 
@@ -42,23 +26,15 @@ export const attributesToRetrieve = [
   "story_html",
 ] as const;
 
-const attributesToHighlight = ["name"];
-
 const attributesToSnippet = ["designer"];
-
-function NoQuery() {
-  return <div className="flex-grow">Type something</div>;
-}
 
 function NoResults() {
   const { indexUiState } = useInstantSearch();
 
   return (
-    <div>
-      <p>
-        No results for <q>{indexUiState.query}</q>.
-      </p>
-    </div>
+    <p className="self-center">
+      No results for <q>{indexUiState.query}</q>.
+    </p>
   );
 }
 
@@ -67,16 +43,11 @@ function NoResults() {
  * Maybe show the most liked shoes?
  * Or recommended?
  *
- * TODO: Because there are going to be quite a few search/explore-like shoes pages, in NavTabs make a dropdown
+ * TODO?: Because there are going to be quite a few search/explore-like shoes pages, in NavTabs make a dropdown
  *
  * Need to make an actual tinder page that shows a random shoe they haven't liked/disliked
  *
- * TODO: look at using AutoComplete in navbar (lg screens only)
- * https://www.algolia.com/doc/guides/building-search-ui/ui-and-ux-patterns/autocomplete/react-hooks/
- *
  * This page will be like a search page where they can find any shoe they want basically.
- *
- * TODO?: tbh this could just be /search not /shoes/search
  */
 const ShoesSearchPage: NextPage = () => {
   return (
@@ -92,21 +63,16 @@ const ShoesSearchPage: NextPage = () => {
             filters="product_category:shoes" // only return shoes
             distinct
             attributesToRetrieve={attributesToRetrieve}
-            attributesToHighlight={attributesToHighlight}
             attributesToSnippet={attributesToSnippet}
           />
 
-          <div className="flex">
-            <CustomSearchBox placeholder="Start typing to search" />
-            {/* TODO: settings button to open refinements modal/whatever */}
-          </div>
+          <CustomSearchBox placeholder="Start typing to search" />
 
-          <div className="flex w-full flex-col gap-y-4">
+          <div className="flex w-full flex-col items-center gap-y-4">
             <Pagination
               classNames={{
-                root: "flex justify-center",
                 list: "btn-group",
-                item: "btn active:btn-secondary [&>a]:active:btn-secondary p-0 border-0", // active:btn-secondary p-0
+                item: "btn active:btn-secondary [&>a]:active:btn-secondary p-0 border-0",
                 // workaround to essentially make the link the button
                 link: "btn bg-transparent border-transparent",
                 disabledItem: "btn-disabled",
@@ -116,10 +82,10 @@ const ShoesSearchPage: NextPage = () => {
               }}
             />
 
-            {/* it still makes the request :/
-            have a look at https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react-hooks/
+            {/* it still makes the request :/ but ntd
+            TODO: have a look at https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react-hooks/
              */}
-            <EmptyQueryBoundary fallback={<NoQuery />}>
+            <EmptyQueryBoundary fallback={undefined}>
               <NoResultsBoundary fallback={<NoResults />}>
                 <div className="flex flex-col gap-4 max-lg:items-center lg:flex-row">
                   <Refinements />
@@ -128,9 +94,6 @@ const ShoesSearchPage: NextPage = () => {
                     hitComponent={ShoeHit}
                     classNames={{
                       list: "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3",
-                      // TODO: customise NoResultsBoundary component instead of classes for empty
-                      // emptyRoot:
-                      //   "relative h-80 w-80 bg-gradient-to-br from-primary to-secondary before:absolute before:text-white before:content-['empty_results!']",
                     }}
                   />
                 </div>

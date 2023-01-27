@@ -1,22 +1,49 @@
 import type { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
 import { unstable_getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 
-const Page: NextPage = () => {
+const AboutPage: NextPage = () => {
   return (
     <>
-      <div>Delete this page</div>
-      <div className="mockup-code md:mx-48">
-        <pre data-prefix="$">
-          <code>pnpm add daisyui</code>
-        </pre>
-      </div>
+      <Head>
+        <title>About - goaTinder</title>
+      </Head>
+      <main className="container prose p-4">
+        <h1 className="">About</h1>
+
+        <p>
+          Bootstrapped using the{" "}
+          <a href="https://create.t3.gg/" rel="noreferrer" target="_blank">
+            T3 stack
+          </a>
+        </p>
+
+        <article>
+          <h2>
+            <u>Tech Stack</u>
+          </h2>
+          <ul>
+            <li>TypeScript</li>
+            <li>Next.Js</li>
+            <li>React</li>
+            <li>Prisma</li>
+            <li>PostgreSQL</li>
+            <li>NextAuth</li>
+            <li>Tailwind</li>
+            <li>React Query</li>
+            <li>HeadlessUI</li>
+            <li>Algolia</li>
+            <li>pnpm</li>
+          </ul>
+        </article>
+      </main>
     </>
   );
 };
 
-export default Page;
+export default AboutPage;
 
 export const getServerSideProps = (async (context) => {
   const session = await unstable_getServerSession(
