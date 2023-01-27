@@ -83,7 +83,7 @@ const SignInPage: AppPage<
       <main className="flex h-screen h-[100dvh] flex-col items-center justify-center gap-y-8">
         <Link
           href="/"
-          className="btn-ghost btn text-3xl normal-case md:-mt-10 md:!text-4xl md:btn-lg"
+          className="btn btn-ghost text-3xl normal-case md:-mt-10 md:!text-4xl md:btn-lg"
         >
           <Brand />
         </Link>

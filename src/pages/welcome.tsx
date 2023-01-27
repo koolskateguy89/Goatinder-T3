@@ -85,7 +85,7 @@ const WelcomePage: NextPage<
           </div>
           <button
             type="submit"
-            className="btn-primary btn mt-3"
+            className="btn btn-primary mt-3"
             disabled={!canAddBio}
           >
             Create Profile

@@ -48,7 +48,7 @@ const EditProfilePage: NextPage<
           }}
         />
 
-        <Link href={`/profile/${user.id}`} className="btn-primary btn">
+        <Link href={`/profile/${user.id}`} className="btn btn-primary">
           Back to Profile
         </Link>
 

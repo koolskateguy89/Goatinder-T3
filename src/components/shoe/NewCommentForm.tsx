@@ -96,7 +96,7 @@ export default function NewCommentForm({
       <div className="flex justify-end">
         <button
           type="submit"
-          className={clsx("btn-primary btn", addingComment && "loading")}
+          className={clsx("btn btn-primary", addingComment && "loading")}
           disabled={
             !signedIn || // not signed in
             content.trim().length === 0 || // only entered whitespace

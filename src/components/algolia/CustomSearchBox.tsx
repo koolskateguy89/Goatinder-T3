@@ -59,7 +59,7 @@ export default function CustomSearchBox({
         <button
           type="submit"
           title="Search"
-          className="btn-primary btn-square btn"
+          className="btn btn-primary btn-square"
           disabled={loadingOrStalled}
         >
           <MdSearch />
@@ -67,7 +67,7 @@ export default function CustomSearchBox({
         <button
           type="reset"
           title="Reset the search"
-          className="btn-secondary btn-square btn"
+          className="btn btn-secondary btn-square"
         >
           <MdClose />
         </button>

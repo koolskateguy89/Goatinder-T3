@@ -57,7 +57,7 @@ export default function Refinements() {
       </aside>
 
       <div className="lg:hidden">
-        <button type="button" onClick={openModal} className="btn-secondary btn">
+        <button type="button" onClick={openModal} className="btn btn-secondary">
           Configuration
         </button>
       </div>

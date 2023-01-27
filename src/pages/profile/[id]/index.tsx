@@ -55,13 +55,13 @@ const ProfilePage: NextPage<
 
         {isMyProfile && (
           <div className="flex gap-x-4 [&>*]:w-48">
-            <Link href={`/profile/${user.id}/edit`} className="btn-primary btn">
+            <Link href={`/profile/${user.id}/edit`} className="btn btn-primary">
               Edit Profile
             </Link>
             <button
               type="button"
               onClick={deleteAccount}
-              className="btn-primary btn"
+              className="btn btn-primary"
             >
               Delete Account
             </button>

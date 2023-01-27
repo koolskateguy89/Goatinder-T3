@@ -20,7 +20,7 @@ export default function NavBar() {
         <MobileDrawer />
         <Link
           href="/"
-          className="btn-ghost btn-sm btn !text-lg normal-case md:!text-xl md:btn-md"
+          className="btn btn-ghost btn-sm !text-lg normal-case md:!text-xl md:btn-md"
         >
           <Brand />
         </Link>
