@@ -7,6 +7,10 @@ import { api } from "utils/api";
 import type { getServerSideProps } from "pages/shoes/[objectID]";
 import ShoeCard from "components/ShoeCard";
 
+const formatter = new Intl.NumberFormat("en", {
+  notation: "compact",
+});
+
 type LikeState = {
   numLikes: number;
   numDislikes: number;
@@ -155,12 +159,12 @@ export default function Shoe({
           type="button"
           onClick={handleDislike}
           title={isSignedIn ? undefined : "Sign in to dislike"}
-          className="btn btn-error w-24 gap-1 disabled:btn-error"
+          className="btn-error btn w-24 gap-1 disabled:btn-error"
           disabled={!isSignedIn}
         >
           <span>
             <span className="sr-only">Number of dislikes:</span>
-            {likeState.numDislikes}
+            {formatter.format(likeState.numDislikes)}
           </span>
           <MdClose />
         </button>
@@ -168,12 +172,12 @@ export default function Shoe({
           type="button"
           onClick={handleLike}
           title={isSignedIn ? undefined : "Sign in to like"}
-          className="btn btn-success w-24 gap-1 disabled:btn-success"
+          className="btn-success btn w-24 gap-1 disabled:btn-success"
           disabled={!isSignedIn}
         >
           <span>
             <span className="sr-only">Number of likes:</span>
-            {likeState.numLikes}
+            {formatter.format(likeState.numLikes)}
           </span>
           <MdFavorite />
         </button>

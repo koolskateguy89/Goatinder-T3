@@ -3,6 +3,10 @@ import clsx from "clsx";
 import { BiDownvote, BiUpvote } from "react-icons/bi";
 import { ImArrowUp, ImArrowDown } from "react-icons/im";
 
+const formatter = new Intl.NumberFormat("en", {
+  notation: "compact",
+});
+
 export type ScoreDisplayProps = {
   score: number;
   userUpvoted: boolean;
@@ -70,7 +74,7 @@ export default function ScoreDisplay({
       </button>
 
       <span className="font-semibold text-base-content/70 dark:text-base-content">
-        {score}
+        {formatter.format(score)}
       </span>
 
       <button
