@@ -139,8 +139,6 @@ export default function Shoe({
         </a>
       </h1>
 
-      {/* TODO: decide what to do about story_html */}
-
       {goatShoe.designer && <p>Designer: {goatShoe.designer}</p>}
 
       <p className="text-sm text-base-content/60">{goatShoe.brand_name}</p>

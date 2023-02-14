@@ -18,9 +18,6 @@ export type ShoeCardProps = {
   children: React.ReactNode; // body of the card
 };
 
-// TODO?: maybe don't use daisyUI's card, just style it myself
-// // TODO: update to be more like TailwindUI's card
-// TODO?: make more like Tailwind's landing page example card
 export default function ShoeCard({
   shoe,
   imageProps,

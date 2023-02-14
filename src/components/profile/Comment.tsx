@@ -16,14 +16,12 @@ export type CommentProps = {
 export default function Comment({ comment }: CommentProps) {
   const { shoe } = comment;
 
-  // TODO
   return (
     <BaseComment
       comment={comment}
       image={
         <div className="mr-2 flex flex-col items-center gap-2">
           <Link href={`/shoes/${shoe.objectId}`}>
-            {/* TODO: image of shoe */}
             <figure className="relative h-20 w-20">
               <Image
                 src={shoe.main_picture_url}

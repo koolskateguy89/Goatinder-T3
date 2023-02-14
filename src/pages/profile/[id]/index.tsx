@@ -37,72 +37,75 @@ const ProfilePage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container flex flex-col items-center gap-y-4 px-4 pt-2 pb-4">
-        <h1 className="text-5xl font-extrabold underline underline-offset-4">
-          {user.name ?? "An unnamed user"}
-        </h1>
+      <div className="container">
+        <main className="flex flex-col items-center gap-y-4 px-4 pt-2 pb-4 lg:mx-auto lg:w-3/4">
+          <h1 className="text-5xl font-extrabold underline underline-offset-4">
+            {user.name ?? "An unnamed user"}
+          </h1>
 
-        <Avatar
-          image={user.image}
-          name={user.name}
-          className="[&>*]:w-24"
-          imageProps={{
-            quality: 100,
-            sizes: "6rem",
-            priority: true,
-          }}
-        />
-
-        {isMyProfile && (
-          <div className="flex gap-x-4 [&>*]:w-48">
-            <Link href={`/profile/${user.id}/edit`} className="btn btn-primary">
-              Edit Profile
-            </Link>
-            <button
-              type="button"
-              onClick={deleteAccount}
-              className="btn btn-primary"
-            >
-              Delete Account
-            </button>
-          </div>
-        )}
-
-        <section className="flex w-full flex-col items-center gap-y-2 lg:max-w-5xl">
-          <h2 className="text-xl font-semibold">
-            {isMyProfile ? "My b" : user.name ? `${user.name}'s b` : "B"}
-            io
-          </h2>
-          <textarea
-            value={
-              user.profile?.bio ??
-              `${
-                isMyProfile
-                  ? "You haven't"
-                  : user.name
-                  ? `${user.name} hasn't`
-                  : "This user hasn't"
-              } written a bio yet.`
-            }
-            className={clsx(
-              "textarea-bordered textarea h-32 w-full md:h-52",
-              !user.profile?.bio &&
-                "text-base-content/70 dark:text-base-content/50"
-            )}
-            readOnly
+          <Avatar
+            image={user.image}
+            name={user.name}
+            className="[&>*]:w-24"
+            imageProps={{
+              quality: 100,
+              sizes: "6rem",
+              priority: true,
+            }}
           />
-          {/* TODO: add link to /welcome so user so user can set profile if not already made */}
-          {/* actually, profile stuff should probably be in /profile/[id]/edit, /welcome can point the user there */}
-        </section>
 
-        <section className="w-full">
-          <ProfilePageTabs
-            comments={comments}
-            disliked={user.disliked}
-            liked={user.liked}
-          />
-        </section>
-      </main>
+          {isMyProfile && (
+            <div className="flex gap-x-4">
+              <Link
+                href={`/profile/${user.id}/edit`}
+                className="btn btn-primary w-32 md:w-48"
+              >
+                Edit Profile
+              </Link>
+              <button
+                type="button"
+                onClick={deleteAccount}
+                className="btn btn-primary w-32 md:w-48"
+              >
+                Delete Account
+              </button>
+            </div>
+          )}
+
+          <section className="flex w-full flex-col items-center gap-y-2 lg:max-w-5xl">
+            <h2 className="text-xl font-semibold">
+              {isMyProfile ? "My b" : user.name ? `${user.name}'s b` : "B"}
+              io
+            </h2>
+            <textarea
+              value={
+                user.profile?.bio ??
+                `${
+                  isMyProfile
+                    ? "You haven't"
+                    : user.name
+                    ? `${user.name} hasn't`
+                    : "This user hasn't"
+                } written a bio yet.`
+              }
+              className={clsx(
+                "textarea-bordered textarea h-32 w-full md:h-52",
+                !user.profile?.bio &&
+                  "text-base-content/70 dark:text-base-content/50"
+              )}
+              readOnly
+            />
+          </section>
+
+          <section className="w-full">
+            <ProfilePageTabs
+              comments={comments}
+              disliked={user.disliked}
+              liked={user.liked}
+            />
+          </section>
+        </main>
+      </div>
     </>
   );
 };

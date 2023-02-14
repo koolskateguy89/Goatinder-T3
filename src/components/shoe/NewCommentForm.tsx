@@ -82,7 +82,6 @@ export default function NewCommentForm({
             </span>
           )}
         </label>
-        {/* TODO: markdown? mdx? */}
         <textarea
           id={textAreaId}
           className="textarea-bordered textarea h-24 dark:placeholder:opacity-60"
@@ -96,7 +95,7 @@ export default function NewCommentForm({
       <div className="flex justify-end">
         <button
           type="submit"
-          className={clsx("btn btn-primary", addingComment && "loading")}
+          className={clsx("btn-primary btn", addingComment && "loading")}
           disabled={
             !signedIn || // not signed in
             content.trim().length === 0 || // only entered whitespace

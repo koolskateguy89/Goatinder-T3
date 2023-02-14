@@ -41,6 +41,7 @@ export default function CustomSearchBox({
           defaultValue={algoliaQuery}
           className="input-bordered input dark:placeholder:opacity-60"
           aria-label="Search"
+          required
         />
 
         {/* can't use before/after on input so using additional markup */}
@@ -59,7 +60,7 @@ export default function CustomSearchBox({
         <button
           type="submit"
           title="Search"
-          className="btn btn-primary btn-square"
+          className="btn-primary btn-square btn"
           disabled={loadingOrStalled}
         >
           <MdSearch />
@@ -67,7 +68,7 @@ export default function CustomSearchBox({
         <button
           type="reset"
           title="Reset the search"
-          className="btn btn-secondary btn-square"
+          className="btn-secondary btn-square btn"
         >
           <MdClose />
         </button>

@@ -1,3 +1,4 @@
+import type { Profile } from "@prisma/client";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
@@ -6,9 +7,8 @@ export const userRouter = createTRPCRouter({
   createProfile: protectedProcedure
     .input(
       z.object({
-        // TODO: whatever fields are in the Profile model
         bio: z.string().trim().min(1),
-      })
+      }) satisfies z.ZodType<Omit<Profile, "userId">>
     )
     .mutation(async ({ ctx, input }) => {
       const { bio } = input;

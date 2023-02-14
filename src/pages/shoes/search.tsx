@@ -69,12 +69,12 @@ const ShoesSearchPage: NextPage = () => {
           <CustomSearchBox placeholder="Start typing to search" />
 
           <div className="flex w-full flex-col items-center gap-y-4">
-            <CustomPagination />
-
             {/* it still makes the request :/ but ntd
-            TODO: have a look at https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react-hooks/
+            TODO?: have a look at https://www.algolia.com/doc/guides/building-search-ui/going-further/conditional-requests/react-hooks/
              */}
             <EmptyQueryBoundary fallback={undefined}>
+              <CustomPagination />
+
               <NoResultsBoundary fallback={<NoResults />}>
                 <div className="flex flex-col gap-4 max-lg:items-center lg:flex-row">
                   <Refinements />
@@ -105,9 +105,6 @@ export const getServerSideProps = (async (context) => {
     context.res,
     authOptions
   );
-
-  // TODO: request db for users likes and disikes
-  // so can show that user has already liked/disliked shoe
 
   return {
     props: {

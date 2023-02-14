@@ -14,8 +14,6 @@ export type CommentProps = {
   onVote: (id: string, vote: "up" | "down") => void;
 };
 
-// TODO?: MAYBE try to implement edit functionality
-// TODO? MAYBE a report feature?
 export default function Comment({ comment, onDelete, onVote }: CommentProps) {
   const { author } = comment;
 
