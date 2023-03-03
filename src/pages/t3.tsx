@@ -81,6 +81,6 @@ const Home: AppPage = () => {
   );
 };
 
-Home.noContainer = true;
+Home.noLayout = true;
 
 export default Home;

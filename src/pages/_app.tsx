@@ -9,7 +9,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 import { api } from "utils/api";
 import type { AppPage } from "types";
-import Container from "components/Container";
+import Layout from "components/Layout";
 
 import "styles/globals.css";
 
@@ -42,12 +42,12 @@ function MyApp({
               )}
             </Toaster>
 
-            {Component.noContainer ? (
+            {Component.noLayout ? (
               <Component {...pageProps} />
             ) : (
-              <Container>
+              <Layout>
                 <Component {...pageProps} />
-              </Container>
+              </Layout>
             )}
           </div>
         </ThemeProvider>

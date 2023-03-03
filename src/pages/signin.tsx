@@ -83,12 +83,12 @@ const SignInPage: AppPage<
       <main className="flex h-screen h-[100dvh] flex-col items-center justify-center gap-y-8">
         <Link
           href="/"
-          className="btn btn-ghost text-3xl normal-case md:-mt-10 md:!text-4xl md:btn-lg"
+          className="btn-ghost btn text-3xl normal-case md:btn-lg md:-mt-10 md:!text-4xl"
         >
           <Brand />
         </Link>
 
-        <section className="flex w-full flex-col items-center gap-3 border-y-2 border-primary py-8 dark:bg-base-200 sm:mx-auto sm:max-w-md sm:border-2 sm:border-x-2 sm:px-8 sm:rounded-box">
+        <section className="flex w-full flex-col items-center gap-3 border-y-2 border-primary py-8 sm:rounded-box dark:bg-base-200 sm:mx-auto sm:max-w-md sm:border-2 sm:border-x-2 sm:px-8">
           <h1 className="text-sm">Sign in with</h1>
           <div className="grid w-full grid-cols-2 gap-3 max-sm:px-6">
             {providers &&
@@ -115,7 +115,7 @@ const SignInPage: AppPage<
   );
 };
 
-SignInPage.noContainer = true;
+SignInPage.noLayout = true;
 
 export default SignInPage;
 

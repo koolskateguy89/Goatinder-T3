@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 // eslint-disable-next-line @typescript-eslint/ban-types
 export type AppPage<P = {}, IP = P> = NextPage<P, IP> & {
   /**
-   * If `false`, doesn't use the `Container` component for this page.
+   * If `false`, doesn't use the `Layout` component for this page.
    */
-  noContainer?: boolean;
+  noLayout?: boolean;
 };
