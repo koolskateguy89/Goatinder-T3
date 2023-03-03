@@ -2,10 +2,10 @@ import type { InferGetServerSidePropsType } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Tab } from "@headlessui/react";
-import { MdClose, MdFavorite, MdModeComment } from "react-icons/md";
 
 import type { getServerSideProps } from "pages/profile/[id]";
 import Comment from "components/profile/Comment";
+import Stats from "components/profile/Stats";
 import CommentsList from "components/comment/CommentsList";
 
 type Props = InferGetServerSidePropsType<typeof getServerSideProps>;
@@ -23,21 +23,7 @@ function ShoeComponent({ objectId, name, main_picture_url, _count }: Shoe) {
           <Link href={`/shoes/${objectId}`}>{name}</Link>
         </h3>
 
-        {/* stats */}
-        <span className="flex gap-x-2 [&>*]:w-20 [&>*]:gap-1">
-          <span className="badge badge-lg">
-            <span className="sr-only">Number of comments:</span>
-            <MdModeComment /> {_count.comments}
-          </span>
-          <span className="badge-success badge badge-lg">
-            <span className="sr-only">Number of likes:</span>
-            <MdFavorite /> {_count.likes}
-          </span>
-          <span className="badge-error badge badge-lg">
-            <span className="sr-only">Number of dislikes:</span>
-            <MdClose /> {_count.dislikes}
-          </span>
-        </span>
+        <Stats {..._count} />
       </div>
     </article>
   );
@@ -57,13 +43,13 @@ export default function ProfilePageTabs({
   return (
     <Tab.Group>
       <Tab.List className="tabs">
-        <Tab className="tab tab-bordered basis-1/3 focus:outline-none ui-selected:tab-active">
+        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active focus:outline-none">
           Comments
         </Tab>
-        <Tab className="tab tab-bordered basis-1/3 focus:outline-none ui-selected:tab-active">
+        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active focus:outline-none">
           Likes
         </Tab>
-        <Tab className="tab tab-bordered basis-1/3 focus:outline-none ui-selected:tab-active">
+        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active focus:outline-none">
           Dislikes
         </Tab>
       </Tab.List>
