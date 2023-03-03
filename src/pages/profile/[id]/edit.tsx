@@ -5,7 +5,7 @@ import type {
 } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
@@ -48,7 +48,7 @@ const EditProfilePage: NextPage<
           }}
         />
 
-        <Link href=".." className="btn btn-primary">
+        <Link href=".." className="btn-primary btn">
           Back to Profile
         </Link>
 
@@ -70,11 +70,7 @@ const EditProfilePage: NextPage<
 export default EditProfilePage;
 
 export const getServerSideProps = (async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   const userId = session?.user?.id;
 

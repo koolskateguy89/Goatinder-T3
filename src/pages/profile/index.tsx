@@ -1,5 +1,5 @@
 import type { GetServerSideProps } from "next";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 
@@ -8,11 +8,7 @@ export default function UnusedPage() {
 }
 
 export const getServerSideProps = (async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   // if signed in, redirect to their profile page
   if (session?.user) {

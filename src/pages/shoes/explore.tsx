@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { useWindowScroll } from "@mantine/hooks";
 import clsx from "clsx";
 import { BiArrowToTop } from "react-icons/bi";
@@ -45,7 +45,7 @@ function BackToTop() {
           !visible && "invisible opacity-0"
         )}
       >
-        <a href="#top" className="btn btn-primary max-lg:btn-circle">
+        <a href="#top" className="btn-primary btn max-lg:btn-circle">
           <BiArrowToTop className="text-2xl lg:hidden" />
           <span className="max-lg:sr-only">Back to top</span>
         </a>
@@ -96,11 +96,7 @@ const ExplorePage: NextPage = () => {
 export default ExplorePage;
 
 export const getServerSideProps = (async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   return {
     props: {

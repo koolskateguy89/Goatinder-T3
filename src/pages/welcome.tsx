@@ -5,7 +5,7 @@ import type {
   NextPage,
 } from "next";
 import Head from "next/head";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import toast from "react-hot-toast";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
@@ -85,7 +85,7 @@ const WelcomePage: NextPage<
           </div>
           <button
             type="submit"
-            className="btn btn-primary mt-3"
+            className="btn-primary btn mt-3"
             disabled={!canAddBio}
           >
             Create Profile
@@ -101,11 +101,7 @@ const WelcomePage: NextPage<
 export default WelcomePage;
 
 export const getServerSideProps = (async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   if (!session || !session.user)
     return {

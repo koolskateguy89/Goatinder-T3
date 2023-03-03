@@ -1,6 +1,6 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import {
   Configure,
   Hits,
@@ -100,11 +100,7 @@ export default ShoesSearchPage;
 // TODO: getServerSideProps with initialData if query in url
 // look at https://www.algolia.com/doc/guides/building-search-ui/widgets/customize-an-existing-widget/react-hooks/#providing-an-initial-state
 export const getServerSideProps = (async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   return {
     props: {

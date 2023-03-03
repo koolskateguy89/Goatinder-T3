@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import type { InferGetServerSidePropsType, GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { getProviders, signIn } from "next-auth/react";
 import toast from "react-hot-toast";
 import { FaDiscord } from "react-icons/fa";
@@ -120,11 +120,7 @@ SignInPage.noLayout = true;
 export default SignInPage;
 
 export const getServerSideProps = (async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   if (session)
     return {

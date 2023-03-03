@@ -5,7 +5,7 @@ import type {
 } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { signOut } from "next-auth/react";
 import clsx from "clsx";
 
@@ -58,14 +58,14 @@ const ProfilePage: NextPage<
             <div className="flex gap-x-4">
               <Link
                 href={`/profile/${user.id}/edit`}
-                className="btn btn-primary w-32 md:w-48"
+                className="btn-primary btn w-32 md:w-48"
               >
                 Edit Profile
               </Link>
               <button
                 type="button"
                 onClick={deleteAccount}
-                className="btn btn-primary w-32 md:w-48"
+                className="btn-primary btn w-32 md:w-48"
               >
                 Delete Account
               </button>
@@ -113,11 +113,7 @@ const ProfilePage: NextPage<
 export default ProfilePage;
 
 export const getServerSideProps = (async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   const userId = session?.user?.id;
 
