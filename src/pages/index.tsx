@@ -1,5 +1,6 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
@@ -16,6 +17,14 @@ const LandingPage: NextPage = () => {
           Welcome to <Brand />!
         </h1>
         Find your dream shoe...
+        <div className="flex gap-4">
+          <Link href="/shoes/explore" className="btn-primary btn">
+            Explore
+          </Link>
+          <Link href="/shoes/search" className="btn-primary btn">
+            Search
+          </Link>
+        </div>
       </main>
     </>
   );
