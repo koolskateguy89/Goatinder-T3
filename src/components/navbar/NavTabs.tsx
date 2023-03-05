@@ -26,6 +26,8 @@ export default function NavTabs() {
     <nav className="flex h-full items-stretch" aria-label="Main">
       <NavTab href="/">Home</NavTab>
       <NavTab href="/shoes/explore">Explore</NavTab>
+      <NavTab href="/shoes/search">Search</NavTab>
+      <NavTab href="/profiles">Users</NavTab>
       <NavTab href="/about">About</NavTab>
     </nav>
   );

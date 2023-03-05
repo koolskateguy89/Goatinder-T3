@@ -7,11 +7,8 @@ import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { HiXMark } from "react-icons/hi2";
 
 import Brand from "components/Brand";
-import ThemeSwitcher from "components/ThemeSwitcher";
 
-/*
-TODO?: add Avatar & name, similar to Meraki UI's sidebar example: https://merakiui.com/components/sidebar
-*/
+// TODO?: add Avatar & name, similar to Meraki UI's sidebar example: https://merakiui.com/components/sidebar
 
 function MobileNavItem({
   href,
@@ -46,7 +43,7 @@ export default function MobileDrawer() {
       <button
         type="button"
         onClick={openModal}
-        className="navbar-icon-btn btn btn-primary lg:hidden"
+        className="navbar-icon-btn btn-primary btn lg:hidden"
       >
         <span>
           <HiOutlineMenuAlt1 />
@@ -89,13 +86,11 @@ export default function MobileDrawer() {
                   <header className="navbar gap-1 border-b border-base-300 px-4 dark:border-white/10">
                     <Link
                       href="/"
-                      className="btn btn-ghost btn-sm text-xl normal-case"
+                      className="btn-ghost btn-sm btn text-xl normal-case"
                     >
                       <Brand />
                     </Link>
 
-                    {/* TODO?: hide the ThemeSwitcher in navbar [below lg, i.e. when this can be opened] */}
-                    <ThemeSwitcher />
                     {/* TODO?: add more icons here */}
 
                     <button
@@ -112,10 +107,8 @@ export default function MobileDrawer() {
                   <main>
                     <nav>
                       <ul className="menu my-4 px-4">
-                        {/* <li className="menu-title">
-                          <span>...</span>
-                        </li> */}
                         <MobileNavItem href="/">Home</MobileNavItem>
+                        <MobileNavItem href="/about">About</MobileNavItem>
                         <li className="menu-title">
                           <span>Shoes</span>
                         </li>
@@ -126,9 +119,9 @@ export default function MobileDrawer() {
                           Explore
                         </MobileNavItem>
                         <li className="menu-title">
-                          <span>...</span>
+                          <span>Users</span>
                         </li>
-                        <MobileNavItem href="/about">About</MobileNavItem>
+                        <MobileNavItem href="/profiles">Users</MobileNavItem>
                       </ul>
                     </nav>
                   </main>

@@ -20,7 +20,7 @@ export default function NavBar() {
         <MobileDrawer />
         <Link
           href="/"
-          className="btn btn-ghost btn-sm !text-lg normal-case md:!text-xl md:btn-md"
+          className="btn-ghost btn-sm btn !text-lg normal-case md:btn-md md:!text-xl"
         >
           <Brand />
         </Link>
@@ -33,7 +33,7 @@ export default function NavBar() {
       <div className="navbar-end">
         <Link
           href="/shoes/search"
-          className="navbar-icon-btn"
+          className="navbar-icon-btn lg:hidden"
           aria-label="Search"
         >
           <span>
@@ -41,9 +41,7 @@ export default function NavBar() {
           </span>
         </Link>
 
-        <div className="hidden lg:block">
-          <ThemeSwitcher />
-        </div>
+        <ThemeSwitcher />
 
         <Profile />
       </div>
