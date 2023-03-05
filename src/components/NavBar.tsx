@@ -5,7 +5,7 @@ import Brand from "components/Brand";
 import ThemeSwitcher from "components/ThemeSwitcher";
 import MobileDrawer from "components/navbar/MobileDrawer";
 import NavTabs from "components/navbar/NavTabs";
-import Profile from "components/navbar/Profile";
+import ProfileDropdown from "components/navbar/ProfileDropdown";
 
 /*
  * TODO: look at using AutoComplete in navbar (lg screens only)
@@ -43,7 +43,7 @@ export default function NavBar() {
 
         <ThemeSwitcher />
 
-        <Profile />
+        <ProfileDropdown />
       </div>
     </header>
   );

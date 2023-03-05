@@ -6,15 +6,14 @@ import { Menu, Transition } from "@headlessui/react";
 
 import Avatar from "components/Avatar";
 
-// TODO: rename to UserDropdown?
-export default function Profile() {
+export default function ProfileDropdown() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
   // should never show - we're passing `session` to `_app` with `getServerSideProps` on every page
   if (status === "loading") {
     return (
-      <button type="button" className="btn btn-primary btn-sm md:btn-md">
+      <button type="button" className="btn-primary btn-sm btn md:btn-md">
         Sign in
       </button>
     );
@@ -32,7 +31,7 @@ export default function Profile() {
           },
         }}
         as="/signin"
-        className="btn btn-primary btn-sm md:btn-md"
+        className="btn-primary btn-sm btn md:btn-md"
       >
         Sign in
       </Link>
