@@ -11,7 +11,7 @@ const AboutPage: NextPage = () => {
         <title>About - goaTinder</title>
       </Head>
       <main className="container prose p-4">
-        <h1 className="">About</h1>
+        <h1>About</h1>
 
         <p>
           Bootstrapped using the{" "}
@@ -32,7 +32,7 @@ const AboutPage: NextPage = () => {
             <li>PostgreSQL</li>
             <li>NextAuth</li>
             <li>Tailwind</li>
-            <li>React Query</li>
+            <li>tRPC</li>
             <li>HeadlessUI</li>
             <li>Algolia</li>
             <li>pnpm</li>
