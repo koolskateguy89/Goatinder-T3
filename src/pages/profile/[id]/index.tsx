@@ -6,31 +6,19 @@ import type {
 import Head from "next/head";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
-import { signOut } from "next-auth/react";
 import clsx from "clsx";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
 import { scoreStateInclude, toScoreStateComment } from "utils/comments";
-import { api } from "utils/api";
 import Avatar from "components/Avatar";
 import ProfilePageTabs from "components/profile/Tabs";
+import DeleteAccountButton from "components/profile/DeleteAccountButton";
 
 const ProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ user, isMyProfile, comments }) => {
   const title = `${user.name} - goaTinder`;
-
-  const deleteAcc = api.user.deleteAccount.useMutation();
-
-  const deleteAccount = async () => {
-    // TODO: something similar to github, where you have to type your username to confirm (maybe use email)
-    // eslint-disable-next-line no-restricted-globals, no-alert
-    if (confirm("Are you sure you want to delete your account?")) {
-      deleteAcc.mutate();
-      await signOut({ callbackUrl: "/" });
-    }
-  };
 
   return (
     <>
@@ -62,13 +50,7 @@ const ProfilePage: NextPage<
               >
                 Edit Profile
               </Link>
-              <button
-                type="button"
-                onClick={deleteAccount}
-                className="btn-primary btn w-32 md:w-48"
-              >
-                Delete Account
-              </button>
+              <DeleteAccountButton />
             </div>
           )}
 
