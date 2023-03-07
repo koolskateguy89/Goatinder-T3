@@ -13,6 +13,8 @@ import { prisma } from "server/db";
 import CommentSection from "components/shoe/CommentSection";
 import Shoe from "components/shoe/Shoe";
 
+// TODO: back button to go back to search results/explore page
+
 const ShoePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ goatShoe, dbShoe }) => {
@@ -128,5 +130,4 @@ export const getServerSideProps = (async (context) => {
       dbShoe,
     },
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}) satisfies GetServerSideProps<any, { objectID: string }>;
+}) satisfies GetServerSideProps<Record<string, unknown>, { objectID: string }>;
