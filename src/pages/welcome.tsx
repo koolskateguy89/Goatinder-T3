@@ -63,10 +63,7 @@ const WelcomePage: NextPage<
           Welcome to <Brand />!
         </h1>
 
-        <form
-          onSubmit={handleSubmit}
-          className="mx-auto flex w-full flex-col items-stretch"
-        >
+        <form onSubmit={handleSubmit} className="mx-auto w-full">
           <div className="form-control">
             <label htmlFor={bioId} className="label">
               <span className="label-text">Create your bio</span>
@@ -85,10 +82,12 @@ const WelcomePage: NextPage<
           </div>
           <button
             type="submit"
-            className="btn-primary btn mt-3"
+            className="btn-primary btn-block btn mt-4"
             disabled={!canAddBio}
           >
-            Create Profile
+            {profileExists
+              ? "Your profile has already been created"
+              : "Create Profile"}
           </button>
         </form>
 

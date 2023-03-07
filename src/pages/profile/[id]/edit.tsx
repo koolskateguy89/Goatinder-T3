@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
@@ -6,31 +7,45 @@ import type {
 import Head from "next/head";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
+import toast from "react-hot-toast";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
+import { api } from "utils/api";
 import Avatar from "components/Avatar";
 
 const EditProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ user }) => {
-  const title = `Editing ${user.name} - goaTinder`;
+  const editProfile = api.user.createProfile.useMutation();
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const currentBio = useRef(user.profile?.bio ?? "");
+  const [newBio, setNewBio] = useState(user.profile?.bio ?? "");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
+    const bio = newBio.trim();
 
-    const bio = formData.get("bio") as string;
+    // shouldn't happen anyway
+    if (!bio) {
+      toast.error("Bio cannot be empty");
+      return;
+    }
 
-    // TODO: trpc call
+    await toast.promise(editProfile.mutateAsync({ bio }), {
+      loading: "Saving...",
+      success: "Saved!",
+      error: "Failed to save",
+    });
+
+    currentBio.current = bio;
   };
 
   return (
     <>
       <Head>
-        <title>{title}</title>
+        <title>Edit profile - goaTinder</title>
       </Head>
       <main className="container flex flex-col items-center gap-y-4 px-4 pt-2 pb-4">
         <h1 className="text-5xl font-extrabold underline underline-offset-4">
@@ -54,12 +69,24 @@ const EditProfilePage: NextPage<
 
         <section className="flex w-full flex-col items-center gap-y-2 lg:max-w-5xl">
           <h2 className="text-xl font-semibold">My bio</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="mx-auto w-full space-y-4">
             <textarea
               name="bio"
-              value={user.profile?.bio ?? ""}
+              value={newBio}
+              onChange={(e) => setNewBio(e.target.value)}
               className="textarea-bordered textarea h-32 w-full md:h-52"
             />
+            <button
+              type="submit"
+              className="btn-primary btn-block btn"
+              disabled={
+                !newBio.trim() ||
+                newBio.trim() === currentBio.current ||
+                editProfile.isLoading
+              }
+            >
+              Save
+            </button>
           </form>
         </section>
       </main>
@@ -108,5 +135,4 @@ export const getServerSideProps = (async (context) => {
       user,
     },
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}) satisfies GetServerSideProps<any, { id: string }>;
+}) satisfies GetServerSideProps<Record<string, unknown>, { id: string }>;

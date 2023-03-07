@@ -17,7 +17,7 @@ import DeleteAccountButton from "components/profile/DeleteAccountButton";
 
 const ProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ user, isMyProfile, comments }) => {
+> = ({ user, isMyProfile, signedIn, comments }) => {
   const title = `${user.name} - goaTinder`;
 
   return (
@@ -52,6 +52,15 @@ const ProfilePage: NextPage<
               </Link>
               <DeleteAccountButton />
             </div>
+          )}
+
+          {!isMyProfile && signedIn && (
+            <Link
+              href={`/chat/${user.id}`}
+              className="btn-primary btn w-32 md:w-48"
+            >
+              Send Message
+            </Link>
           )}
 
           <section className="flex w-full flex-col items-center gap-y-2 lg:max-w-5xl">
@@ -151,8 +160,8 @@ export const getServerSideProps = (async (context) => {
       session,
       user: restOfUser,
       isMyProfile,
+      signedIn: Boolean(session?.user),
       comments: comments.map(toScoreStateComment),
     },
   };
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-}) satisfies GetServerSideProps<any, { id: string }>;
+}) satisfies GetServerSideProps<Record<string, unknown>, { id: string }>;
