@@ -14,7 +14,7 @@ export default function DeleteAccountButton() {
   const deleteAcc = api.user.deleteAccount.useMutation();
 
   const deleteAccount = async () => {
-    deleteAcc.mutate();
+    await deleteAcc.mutateAsync();
     await signOut({ callbackUrl: "/" });
   };
 
