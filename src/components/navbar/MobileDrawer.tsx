@@ -119,7 +119,7 @@ export default function MobileDrawer() {
                           Explore
                         </MobileNavItem>
                         <li className="menu-title">
-                          <span>Users</span>
+                          <span>Social</span>
                         </li>
                         <MobileNavItem href="/profiles">Users</MobileNavItem>
                       </ul>

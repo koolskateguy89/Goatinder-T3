@@ -21,8 +21,9 @@ const ProfilesPage: NextPage<
         <title>Profiles - goaTinder</title>
       </Head>
       <main className="container flex-grow p-4">
-        <ul className="grid grid-cols-2 justify-items-center gap-4 lg:grid-cols-3">
+        <ul className="flex flex-wrap justify-center gap-x-4 gap-y-8">
           {users.map((user) => (
+            // TODO?: add link to chat page here
             <li key={user.id}>
               <Link
                 href={`/profile/${user.id}`}
@@ -34,9 +35,7 @@ const ProfilesPage: NextPage<
                     name={user.name}
                     className="[&>*]:w-16"
                     imageProps={{
-                      quality: 100,
                       sizes: "4rem",
-                      // priority: true,
                     }}
                   />
                   <span className="font-medium">{user.name}</span>
@@ -61,7 +60,10 @@ export const getServerSideProps = (async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
   const users = await prisma.user.findMany({
-    include: {
+    select: {
+      id: true,
+      name: true,
+      image: true,
       _count: {
         select: {
           liked: true,
