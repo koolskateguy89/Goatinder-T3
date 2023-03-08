@@ -17,7 +17,7 @@ export default function ChatPreview({
   return (
     <Link
       href={`/chat/${id}`}
-      className="rounded-box flex items-center border-2 border-base-300 bg-base-200 px-6 py-4"
+      className="rounded-box flex items-center gap-x-4 border-2 border-base-300 bg-base-200 px-6 py-4"
     >
       <Avatar
         image={image}
@@ -27,13 +27,9 @@ export default function ChatPreview({
           sizes: "4rem",
         }}
       />
-      <div className="ml-4 space-y-6">
-        <div className="text-2xl font-semibold">
-          <span>{name}</span>
-        </div>
-        <div>
-          <span className="opacity-70">{mostRecentMessage}</span>
-        </div>
+      <div>
+        <div className="text-2xl font-semibold">{name}</div>
+        <div className=" opacity-70">{mostRecentMessage}</div>
       </div>
     </Link>
   );

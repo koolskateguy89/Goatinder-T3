@@ -8,7 +8,6 @@ import { api } from "utils/api";
 import ChatPreview from "components/chat/ChatPreview";
 
 export default function ChatsPage() {
-  // TODO: list the gc's they're part of and their private messages
   // TODO: a new chat buttton, maybe just display a dialog in which they pick who to chat with & redirect to /chat/[id]
 
   // prefetched in getServerSideProps
@@ -21,7 +20,6 @@ export default function ChatsPage() {
         <title>Chat - goaTinder</title>
       </Head>
       <main className="container mt-4 flex flex-col items-center">
-        {/* TODO: daisyui chat things */}
         <ol className="space-y-4">
           {chatInfos ? (
             chatInfos.length ? (

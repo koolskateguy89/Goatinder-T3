@@ -30,7 +30,7 @@ export default function Messages({ messages, onDelete }: MessagesProps) {
           </li>
         ))
       ) : (
-        <li>No messages</li>
+        <li className="mx-auto w-fit">No messages</li>
       )}
     </ol>
   );
