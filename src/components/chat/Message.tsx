@@ -10,6 +10,7 @@ type CommonMessage = GroupChatMessage | PrivateMessage;
 // /images/stock/photo-1534528741775-53994a69daeb.jpg
 
 export type MessageProps = Pick<CommonMessage, "id" | "content" | "sentAt"> & {
+  groupChat: boolean;
   sender: Pick<User, "id" | "name" | "image">;
   onDelete: (messageId: string) => void;
 };
@@ -27,6 +28,7 @@ function formatDate(date: Date): string {
 }
 
 export default function Message({
+  groupChat,
   id,
   sender,
   content,
@@ -36,14 +38,13 @@ export default function Message({
   const { data: session } = useSession();
 
   const isMyMessage = session?.user?.id === sender.id;
-  // TODO: rightclick -> menu -> delete [if isMyMessage or iAmAdmin(only for gc -
-  // maybe have gc message as separate component)]
+
+  // TODO: rightclick -> menu -> delete [if isMyMessage or iAmAdmin(only for gc
 
   const deleteMut = api.chat.deleteMessage.useMutation();
 
   const deleteMessage = () => {
-    // deleteMut.mutate({ id });
-    console.log("Message.deleteMessage()");
+    deleteMut.mutate({ groupChat, id });
     onDelete(id);
   };
 
