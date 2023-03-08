@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image, { type ImageProps } from "next/image";
 import clsx from "clsx";
 
@@ -48,6 +48,12 @@ export default function Avatar({
   const [error, setError] = useState(false);
 
   const usePlaceholder = !image || error;
+
+  // without this, in specific cases the avatar will show the placeholder instead of the image
+  // e.g. when you go to a chat page and switch to another chat
+  useEffect(() => {
+    setError(false);
+  }, [image]);
 
   return (
     // <img src="https://placeimg.com/192/192/people" /> (could use for seeding)
