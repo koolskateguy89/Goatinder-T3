@@ -6,7 +6,7 @@ import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 
 // TODO: delete gc (on manage page, only creator can delete)
 
-const privateMessageSelect = {
+const commonMessageSelect = {
   id: true,
   content: true,
   sentAt: true,
@@ -17,20 +17,7 @@ const privateMessageSelect = {
       image: true,
     },
   },
-} satisfies Prisma.PrivateMessageSelect;
-
-const groupChatMessageSelect = {
-  id: true,
-  content: true,
-  sentAt: true,
-  sender: {
-    select: {
-      id: true,
-      name: true,
-      image: true,
-    },
-  },
-} satisfies Prisma.GroupChatMessageSelect;
+} satisfies Prisma.PrivateMessageSelect satisfies Prisma.GroupChatMessageSelect;
 
 const basicUserInfoSelect = {
   id: true,
@@ -48,32 +35,60 @@ const groupChatInfoSelect = {
   },
 } satisfies Prisma.GroupChatSelect;
 
+type CommonMessage = Prisma.PrivateMessageGetPayload<{
+  select: typeof commonMessageSelect;
+}>;
+
 type BasicUserInfo = Prisma.UserGetPayload<{
   select: typeof basicUserInfoSelect;
 }>;
 
 type GroupChatInfo = {
   groupChat: true;
-  mostRecentMessage:
-    | Prisma.GroupChatMessageGetPayload<{
-        select: typeof groupChatMessageSelect;
-      }>
-    | undefined;
+  mostRecentMessage: CommonMessage | undefined;
 } & Prisma.GroupChatGetPayload<{
   select: typeof groupChatInfoSelect;
 }>;
 
 type PrivateChatInfo = {
   groupChat: false;
-  mostRecentMessage: Prisma.PrivateMessageGetPayload<{
-    select: typeof privateMessageSelect;
-  }>;
+  mostRecentMessage: CommonMessage;
 } & BasicUserInfo;
 
 type ChatInfo = GroupChatInfo | PrivateChatInfo;
 
-// TODO: functions to transform the data into the format we want
-// i.e. User to PrivateChatInfo, GroupChat to PrivateChatInfo
+function toPrivateChatInfo(
+  user: BasicUserInfo,
+  mostRecentMessage: CommonMessage
+): PrivateChatInfo {
+  return {
+    groupChat: false,
+    id: user.id,
+    name: user.name,
+    image: user.image,
+    mostRecentMessage,
+  };
+}
+
+function toGroupChatInfo(
+  groupChat: Prisma.GroupChatGetPayload<{
+    select: typeof groupChatInfoSelect & {
+      messages: {
+        select: typeof commonMessageSelect;
+      };
+    };
+  }>
+): GroupChatInfo {
+  return {
+    groupChat: true,
+    id: groupChat.id,
+    name: groupChat.name,
+    image: groupChat.image,
+    createdAt: groupChat.createdAt,
+    creator: groupChat.creator,
+    mostRecentMessage: groupChat.messages[0],
+  };
+}
 
 export const chatRouter = createTRPCRouter({
   getAllInfo: protectedProcedure.query(async ({ ctx }) => {
@@ -88,7 +103,7 @@ export const chatRouter = createTRPCRouter({
           where: {
             senderId: userId,
           },
-          select: privateMessageSelect,
+          select: commonMessageSelect,
           orderBy: {
             // most recent first
             sentAt: "desc",
@@ -107,19 +122,15 @@ export const chatRouter = createTRPCRouter({
       },
     });
 
-    const receivers: PrivateChatInfo[] = _receivers.map((receiver) => ({
-      groupChat: false,
-      id: receiver.id,
-      name: receiver.name,
-      image: receiver.image,
-      mostRecentMessage: receiver.receivedMessages[0]!,
-    }));
+    const receivers: PrivateChatInfo[] = _receivers.map((receiver) =>
+      toPrivateChatInfo(receiver, receiver.receivedMessages[0]!)
+    );
 
     const _groupChats = await ctx.prisma.groupChat.findMany({
       select: {
         ...groupChatInfoSelect,
         messages: {
-          select: groupChatMessageSelect,
+          select: commonMessageSelect,
           orderBy: {
             // most recent first
             sentAt: "desc",
@@ -145,15 +156,7 @@ export const chatRouter = createTRPCRouter({
       },
     });
 
-    const groupChats: GroupChatInfo[] = _groupChats.map((groupChat) => ({
-      groupChat: true,
-      id: groupChat.id,
-      name: groupChat.name,
-      image: groupChat.image,
-      createdAt: groupChat.createdAt,
-      creator: groupChat.creator,
-      mostRecentMessage: groupChat.messages[0],
-    }));
+    const groupChats: GroupChatInfo[] = _groupChats.map(toGroupChatInfo);
 
     // sort by most recent message first
     const all: ChatInfo[] = [...receivers, ...groupChats].sort((a, b) => {
@@ -167,10 +170,6 @@ export const chatRouter = createTRPCRouter({
 
       return bMostRecent.getTime() - aMostRecent.getTime();
     });
-
-    console.log("receivers =", receivers);
-    console.log("groupChats =", groupChats);
-    console.log("all =", all);
 
     return all;
   }),
@@ -192,7 +191,7 @@ export const chatRouter = createTRPCRouter({
             where: {
               senderId: userId,
             },
-            select: privateMessageSelect,
+            select: commonMessageSelect,
             orderBy: {
               // most recent first
               sentAt: "desc",
@@ -203,13 +202,7 @@ export const chatRouter = createTRPCRouter({
       });
 
       if (receiver)
-        return {
-          groupChat: false,
-          id: receiver.id,
-          name: receiver.name,
-          image: receiver.image,
-          mostRecentMessage: receiver.receivedMessages[0]!,
-        } satisfies PrivateChatInfo;
+        return toPrivateChatInfo(receiver, receiver.receivedMessages[0]!);
 
       // TODO: only return this if they are part of the gc, otherwise null
       const groupChat = await ctx.prisma.groupChat.findUnique({
@@ -219,7 +212,7 @@ export const chatRouter = createTRPCRouter({
         select: {
           ...groupChatInfoSelect,
           messages: {
-            select: groupChatMessageSelect,
+            select: commonMessageSelect,
             orderBy: {
               // most recent first
               sentAt: "desc",
@@ -233,15 +226,7 @@ export const chatRouter = createTRPCRouter({
         throw new Error("Invalid id");
       }
 
-      return {
-        groupChat: true,
-        id: groupChat.id,
-        name: groupChat.name,
-        image: groupChat.image,
-        createdAt: groupChat.createdAt,
-        creator: groupChat.creator,
-        mostRecentMessage: groupChat.messages[0],
-      } satisfies GroupChatInfo;
+      return toGroupChatInfo(groupChat);
     }),
 
   messagesById: protectedProcedure
@@ -261,14 +246,14 @@ export const chatRouter = createTRPCRouter({
               // only messages sent to the signed in user
               receiverId: userId,
             },
-            select: privateMessageSelect,
+            select: commonMessageSelect,
           },
           receivedMessages: {
             where: {
               // only messages sent by the signed in user
               senderId: userId,
             },
-            select: privateMessageSelect,
+            select: commonMessageSelect,
           },
         },
       });
@@ -294,7 +279,7 @@ export const chatRouter = createTRPCRouter({
         },
         select: {
           messages: {
-            select: groupChatMessageSelect,
+            select: commonMessageSelect,
             orderBy: {
               // oldest first
               sentAt: "asc",
@@ -311,23 +296,126 @@ export const chatRouter = createTRPCRouter({
       } as const;
     }),
 
-  deleteMessage: protectedProcedure
-    .input(z.object({ id: z.string() }))
+  sendPrivateMessage: protectedProcedure
+    .input(
+      z.object({
+        receiverId: z.string(),
+        content: z.string().trim().min(1),
+      })
+    )
     .mutation(async ({ ctx, input }) => {
-      const { id } = input;
+      const { receiverId, content } = input;
 
-      // TODO
-      // 1. ensure message exists
-      // 2. ensure message belongs to user
+      const senderId = ctx.session.user.id;
 
-      // 0. need to find out what type of message it is
+      const message = await ctx.prisma.privateMessage.create({
+        data: {
+          content,
+          sender: {
+            connect: {
+              id: senderId,
+            },
+          },
+          receiver: {
+            connect: {
+              id: receiverId,
+            },
+          },
+        },
+        select: commonMessageSelect,
+      });
 
-      const deletedMessage = await ctx.prisma.privateMessage.delete({
+      return message;
+    }),
+
+  sendGroupChatMessage: protectedProcedure
+    .input(
+      z.object({
+        groupChatId: z.string(),
+        content: z.string().trim().min(1),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { groupChatId, content } = input;
+
+      const senderId = ctx.session.user.id;
+
+      const { creatorId, members } =
+        await ctx.prisma.groupChat.findUniqueOrThrow({
+          where: {
+            id: groupChatId,
+          },
+          select: {
+            creatorId: true,
+            members: {
+              select: {
+                id: true,
+              },
+              where: {
+                id: senderId,
+              },
+            },
+          },
+        });
+
+      if (creatorId !== senderId && members.length === 0) {
+        throw new Error("You are not part of this group chat");
+      }
+
+      const message = await ctx.prisma.groupChatMessage.create({
+        data: {
+          content,
+          sender: {
+            connect: {
+              id: senderId,
+            },
+          },
+          groupChat: {
+            connect: {
+              id: groupChatId,
+            },
+          },
+        },
+        select: commonMessageSelect,
+      });
+
+      return message;
+    }),
+
+  deleteMessage: protectedProcedure
+    .input(
+      z.object({
+        groupChat: z.boolean(),
+        id: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { groupChat, id } = input;
+
+      const userId = ctx.session.user.id;
+
+      const delegate = groupChat
+        ? ctx.prisma.groupChatMessage
+        : ctx.prisma.privateMessage;
+
+      // @ts-expect-error It works
+      const { senderId } = await delegate.findUniqueOrThrow({
+        where: {
+          id,
+        },
+        select: {
+          senderId: true,
+        },
+      });
+
+      if (senderId !== userId)
+        throw new Error("Unauthorised to delete this message");
+
+      // @ts-expect-error It works
+      await delegate.delete({
         where: {
           id,
         },
       });
-
-      return "lol";
     }),
 });
