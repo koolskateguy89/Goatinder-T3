@@ -11,8 +11,10 @@ import { type ImmerReducer, useImmerReducer } from "use-immer";
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { createSSGHelpers } from "utils/ssg";
 import { api, type RouterOutputs } from "utils/api";
+import Sidebar from "components/chat/Sidebar";
 import ChatMeta from "components/chat/ChatMeta";
 import Messages from "components/chat/Messages";
+import NewMessageForm from "components/chat/NewMessageForm";
 
 // gc1: cleyua3uq000hw26kqttq4o5x
 
@@ -59,6 +61,8 @@ const ChatPage: NextPage<
   const { data: chatData } = api.chat.infoById.useQuery({ id });
   const { data: messagesData } = api.chat.messagesById.useQuery({ id });
 
+  const title = chatData ? `${chatData.name} - goaTinder` : "goaTinder";
+
   const [messageState, messagesDispatch] = useImmerReducer(messageReducer, {
     messages: messagesData?.messages ?? [],
   });
@@ -73,26 +77,26 @@ const ChatPage: NextPage<
   }, [messagesDispatch, messagesData]);
 
   const onMessageDelete = (messageId: string) => {
-    console.log("ChatPage.onMessageDelete()");
     messagesDispatch({ type: "delete", payload: { id: messageId } });
   };
 
-  const title = chatData ? `${chatData.name} - goaTinder` : "goaTinder";
+  const onMessageSent = (message: MessageType) => {
+    messagesDispatch({ type: "add", payload: message });
+  };
 
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container flex">
-        <div className="basis-1/5 overflow-auto border-r-4 border-base-300 dark:border-white/5">
-          side stuff here... aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-          ccccccccccccccccccccccccccccccc
+      <main className="container flex pb-4">
+        <div className="min-h-screen min-h-[calc(100dvh-4rem)] basis-1/4 overflow-auto border-r-4 border-base-300 dark:border-white/5 max-md:hidden">
+          <div className="mt-4">
+            <Sidebar />
+          </div>
         </div>
         <div className="flex-grow">
           <div className="border-b-4 border-base-300 p-2 dark:border-white/5">
-            {/* TODO: remove pre */}
-            <pre>chatData = {JSON.stringify(chatData, null, 2)}</pre>
             {chatData ? (
               <ChatMeta
                 name={chatData.name}
@@ -103,18 +107,27 @@ const ChatPage: NextPage<
               />
             ) : (
               <div>
-                <h1>loading</h1>
+                <h1>loading...</h1>
               </div>
             )}
           </div>
 
-          <div className="p-2">
-            <Messages
-              messages={messageState.messages}
-              onDelete={onMessageDelete}
-            />
-            {/* TODO: input so can send messages */}
-          </div>
+          {chatData ? (
+            <div className="p-1 md:p-4">
+              <Messages
+                groupChat={chatData.groupChat}
+                messages={messageState.messages}
+                onDelete={onMessageDelete}
+              />
+              <NewMessageForm
+                id={chatData.id}
+                groupChat={chatData.groupChat}
+                onMessageSent={onMessageSent}
+              />
+            </div>
+          ) : (
+            <>Loading...</>
+          )}
         </div>
       </main>
     </>
@@ -134,7 +147,7 @@ export const getServerSideProps = (async (context) => {
       },
     };
 
-  // TODO: handle if they're trying to message themself
+  // TODO: handle them trying to message themself
 
   const id = context.params?.id;
 
@@ -147,8 +160,7 @@ export const getServerSideProps = (async (context) => {
 
   // prefetch chat data
   try {
-    const chatData = await ssg.chat.infoById.fetch({ id });
-    console.log(chatData);
+    await ssg.chat.infoById.fetch({ id });
   } catch (error) {
     // invalid ID
     return {
@@ -156,7 +168,10 @@ export const getServerSideProps = (async (context) => {
     };
   }
 
-  await ssg.chat.messagesById.prefetch({ id });
+  await Promise.all([
+    ssg.chat.messagesById.prefetch({ id }),
+    ssg.chat.getAllInfo.prefetch(),
+  ]);
 
   return {
     props: {
