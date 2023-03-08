@@ -104,8 +104,6 @@ model ShoeComment {
     downvoters  User[]   @relation("Downvoters")
 }
 
-// TODO: migrate db & seed messages
-
 model GroupChat {
     id        String             @id @default(cuid())
     name      String
