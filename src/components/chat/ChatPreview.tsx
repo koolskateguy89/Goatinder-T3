@@ -17,19 +17,20 @@ export default function ChatPreview({
   return (
     <Link
       href={`/chat/${id}`}
-      className="rounded-box flex items-center gap-x-4 border-2 border-base-300 bg-base-200 px-6 py-4"
+      className="rounded-box flex items-center gap-x-4 border-2 border-base-300 bg-base-200 px-4 py-2 md:px-6 md:py-4"
     >
       <Avatar
         image={image}
         name={name}
-        className="[&>*]:w-16"
+        className="[&>*]:w-12 md:[&>*]:w-14"
         imageProps={{
-          sizes: "4rem",
+          sizes: "(min-width: 768px): 3.5rem, 3rem",
         }}
       />
       <div>
-        <div className="text-2xl font-semibold">{name}</div>
-        <div className=" opacity-70">{mostRecentMessage}</div>
+        <div className="text-base font-semibold md:text-xl">{name}</div>
+        {/* TODO: limit length and add ellipsis */}
+        <div className="opacity-70">{mostRecentMessage}</div>
       </div>
     </Link>
   );

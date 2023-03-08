@@ -14,12 +14,14 @@ export default function ChatsPage() {
   // is already sorted by most recent message
   const { data: chatInfos } = api.chat.getAllInfo.useQuery();
 
+  // TODO: new chat button, should be able to use same component as in Sidebar
+
   return (
     <>
       <Head>
         <title>Chat - goaTinder</title>
       </Head>
-      <main className="container mt-4 flex flex-col items-center">
+      <main className="container mt-4 flex flex-col items-center px-4">
         <ol className="space-y-4">
           {chatInfos ? (
             chatInfos.length ? (
