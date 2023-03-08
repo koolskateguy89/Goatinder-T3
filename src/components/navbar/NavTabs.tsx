@@ -1,10 +1,26 @@
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import clsx from "clsx";
 
-function NavTab({ href, children }: React.PropsWithChildren<{ href: string }>) {
+type NavTabProps = React.PropsWithChildren<{
+  href: string;
+  /**
+   * If `true`, check if the current location _starts with_ `href`;
+   * if `false`, only considers the link to be active when the current
+   * location matches the `href` exactly.
+   *
+   * @default false
+   * @see https://start.solidjs.com/api/A#props `end`
+   */
+  start?: boolean;
+}>;
+
+function NavTab({ href, children, start = false }: NavTabProps) {
   const router = useRouter();
-  const active = router.asPath === href;
+  const active = start
+    ? router.asPath.startsWith(href)
+    : router.asPath === href;
 
   return (
     <Link
@@ -22,12 +38,20 @@ function NavTab({ href, children }: React.PropsWithChildren<{ href: string }>) {
 }
 
 export default function NavTabs() {
+  const { data: session } = useSession();
+  const signedIn = Boolean(session?.user);
+
   return (
     <nav className="flex h-full items-stretch" aria-label="Main">
       <NavTab href="/">Home</NavTab>
       <NavTab href="/shoes/explore">Explore</NavTab>
       <NavTab href="/shoes/search">Search</NavTab>
       <NavTab href="/profiles">Users</NavTab>
+      {signedIn && (
+        <NavTab href="/chat" start>
+          Chat
+        </NavTab>
+      )}
       <NavTab href="/about">About</NavTab>
     </nav>
   );

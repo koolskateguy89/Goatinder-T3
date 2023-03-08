@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 import { Dialog, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
@@ -29,6 +30,9 @@ function MobileNavItem({
 // TODO: add icons
 export default function MobileDrawer() {
   const router = useRouter();
+
+  const { data: session } = useSession();
+  const signedIn = Boolean(session?.user);
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -122,6 +126,9 @@ export default function MobileDrawer() {
                           <span>Social</span>
                         </li>
                         <MobileNavItem href="/profiles">Users</MobileNavItem>
+                        {signedIn && (
+                          <MobileNavItem href="/chat">Chat</MobileNavItem>
+                        )}
                       </ul>
                     </nav>
                   </main>
