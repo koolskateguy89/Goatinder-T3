@@ -17,6 +17,8 @@ import { prisma } from "server/db";
 
 // anyone in the gc can access this page, they can see the creator
 // and members and be able to leave the GC
+// ^ the creator has to set a new creator before they can leave
+// really creator is admin
 
 // tbh could use SSR for this instead of tRPC
 
@@ -43,22 +45,23 @@ export default ManageGroupChatPage;
 export const getServerSideProps = (async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  if (!session || !session.user)
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-
-  const userId = session.user.id;
-
   const id = context.params?.id;
 
   if (!id)
     return {
       notFound: true,
     };
+
+  if (!session || !session.user)
+    // if not signed in, redirect to signin
+    return {
+      redirect: {
+        destination: `/signin?callbackUrl=/chat/${id}/manage`,
+        permanent: false,
+      },
+    };
+
+  const userId = session.user.id;
 
   const groupChat = await prisma.groupChat.findUnique({
     where: {

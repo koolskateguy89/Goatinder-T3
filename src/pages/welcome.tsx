@@ -5,6 +5,7 @@ import type {
   NextPage,
 } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { getServerSession } from "next-auth";
 import toast from "react-hot-toast";
 
@@ -16,7 +17,8 @@ import SessionData from "components/welcome/SessionData";
 
 const WelcomePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ profileExists }) => {
+> = ({ profileExists, callbackUrl }) => {
+  const router = useRouter();
   const bioId = useId();
 
   const [canAddBio, setCanAddBio] = useState(!profileExists);
@@ -46,10 +48,18 @@ const WelcomePage: NextPage<
         }),
         {
           loading: "Creating profile...",
-          success: "Profile created!",
+          success: callbackUrl
+            ? `Profile created, redirecting to ${callbackUrl} in 3 seconds...`
+            : "Profile created!",
           error: "Failed to create profile",
         }
       )
+      .then(() => {
+        if (callbackUrl)
+          setTimeout(async () => {
+            await router.push(callbackUrl);
+          }, 3000);
+      })
       .catch(() => setCanAddBio(true));
   };
 
@@ -135,6 +145,7 @@ export const getServerSideProps = (async (context) => {
     props: {
       session,
       profileExists,
+      callbackUrl,
     },
   };
 }) satisfies GetServerSideProps;

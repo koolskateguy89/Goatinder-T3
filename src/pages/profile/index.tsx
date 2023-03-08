@@ -23,7 +23,7 @@ export const getServerSideProps = (async (context) => {
   // if not signed in, redirect to signin
   return {
     redirect: {
-      destination: `/signin?callbackUrl=/profile`,
+      destination: "/signin?callbackUrl=/profile",
       permanent: false,
     },
   };

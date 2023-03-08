@@ -46,19 +46,20 @@ export default ChatPage;
 export const getServerSideProps = (async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  if (!session || !session.user)
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-
   const id = context.params?.id;
 
   if (!id)
     return {
       notFound: true,
+    };
+
+  if (!session || !session.user)
+    // if not signed in, redirect to signin
+    return {
+      redirect: {
+        destination: `/signin?callbackUrl=/chat/${id}`,
+        permanent: false,
+      },
     };
 
   // Trying to message yourself

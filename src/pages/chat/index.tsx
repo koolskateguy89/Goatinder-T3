@@ -53,9 +53,10 @@ export const getServerSideProps = (async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
   if (!session || !session.user)
+    // if not signed in, redirect to signin
     return {
       redirect: {
-        destination: "/",
+        destination: `/signin?callbackUrl=/chat`,
         permanent: false,
       },
     };
