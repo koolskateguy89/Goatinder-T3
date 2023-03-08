@@ -10,6 +10,7 @@ import { authOptions } from "pages/api/auth/[...nextauth]";
 import { createSSGHelpers } from "utils/ssg";
 import Sidebar from "components/chat/Sidebar";
 import Chat from "components/chat/Chat";
+import Link from "next/link";
 
 // gc1: clez36kha000hw2govvab9yax
 
@@ -31,8 +32,11 @@ const ChatPage: NextPage<
           {id ? (
             <Chat id={id} />
           ) : (
-            <div className="flex items-center justify-center pt-4">
+            <div className="flex flex-col items-center justify-center gap-2 pt-4">
               You cannot message yourself!
+              <Link href="/chat" className="btn-primary btn">
+                Chats
+              </Link>
             </div>
           )}
         </div>
