@@ -22,32 +22,39 @@ const ProfilesPage: NextPage<
       </Head>
       <main className="container flex-grow p-4">
         <ul className="flex flex-wrap justify-center gap-x-4 gap-y-8">
-          {users.map((user) => (
-            // TODO?: add link to chat page here
-            <li key={user.id}>
-              <Link
-                href={`/profile/${user.id}`}
-                className="flex flex-col items-center gap-2"
-              >
-                <div className="flex items-center gap-2">
-                  <Avatar
-                    image={user.image}
-                    name={user.name}
-                    className="[&>*]:w-16"
-                    imageProps={{
-                      sizes: "4rem",
-                    }}
+          {users.length ? (
+            users.map((user) => (
+              <li key={user.id}>
+                <Link
+                  href={`/profile/${user.id}`}
+                  className="flex flex-col items-center gap-2"
+                >
+                  <div className="flex items-center gap-2">
+                    <Avatar
+                      image={user.image}
+                      name={user.name}
+                      className="[&>*]:w-16"
+                      imageProps={{
+                        sizes: "4rem",
+                      }}
+                    />
+                    <span className="font-medium">{user.name}</span>
+                  </div>
+                  <Stats
+                    comments={user._count.comments}
+                    likes={user._count.liked}
+                    dislikes={user._count.disliked}
                   />
-                  <span className="font-medium">{user.name}</span>
-                </div>
-                <Stats
-                  comments={user._count.comments}
-                  likes={user._count.liked}
-                  dislikes={user._count.disliked}
-                />
-              </Link>
+                </Link>
+              </li>
+            ))
+          ) : (
+            <li>
+              <p className="text-center text-xl font-medium">
+                {`No users found, that's weird...`}
+              </p>
             </li>
-          ))}
+          )}
         </ul>
       </main>
     </>

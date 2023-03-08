@@ -80,7 +80,7 @@ const SignInPage: AppPage<
       <Head>
         <title>Sign in to goaTinder</title>
       </Head>
-      <main className="flex h-screen h-[100dvh] flex-col items-center justify-center gap-y-8">
+      <main className="flex h-screen !h-[100dvh] flex-col items-center justify-center gap-y-8">
         <Link
           href="/"
           className="btn-ghost btn text-3xl normal-case md:btn-lg md:-mt-10 md:!text-4xl"
