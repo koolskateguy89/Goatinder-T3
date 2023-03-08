@@ -6,14 +6,13 @@ export type MessagesProps = {
   onDelete: (messageId: string) => void;
 };
 
-// TODO: make scrollable
 export default function Messages({
   messages,
   groupChat,
   onDelete,
 }: MessagesProps) {
   return (
-    <ol>
+    <ol className="absolute max-h-full overflow-y-auto">
       {messages.length ? (
         messages.map((message) => (
           <li key={message.id}>

@@ -22,13 +22,13 @@ const ChatPage: NextPage<
       <Head>
         <title>Chat - goaTinder</title>
       </Head>
-      <main className="container flex pb-4">
-        <div className="min-h-screen min-h-[calc(100dvh-4rem)] basis-1/4 overflow-auto border-r-4 border-base-300 dark:border-white/5 max-md:hidden">
-          <div className="mt-4">
+      <main className="container flex flex-grow">
+        <div className="basis-1/4 overflow-auto border-r-4 border-base-300 dark:border-white/5 max-md:hidden">
+          <div className="mt-4 pb-4">
             <Sidebar />
           </div>
         </div>
-        <div className="flex-grow">
+        <div className="flex flex-grow flex-col">
           {id ? (
             <Chat id={id} />
           ) : (

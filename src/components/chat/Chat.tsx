@@ -90,18 +90,22 @@ export default function Chat({ id }: { id: string }) {
       </div>
 
       {chatData ? (
-        <div className="p-1 md:p-4">
-          <Messages
-            groupChat={chatData.groupChat}
-            messages={messageState.messages}
-            onDelete={onMessageDelete}
-          />
-          <NewMessageForm
-            id={chatData.id}
-            groupChat={chatData.groupChat}
-            onMessageSent={onMessageSent}
-          />
-        </div>
+        <>
+          <div className="relative flex-grow p-1 md:p-4">
+            <Messages
+              groupChat={chatData.groupChat}
+              messages={messageState.messages}
+              onDelete={onMessageDelete}
+            />
+          </div>
+          <div className="p-1 md:p-4">
+            <NewMessageForm
+              id={chatData.id}
+              groupChat={chatData.groupChat}
+              onMessageSent={onMessageSent}
+            />
+          </div>
+        </>
       ) : (
         <>Loading...</>
       )}
