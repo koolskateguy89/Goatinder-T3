@@ -29,7 +29,7 @@ export default function ChatMeta({ name, image, nameHref }: ChatMetaProps) {
       />
 
       <Link href={nameHref} className="ml-2 text-2xl font-semibold">
-        <h1>{name}</h1>
+        <h1 className="max-w-xs truncate md:max-w-md lg:max-w-prose">{name}</h1>
       </Link>
     </div>
   );
