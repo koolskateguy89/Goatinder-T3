@@ -26,7 +26,7 @@ export default function Sidebar() {
               </li>
             ))
           ) : (
-            <li>...</li>
+            <li>No messages</li>
           )
         ) : (
           <li>Loading...</li>

@@ -71,7 +71,6 @@ export default function Message({
           type="button"
           onClick={deleteMessage}
           aria-label="Delete message"
-          // className="chat-delete"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -52,7 +52,13 @@ export default function ChatsPage() {
 export const getServerSideProps = (async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
 
-  // TODO: prefetch
+  if (!session || !session.user)
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
 
   const ssg = await createSSGHelpers(session);
 
