@@ -12,7 +12,7 @@ export default function Messages({
   onDelete,
 }: MessagesProps) {
   return (
-    <ol className="absolute max-h-full overflow-y-auto">
+    <ol className="absolute inset-0 max-h-full overflow-y-auto">
       {messages.length ? (
         messages.map((message) => (
           <li key={message.id}>
