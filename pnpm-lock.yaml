@@ -29,8 +29,6 @@ specifiers:
   eslint-config-airbnb-typescript: ^17.0.0
   eslint-config-next: 13.2.3
   eslint-config-prettier: ^8.7.0
-  eslint-plugin-react: ^7.32.2
-  eslint-plugin-react-hooks: ^4.6.0
   immer: ^9.0.19
   next: 13.2.3
   next-auth: ^4.20.1
@@ -99,8 +97,6 @@ devDependencies:
   eslint-config-airbnb-typescript: 17.0.0_gnnf2grdq7gywvy33vl2lfcipa
   eslint-config-next: 13.2.3_ycpbpc6yetojsgtrx3mwntkhsu
   eslint-config-prettier: 8.7.0_eslint@8.35.0
-  eslint-plugin-react: 7.32.2_eslint@8.35.0
-  eslint-plugin-react-hooks: 4.6.0_eslint@8.35.0
   postcss: 8.4.21
   prettier: 2.8.4
   prettier-plugin-tailwindcss: 0.2.4_prettier@2.8.4
