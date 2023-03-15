@@ -13,10 +13,9 @@ export default function Sidebar() {
     <aside className="px-4">
       {/* TODO: search */}
 
-      {/* TODO: make more styled like a Preview */}
-      <NewChatButton className="btn-secondary btn-block btn mb-4" />
+      <NewChatButton className="btn-primary btn-block btn mb-4" />
 
-      <ol className="space-y-4 overflow-y-auto px-4">
+      <ol className="space-y-4 overflow-y-auto">
         {chatInfos ? (
           chatInfos.length ? (
             chatInfos.map((chatInfo) => (

@@ -1,5 +1,5 @@
 import { useChatInfo } from "store/chat/info";
-import Message, { type MessageProps } from "./Message";
+import Message, { type MessageProps } from "components/chat/Message";
 
 export type MessagesProps = {
   messages: Omit<MessageProps, "groupChat" | "onDelete">[];

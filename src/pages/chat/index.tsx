@@ -1,28 +1,17 @@
-import type {
-  GetServerSideProps,
-  NextPage,
-  InferGetServerSidePropsType,
-} from "next";
+import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { createSSGHelpers } from "utils/ssg";
-import { prisma } from "server/db";
 import { api } from "utils/api";
 import ChatPreview from "components/chat/ChatPreview";
 import NewChatButton from "components/chat/NewChatButton";
 
-const ChatsPage: NextPage<
-  InferGetServerSidePropsType<typeof getServerSideProps>
-> = () => {
-  // TODO: a new chat buttton, maybe just display a dialog in which they pick who to chat with & redirect to /chat/[id]
-
+export default function ChatsPage() {
   // prefetched in getServerSideProps
   // is already sorted by most recent message
   const { data: chatInfos } = api.chat.getAllInfo.useQuery();
-
-  // TODO: new chat button, should be able to use same component as in Sidebar
 
   return (
     <>
@@ -30,9 +19,10 @@ const ChatsPage: NextPage<
         <title>Chat - goaTinder</title>
       </Head>
       <main className="container mt-4 flex flex-col items-center px-4">
-        {/* TODO: make look like a chat */}
-        <NewChatButton className="btn-secondary btn" />
-        <ol className="mt-4 space-y-4">
+        <ol className="space-y-4">
+          <li>
+            <NewChatButton className="btn-primary btn-block btn" />
+          </li>
           {chatInfos ? (
             chatInfos.length ? (
               chatInfos.map((chatInfo) => (
@@ -57,9 +47,7 @@ const ChatsPage: NextPage<
       </main>
     </>
   );
-};
-
-export default ChatsPage;
+}
 
 export const getServerSideProps = (async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
