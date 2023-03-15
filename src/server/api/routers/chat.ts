@@ -1,97 +1,29 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { Prisma } from "@prisma/client";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
+import {
+  commonMessageSelect,
+  basicUserInfoSelect,
+  groupChatInfoSelect,
+  // CommonMessage,
+  // type BasicUserInfo,
+  type GroupChatInfo,
+  type PrivateChatInfo,
+  type ChatInfo,
+  toPrivateChatInfo,
+  toGroupChatInfo,
+} from "types/chat";
+import { groupChatRouter } from "server/api/routers/chat/group";
+import { privateChatRouter } from "server/api/routers/chat/private";
 
 // TODO: delete gc (on manage page, only creator can delete)
 // TODO: create gc
 
-const commonMessageSelect = {
-  id: true,
-  content: true,
-  sentAt: true,
-  sender: {
-    select: {
-      id: true,
-      name: true,
-      image: true,
-    },
-  },
-} satisfies Prisma.PrivateMessageSelect satisfies Prisma.GroupChatMessageSelect;
-
-const basicUserInfoSelect = {
-  id: true,
-  name: true,
-  image: true,
-} satisfies Prisma.UserSelect;
-
-const groupChatInfoSelect = {
-  id: true,
-  name: true,
-  image: true,
-  createdAt: true,
-  creator: {
-    select: basicUserInfoSelect,
-  },
-} satisfies Prisma.GroupChatSelect;
-
-type CommonMessage = Prisma.PrivateMessageGetPayload<{
-  select: typeof commonMessageSelect;
-}>;
-
-type BasicUserInfo = Prisma.UserGetPayload<{
-  select: typeof basicUserInfoSelect;
-}>;
-
-type GroupChatInfo = {
-  groupChat: true;
-  mostRecentMessage: CommonMessage | undefined;
-} & Prisma.GroupChatGetPayload<{
-  select: typeof groupChatInfoSelect;
-}>;
-
-type PrivateChatInfo = {
-  groupChat: false;
-  mostRecentMessage: CommonMessage;
-} & BasicUserInfo;
-
-export type ChatInfo = GroupChatInfo | PrivateChatInfo;
-
-function toPrivateChatInfo(
-  user: BasicUserInfo,
-  mostRecentMessage: CommonMessage
-): PrivateChatInfo {
-  return {
-    groupChat: false,
-    id: user.id,
-    name: user.name,
-    image: user.image,
-    mostRecentMessage,
-  };
-}
-
-function toGroupChatInfo(
-  groupChat: Prisma.GroupChatGetPayload<{
-    select: typeof groupChatInfoSelect & {
-      messages: {
-        select: typeof commonMessageSelect;
-      };
-    };
-  }>
-): GroupChatInfo {
-  return {
-    groupChat: true,
-    id: groupChat.id,
-    name: groupChat.name,
-    image: groupChat.image,
-    createdAt: groupChat.createdAt,
-    creator: groupChat.creator,
-    mostRecentMessage: groupChat.messages[0],
-  };
-}
-
 export const chatRouter = createTRPCRouter({
+  group: groupChatRouter,
+  private: privateChatRouter,
+
   getAllInfo: protectedProcedure.query(async ({ ctx }) => {
     const userId = ctx.session.user.id;
 
@@ -252,7 +184,7 @@ export const chatRouter = createTRPCRouter({
   }),
 
   infoById: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ id: z.string().cuid() }))
     .query(async ({ ctx, input }) => {
       const { id: receiverOrGroupChatId } = input;
 
@@ -307,7 +239,7 @@ export const chatRouter = createTRPCRouter({
     }),
 
   messagesById: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ id: z.string().cuid() }))
     .query(async ({ ctx, input }) => {
       const { id: receiverOrGroupChatId } = input;
 
@@ -373,97 +305,11 @@ export const chatRouter = createTRPCRouter({
       } as const;
     }),
 
-  sendPrivateMessage: protectedProcedure
-    .input(
-      z.object({
-        receiverId: z.string(),
-        content: z.string().trim().min(1),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { receiverId, content } = input;
-
-      const senderId = ctx.session.user.id;
-
-      const message = await ctx.prisma.privateMessage.create({
-        data: {
-          content,
-          sender: {
-            connect: {
-              id: senderId,
-            },
-          },
-          receiver: {
-            connect: {
-              id: receiverId,
-            },
-          },
-        },
-        select: commonMessageSelect,
-      });
-
-      return message;
-    }),
-
-  sendGroupChatMessage: protectedProcedure
-    .input(
-      z.object({
-        groupChatId: z.string(),
-        content: z.string().trim().min(1),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
-      const { groupChatId, content } = input;
-
-      const senderId = ctx.session.user.id;
-
-      const { creatorId, members } =
-        await ctx.prisma.groupChat.findUniqueOrThrow({
-          where: {
-            id: groupChatId,
-          },
-          select: {
-            creatorId: true,
-            members: {
-              select: {
-                id: true,
-              },
-              where: {
-                id: senderId,
-              },
-            },
-          },
-        });
-
-      if (creatorId !== senderId && members.length === 0) {
-        throw new Error("You are not part of this group chat");
-      }
-
-      const message = await ctx.prisma.groupChatMessage.create({
-        data: {
-          content,
-          sender: {
-            connect: {
-              id: senderId,
-            },
-          },
-          groupChat: {
-            connect: {
-              id: groupChatId,
-            },
-          },
-        },
-        select: commonMessageSelect,
-      });
-
-      return message;
-    }),
-
   deleteMessage: protectedProcedure
     .input(
       z.object({
         groupChat: z.boolean(),
-        id: z.string(),
+        id: z.string().cuid(),
       })
     )
     .mutation(async ({ ctx, input }) => {

@@ -18,8 +18,8 @@ export default function NewMessageForm({ onMessageSent }: NewMessageFormProps) {
 
   const [content, setContent] = useState("");
 
-  const sendPrivateMessageMut = api.chat.sendPrivateMessage.useMutation();
-  const sendGroupChatMessageMut = api.chat.sendGroupChatMessage.useMutation();
+  const sendPrivateMessageMut = api.chat.private.sendMessage.useMutation();
+  const sendGroupChatMessageMut = api.chat.group.sendMessage.useMutation();
 
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
