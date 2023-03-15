@@ -1,9 +1,9 @@
 import { createContext, useContext } from "react";
 
-import type { ChatInfo as ServerChatInfo } from "server/api/routers/chat";
+import type { ChatInfo as FullChatInfo } from "types/chat";
 
 export type ChatInfo = Pick<
-  ServerChatInfo,
+  FullChatInfo,
   "id" | "image" | "name" | "groupChat"
 >;
 
