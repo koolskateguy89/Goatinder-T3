@@ -1,7 +1,6 @@
 import { Fragment, useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { Dialog, Transition } from "@headlessui/react";
-import type { User } from "@prisma/client";
 
 import { api } from "utils/api";
 
@@ -10,6 +9,8 @@ export type NewChatButtonProps = {
 };
 
 export default function NewChatButton({ className }: NewChatButtonProps) {
+  const router = useRouter();
+
   const { data: users } = api.user.getAllOtherUsers.useQuery();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -18,16 +19,39 @@ export default function NewChatButton({ className }: NewChatButtonProps) {
 
   const closeModal = () => setIsOpen(false);
 
-  // TODO: dialog to pick who to chat with
-  // or create a new group chat
-  // if group chat, then redirect to /chat/[id]/manage
-  // if 1:1 chat, then redirect to /chat/[id]
+  const newGroupChatMut = api.chat.group.createNew.useMutation();
 
-  // TODO: mutation to create new GC
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    const userId = formData.get("userId") as string;
+
+    if (!userId) return;
+
+    closeModal();
+    await router.push(`/chat/${userId}`);
+  };
+
+  const createNewGroupChat = async () => {
+    const { id } = await newGroupChatMut.mutateAsync({
+      name: "New Group Chat",
+      image: "",
+    });
+
+    closeModal();
+    await router.push(`/chat/${id}/manage`);
+  };
 
   return (
     <>
-      <button type="button" onClick={openModal} className={className}>
+      <button
+        type="button"
+        onClick={openModal}
+        className={className}
+        aria-label="New Chat"
+      >
         +
       </button>
 
@@ -62,32 +86,47 @@ export default function NewChatButton({ className }: NewChatButtonProps) {
                 <Dialog.Panel className="w-80 rounded-2xl bg-base-100 p-6 shadow-lg">
                   <Dialog.Title as="h3" className="text-xl font-semibold">
                     New Chat
+                    {!users && (
+                      <span className="text-base font-normal text-gray-500">
+                        {" "}
+                        (loading...)
+                      </span>
+                    )}
                   </Dialog.Title>
 
-                  <div className="">
-                    select to chat with
-                    <br />
-                    also new group chat button
-                  </div>
+                  <form onSubmit={handleSubmit} className="mt-2 space-y-2">
+                    <select
+                      name="userId"
+                      className="select-bordered select w-full max-w-xs"
+                      defaultValue="Select a user"
+                      disabled={!users}
+                    >
+                      <option disabled>Select a user</option>
+                      {users?.map((user) => (
+                        <option key={user.id} value={user.id}>
+                          {user.name}
+                        </option>
+                      ))}
+                    </select>
 
-                  <select className="select-primary select w-full max-w-xs">
-                    <option disabled selected>
-                      Select a user
-                    </option>
-                    <option className="font-semibold">New group chat</option>
-                    <option>Game of Thrones</option>
-                    <option>Lost</option>
-                    <option>Breaking Bad</option>
-                    <option>Walking Dead</option>
-                  </select>
-
-                  <ul>
-                    {users?.map((user) => (
-                      <li key={user.id}>
-                        <Link href={`/chat/${user.id}`}>{user.name}</Link>
-                      </li>
-                    )) ?? <li>Loading...</li>}
-                  </ul>
+                    <div className="flex justify-between">
+                      <button
+                        type="submit"
+                        className="btn-primary btn-link btn"
+                        disabled={!users}
+                      >
+                        Chat
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-primary btn"
+                        onClick={createNewGroupChat}
+                        disabled={newGroupChatMut.isLoading}
+                      >
+                        New group chat
+                      </button>
+                    </div>
+                  </form>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
