@@ -10,9 +10,9 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "next/core-web-vitals",
     "airbnb",
     "airbnb-typescript",
+    "next/core-web-vitals",
     "prettier"
   ],
   "rules": {
