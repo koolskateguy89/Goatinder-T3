@@ -40,4 +40,20 @@ export const userRouter = createTRPCRouter({
       },
     });
   }),
+
+  getAllOtherUsers: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+
+    return await ctx.prisma.user.findMany({
+      where: {
+        NOT: {
+          id: userId,
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+  }),
 });

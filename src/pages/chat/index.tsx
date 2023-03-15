@@ -1,13 +1,21 @@
-import type { GetServerSideProps } from "next";
+import type {
+  GetServerSideProps,
+  NextPage,
+  InferGetServerSidePropsType,
+} from "next";
 import Head from "next/head";
 import { getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { createSSGHelpers } from "utils/ssg";
+import { prisma } from "server/db";
 import { api } from "utils/api";
 import ChatPreview from "components/chat/ChatPreview";
+import NewChatButton from "components/chat/NewChatButton";
 
-export default function ChatsPage() {
+const ChatsPage: NextPage<
+  InferGetServerSidePropsType<typeof getServerSideProps>
+> = () => {
   // TODO: a new chat buttton, maybe just display a dialog in which they pick who to chat with & redirect to /chat/[id]
 
   // prefetched in getServerSideProps
@@ -22,7 +30,9 @@ export default function ChatsPage() {
         <title>Chat - goaTinder</title>
       </Head>
       <main className="container mt-4 flex flex-col items-center px-4">
-        <ol className="space-y-4">
+        {/* TODO: make look like a chat */}
+        <NewChatButton className="btn-secondary btn" />
+        <ol className="mt-4 space-y-4">
           {chatInfos ? (
             chatInfos.length ? (
               chatInfos.map((chatInfo) => (
@@ -47,7 +57,9 @@ export default function ChatsPage() {
       </main>
     </>
   );
-}
+};
+
+export default ChatsPage;
 
 export const getServerSideProps = (async (context) => {
   const session = await getServerSession(context.req, context.res, authOptions);
@@ -63,7 +75,10 @@ export const getServerSideProps = (async (context) => {
 
   const ssg = await createSSGHelpers(session);
 
-  await ssg.chat.getAllInfo.prefetch();
+  await Promise.all([
+    ssg.chat.getAllInfo.prefetch(),
+    ssg.user.getAllOtherUsers.prefetch(),
+  ]);
 
   return {
     props: {

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 
 // TODO: delete gc (on manage page, only creator can delete)
+// TODO: create gc
 
 const commonMessageSelect = {
   id: true,

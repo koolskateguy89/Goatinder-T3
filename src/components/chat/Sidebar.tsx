@@ -1,5 +1,6 @@
 import { api } from "utils/api";
-import SidebarChatPreview from "./SidebarChatPreview";
+import SidebarChatPreview from "components/chat/SidebarChatPreview";
+import NewChatButton from "components/chat/NewChatButton";
 
 export default function Sidebar() {
   // prefetched in getServerSideProps
@@ -9,9 +10,12 @@ export default function Sidebar() {
   // because we'll need to filter
 
   return (
-    <aside>
+    <aside className="px-4">
       {/* TODO: search */}
-      {/* TODO: new chat button (open dialog) */}
+
+      {/* TODO: make more styled like a Preview */}
+      <NewChatButton className="btn-secondary btn-block btn mb-4" />
+
       <ol className="space-y-4 overflow-y-auto px-4">
         {chatInfos ? (
           chatInfos.length ? (
