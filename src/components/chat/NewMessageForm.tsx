@@ -5,20 +5,17 @@ import { CgSpinner } from "react-icons/cg";
 import { MdSend } from "react-icons/md";
 
 import { api, type RouterOutputs } from "utils/api";
+import { useChatInfo } from "store/chat/info";
 
 type MessageType = RouterOutputs["chat"]["messagesById"]["messages"][number];
 
 export type NewMessageFormProps = {
-  groupChat: boolean;
-  id: string;
   onMessageSent: (message: MessageType) => void;
 };
 
-export default function NewMessageForm({
-  groupChat,
-  id,
-  onMessageSent,
-}: NewMessageFormProps) {
+export default function NewMessageForm({ onMessageSent }: NewMessageFormProps) {
+  const { groupChat, id } = useChatInfo();
+
   const [content, setContent] = useState("");
 
   const sendPrivateMessageMut = api.chat.sendPrivateMessage.useMutation();

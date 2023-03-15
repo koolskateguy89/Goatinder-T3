@@ -55,7 +55,7 @@ type PrivateChatInfo = {
   mostRecentMessage: CommonMessage;
 } & BasicUserInfo;
 
-type ChatInfo = GroupChatInfo | PrivateChatInfo;
+export type ChatInfo = GroupChatInfo | PrivateChatInfo;
 
 function toPrivateChatInfo(
   user: BasicUserInfo,

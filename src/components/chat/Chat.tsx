@@ -3,6 +3,7 @@ import Head from "next/head";
 import { type ImmerReducer, useImmerReducer } from "use-immer";
 
 import { api, type RouterOutputs } from "utils/api";
+import { ChatInfoProvider } from "store/chat/info";
 import ChatMeta from "components/chat/ChatMeta";
 import Messages from "components/chat/Messages";
 import NewMessageForm from "components/chat/NewMessageForm";
@@ -42,10 +43,12 @@ const messageReducer: ImmerReducer<MessageState, MessageAction> = (
 
 export default function Chat({ id }: { id: string }) {
   // prefetched in getServerSideProps
-  const { data: chatData } = api.chat.infoById.useQuery({ id });
+  const chatInfoQuery = api.chat.infoById.useQuery({ id });
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const chatData = chatInfoQuery.data!;
   const { data: messagesData } = api.chat.messagesById.useQuery({ id });
 
-  const title = chatData ? `${chatData.name} - goaTinder` : "goaTinder";
+  const title = `${chatData.name} - goaTinder`;
 
   const [messageState, messagesDispatch] = useImmerReducer(messageReducer, {
     messages: messagesData?.messages ?? [],
@@ -69,46 +72,20 @@ export default function Chat({ id }: { id: string }) {
   };
 
   return (
-    <>
+    <ChatInfoProvider value={chatData}>
       <Head>
         <title>{title}</title>
       </Head>
       <div className="border-b-4 border-base-300 p-2 dark:border-white/5">
-        {chatData ? (
-          <ChatMeta
-            name={chatData.name}
-            image={chatData.image}
-            nameHref={
-              chatData.groupChat ? `/chat/${id}/manage` : `/profile/${id}`
-            }
-          />
-        ) : (
-          <div>
-            <h1>loading...</h1>
-          </div>
-        )}
+        <ChatMeta />
       </div>
 
-      {chatData ? (
-        <>
-          <div className="relative flex-grow p-1 md:p-4">
-            <Messages
-              groupChat={chatData.groupChat}
-              messages={messageState.messages}
-              onDelete={onMessageDelete}
-            />
-          </div>
-          <div className="p-1 md:p-4">
-            <NewMessageForm
-              id={chatData.id}
-              groupChat={chatData.groupChat}
-              onMessageSent={onMessageSent}
-            />
-          </div>
-        </>
-      ) : (
-        <>Loading...</>
-      )}
-    </>
+      <div className="relative flex-grow p-1 md:p-4">
+        <Messages messages={messageState.messages} onDelete={onMessageDelete} />
+      </div>
+      <div className="p-1 md:p-4">
+        <NewMessageForm onMessageSent={onMessageSent} />
+      </div>
+    </ChatInfoProvider>
   );
 }
