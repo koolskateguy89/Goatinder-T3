@@ -17,9 +17,6 @@ import {
 import { groupChatRouter } from "server/api/routers/chat/group";
 import { privateChatRouter } from "server/api/routers/chat/private";
 
-// TODO: delete gc (on manage page, only creator can delete)
-// TODO: create gc
-
 export const chatRouter = createTRPCRouter({
   group: groupChatRouter,
   private: privateChatRouter,

@@ -8,33 +8,70 @@ import { getServerSession } from "next-auth";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { prisma } from "server/db";
-
-// TODO: get id from url
+import DeleteGroupButton from "components/chat/manage/DeleteGroupButton";
+import LeaveGroupButton from "components/chat/manage/LeaveGroupButton";
 
 // TODO: only allow gc creator to add & remove members
 // TODO: allow creator to change gc name & image
-// TODO: allow creator to delete gc
 
-// anyone in the gc can access this page, they can see the creator
 // and members and be able to leave the GC
 // ^ the creator has to set a new creator before they can leave
 // really creator is admin
-
-// tbh could use SSR for this instead of tRPC
+// maybe not allow creator to leave at all (no change creator)
 
 const ManageGroupChatPage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ groupChat }) => {
+> = ({ groupChat, iAmCreator }) => {
   const title = `${groupChat.name} - goaTinder`;
+
+  const ManageButton = iAmCreator ? DeleteGroupButton : LeaveGroupButton;
 
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container">
-        <div>Manage Group Chat {groupChat.name}</div>
+      <main className="container mt-2 px-2">
         <pre>groupChat = {JSON.stringify(groupChat, null, 2)}</pre>
+
+        <h1 className="text-2xl font-semibold">
+          {/* TODO: name editable */}
+          {groupChat.name}
+        </h1>
+
+        {/* TODO: be able to update image */}
+
+        <section>
+          <h2 className="text-xl font-semibold">Creator</h2>
+          {/* TODO: display the creator, or some */}
+          {/* sort of indicator of "me" */}
+        </section>
+
+        <section>
+          <h2 className="text-xl font-semibold">
+            Members
+            {/* TODO: maybe maybe add button a component cos need a modal */}
+            {iAmCreator && (
+              <button type="button" className="btn-success btn ml-4">
+                Add
+              </button>
+            )}
+          </h2>
+          <ul>
+            {groupChat.members.length ? (
+              groupChat.members.map((user) => (
+                <li key={user.id}>
+                  {user.name}
+                  {/* TODO: button to remove if creator */}
+                </li>
+              ))
+            ) : (
+              <li>No members</li>
+            )}
+          </ul>
+        </section>
+
+        <ManageButton className="btn-error btn mt-8" id={groupChat.id} />
       </main>
     </>
   );
@@ -96,6 +133,7 @@ export const getServerSideProps = (async (context) => {
     props: {
       session,
       groupChat,
+      iAmCreator: userId === groupChat.creatorId,
     },
   };
 }) satisfies GetServerSideProps<Record<string, unknown>, { id: string }>;
