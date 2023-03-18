@@ -1,4 +1,3 @@
-import { useChatInfo } from "store/chat/info";
 import Message, { type MessageProps } from "components/chat/Message";
 
 export type MessagesProps = {
@@ -7,14 +6,12 @@ export type MessagesProps = {
 };
 
 export default function Messages({ messages, onDelete }: MessagesProps) {
-  const { groupChat } = useChatInfo();
-
   return (
     <ol className="absolute inset-0 max-h-full overflow-y-auto">
       {messages.length ? (
         messages.map((message) => (
           <li key={message.id}>
-            <Message {...message} groupChat={groupChat} onDelete={onDelete} />
+            <Message {...message} onDelete={onDelete} />
           </li>
         ))
       ) : (

@@ -3,6 +3,7 @@ import type { GroupChatMessage, PrivateMessage, User } from "@prisma/client";
 import clsx from "clsx";
 
 import { api } from "utils/api";
+import { useChatInfo } from "store/chat/info";
 import Avatar from "components/Avatar";
 
 type CommonMessage = GroupChatMessage | PrivateMessage;
@@ -10,7 +11,6 @@ type CommonMessage = GroupChatMessage | PrivateMessage;
 // /images/stock/photo-1534528741775-53994a69daeb.jpg
 
 export type MessageProps = Pick<CommonMessage, "id" | "content" | "sentAt"> & {
-  groupChat: boolean;
   sender: Pick<User, "id" | "name" | "image">;
   onDelete: (messageId: string) => void;
 };
@@ -28,7 +28,6 @@ function formatDate(date: Date): string {
 }
 
 export default function Message({
-  groupChat,
   id,
   sender,
   content,
@@ -38,6 +37,8 @@ export default function Message({
   const { data: session } = useSession();
 
   const isMyMessage = session?.user?.id === sender.id;
+
+  const { groupChat } = useChatInfo();
 
   // TODO: rightclick -> menu -> delete [if isMyMessage or iAmAdmin(only for gc
 

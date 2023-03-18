@@ -80,7 +80,7 @@ export default function Chat({ id }: { id: string }) {
         <ChatMeta />
       </div>
 
-      <div className="relative flex-grow p-1 md:p-4">
+      <div className="relative m-1 flex-grow">
         <Messages messages={messageState.messages} onDelete={onMessageDelete} />
       </div>
       <div className="p-1 md:p-4">
