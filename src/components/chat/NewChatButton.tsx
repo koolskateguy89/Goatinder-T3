@@ -91,14 +91,14 @@ export default function NewChatButton({ className }: NewChatButtonProps) {
               >
                 Chat
               </button>
-              <button
+              {/* <button
                 type="button"
                 className="btn-primary btn"
                 onClick={createNewGroupChat}
                 disabled={newGroupChatMut.isLoading}
               >
                 New group chat
-              </button>
+              </button> */}
             </div>
           </form>
         </Dialog.Panel>
