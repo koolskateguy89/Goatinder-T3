@@ -18,7 +18,7 @@ export default function DeleteGroupButton({
 
   const handleDelete = async () => {
     // TODO: confirm delete
-    deleteMut.mutate({ id });
+    await deleteMut.mutateAsync({ id });
     await router.push("/chat");
   };
 

@@ -31,25 +31,24 @@ const ManageGroupChatPage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container mt-2 px-2">
+      <main className="container mt-2 space-y-4 px-2">
         <pre>groupChat = {JSON.stringify(groupChat, null, 2)}</pre>
 
-        <h1 className="text-2xl font-semibold">
+        <h1 className="text-2xl font-semibold text-red-400 underline">
           {/* TODO: name editable */}
           {groupChat.name}
         </h1>
 
+        <p>
+          Group created by {groupChat.creator.name} on{" "}
+          {groupChat.createdAt.toDateString()}
+        </p>
+
         {/* TODO: be able to update image */}
 
         <section>
-          <h2 className="text-xl font-semibold">Creator</h2>
-          {/* TODO: display the creator, or some */}
-          {/* sort of indicator of "me" */}
-        </section>
-
-        <section>
           <h2 className="text-xl font-semibold">
-            Members
+            {groupChat.members.length} members
             {/* TODO: maybe maybe add button a component cos need a modal */}
             {iAmCreator && (
               <button type="button" className="btn-success btn ml-4">
@@ -58,16 +57,12 @@ const ManageGroupChatPage: NextPage<
             )}
           </h2>
           <ul>
-            {groupChat.members.length ? (
-              groupChat.members.map((user) => (
-                <li key={user.id}>
-                  {user.name}
-                  {/* TODO: button to remove if creator */}
-                </li>
-              ))
-            ) : (
-              <li>No members</li>
-            )}
+            {groupChat.members.map((user) => (
+              <li key={user.id}>
+                {user.name}
+                {/* TODO: button to remove if creator */}
+              </li>
+            ))}
           </ul>
         </section>
 
