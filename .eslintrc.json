@@ -52,8 +52,8 @@
     "no-promise-executor-return": "off",
     "consistent-return": "off",
     "@typescript-eslint/naming-convention": "off", // annoying when dealing with external libraries
-    "@typescript-eslint/no-floating-promises": "warn", // annoying as error during development
     "react/jsx-no-useless-fragment": "warn", // annoying as error during development
+    "no-void": "off", // conflicts with no-floating-promises
 
     // my own rules
     "no-duplicate-imports": "error",
