@@ -66,8 +66,9 @@ const ExplorePage: NextPage = () => {
         <meta name="description" content="llo" />
       </Head>
       <InstantSearchProvider>
-        <main className="container flex flex-col items-center gap-y-4 py-4 px-2 lg:px-12">
+        <main className="container flex flex-col items-center gap-y-4 px-2 py-4 lg:px-12">
           <Configure
+            // @ts-expect-error Idk
             analytics={false}
             filters="product_category:shoes" // only return shoes
             hitsPerPage={12}
