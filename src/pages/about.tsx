@@ -1,6 +1,7 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { getServerSession } from "next-auth";
+import { FaGithub } from "react-icons/fa";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 
@@ -11,7 +12,15 @@ const AboutPage: NextPage = () => {
         <title>About - goaTinder</title>
       </Head>
       <main className="container prose p-4">
-        <h1>About</h1>
+        <h1 className="flex flex-row space-x-2">
+          <span>About</span>
+          <a
+            href="https://github.com/koolskateguy89/goatinder-T3/"
+            target="_blank"
+          >
+            <FaGithub />
+          </a>
+        </h1>
 
         <p>
           Bootstrapped using the{" "}
