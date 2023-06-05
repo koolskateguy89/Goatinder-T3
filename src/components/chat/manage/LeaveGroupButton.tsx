@@ -18,7 +18,7 @@ export default function LeaveGroupButton({
 
   const handleLeave = async () => {
     // TODO: confirm leave
-    leaveMut.mutateAsync({ id });
+    void leaveMut.mutateAsync({ id });
     await router.push("/chat");
   };
 
