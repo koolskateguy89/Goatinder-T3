@@ -35,13 +35,13 @@ export default function CustomInstantSearchBox({
 
   return (
     <form onSubmit={(e) => e.preventDefault()} onReset={clear}>
-      <div className="input-group [&>.btn]:text-2xl">
+      <div className="join [&>.btn]:text-2xl">
         <input
           type="search"
           placeholder={placeholder}
           defaultValue={query}
           onChange={(event) => setDebouncedQuery(event.currentTarget.value)}
-          className="input-bordered input dark:placeholder:opacity-60"
+          className="input-bordered input join-item dark:placeholder:opacity-60"
           aria-label="Search"
         />
 
@@ -61,7 +61,7 @@ export default function CustomInstantSearchBox({
         <button
           type="reset"
           title="Reset refinement"
-          className="btn-secondary btn-square btn"
+          className="btn-secondary btn-square join-item btn"
         >
           <MdClose />
         </button>

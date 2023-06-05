@@ -33,13 +33,13 @@ export default function CustomSearchBox({
 
   return (
     <form onSubmit={handleSubmit} onReset={clear}>
-      <div className="input-group [&_.btn]:text-2xl">
+      <div className="join [&_.btn]:text-2xl">
         <input
           type="search"
           name="query"
           placeholder={placeholder}
           defaultValue={algoliaQuery}
-          className="input-bordered input dark:placeholder:opacity-60"
+          className="input-bordered input join-item dark:placeholder:opacity-60"
           aria-label="Search"
           required
         />
@@ -60,7 +60,7 @@ export default function CustomSearchBox({
         <button
           type="submit"
           title="Search"
-          className="btn-primary btn-square btn"
+          className="btn-primary btn-square join-item btn"
           disabled={loadingOrStalled}
         >
           <MdSearch />
@@ -68,7 +68,7 @@ export default function CustomSearchBox({
         <button
           type="reset"
           title="Reset the search"
-          className="btn-secondary btn-square btn"
+          className="btn-secondary btn-square join-item btn"
         >
           <MdClose />
         </button>

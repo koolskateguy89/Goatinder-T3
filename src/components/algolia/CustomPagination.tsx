@@ -24,10 +24,10 @@ export default function CustomPagination(props: UsePaginationProps) {
 
   return (
     <div className="max-w-full overflow-x-auto">
-      <div className="btn-group">
+      <div className="join">
         <button
           type="button"
-          className="btn max-md:btn-sm"
+          className="join-item btn max-md:btn-sm"
           onClick={() => refine(0)}
           aria-label="First"
           disabled={isFirstPage}
@@ -36,7 +36,7 @@ export default function CustomPagination(props: UsePaginationProps) {
         </button>
         <button
           type="button"
-          className="btn max-md:btn-sm"
+          className="join-item btn max-md:btn-sm"
           onClick={() => refine(currentRefinement - 1)}
           aria-label="Previous"
           disabled={isFirstPage}
@@ -52,7 +52,7 @@ export default function CustomPagination(props: UsePaginationProps) {
               type="button"
               onClick={() => refine(page)}
               className={clsx(
-                "btn max-md:btn-sm",
+                "join-item btn max-md:btn-sm",
                 isCurrentPage && canRefine && "btn-secondary"
               )}
               aria-label={`Page ${page + 1}`}
@@ -64,7 +64,7 @@ export default function CustomPagination(props: UsePaginationProps) {
 
         <button
           type="button"
-          className="btn max-md:btn-sm"
+          className="join-item btn max-md:btn-sm"
           onClick={() => refine(currentRefinement + 1)}
           aria-label="Next"
           disabled={isLastPage}
@@ -73,7 +73,7 @@ export default function CustomPagination(props: UsePaginationProps) {
         </button>
         <button
           type="button"
-          className="btn max-md:btn-sm"
+          className="join-item btn max-md:btn-sm"
           onClick={() => refine(nbPages - 1)}
           aria-label="Last"
           disabled={isLastPage}
