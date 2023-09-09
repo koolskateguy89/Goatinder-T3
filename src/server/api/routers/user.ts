@@ -4,10 +4,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
 
 export const userRouter = createTRPCRouter({
-  /**
-   * Can also be used to update the profile
-   */
-  createProfile: protectedProcedure
+  createOrUpdateProfile: protectedProcedure
     .input(
       z.object({
         bio: z.string().trim().min(1),
