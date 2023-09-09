@@ -17,7 +17,7 @@ import Avatar from "components/Avatar";
 const EditProfilePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
 > = ({ user }) => {
-  const editProfile = api.user.createProfile.useMutation();
+  const editProfile = api.user.createOrUpdateProfile.useMutation();
 
   const currentBio = useRef(user.profile?.bio ?? "");
   const [newBio, setNewBio] = useState(user.profile?.bio ?? "");
@@ -47,7 +47,7 @@ const EditProfilePage: NextPage<
       <Head>
         <title>Edit profile - goaTinder</title>
       </Head>
-      <main className="container flex flex-col items-center gap-y-4 px-4 pt-2 pb-4">
+      <main className="container flex flex-col items-center gap-y-4 px-4 pb-4 pt-2">
         <h1 className="text-5xl font-extrabold underline underline-offset-4">
           {user.name ?? "An unnamed user"}
         </h1>

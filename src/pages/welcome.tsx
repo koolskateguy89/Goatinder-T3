@@ -23,7 +23,7 @@ const WelcomePage: NextPage<
 
   const [canAddBio, setCanAddBio] = useState(!profileExists);
 
-  const createProfile = api.user.createProfile.useMutation();
+  const createProfile = api.user.createOrUpdateProfile.useMutation();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
