@@ -62,7 +62,9 @@ export default function Message({
       />
       <div className="chat-header">
         {sender.name}
-        <time className="text-xs opacity-50">{formatDate(sentAt)}</time>
+        <time dateTime={sentAt.toISOString()} className="text-xs opacity-50">
+          {formatDate(sentAt)}
+        </time>
       </div>
       <div className="chat-bubble">{content}</div>
       {/* TODO: not sure about if we want to show status (seen etc.) */}
