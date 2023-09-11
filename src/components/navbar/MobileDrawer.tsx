@@ -6,6 +6,14 @@ import { Dialog, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { HiOutlineMenuAlt1 } from "react-icons/hi";
 import { HiXMark } from "react-icons/hi2";
+import {
+  MdHome,
+  MdInfo,
+  MdSearch,
+  MdExplore,
+  MdPeople,
+  MdChat,
+} from "react-icons/md";
 
 import Brand from "components/Brand";
 
@@ -16,18 +24,17 @@ function MobileNavItem({
   children,
 }: React.PropsWithChildren<{ href: string }>) {
   const router = useRouter();
-  const active = router.asPath === href;
+  const isActive = router.asPath === href;
 
   return (
     <li>
-      <Link href={href} className={clsx(active && "active")}>
+      <Link href={href} className={clsx(isActive && "active")}>
         {children}
       </Link>
     </li>
   );
 }
 
-// TODO: add icons
 export default function MobileDrawer() {
   const router = useRouter();
 
@@ -111,23 +118,37 @@ export default function MobileDrawer() {
                   <main>
                     <nav>
                       <ul className="menu my-4 px-4">
-                        <MobileNavItem href="/">Home</MobileNavItem>
-                        <MobileNavItem href="/about">About</MobileNavItem>
+                        <MobileNavItem href="/">
+                          <MdHome />
+                          Home
+                        </MobileNavItem>
+                        <MobileNavItem href="/about">
+                          <MdInfo />
+                          About
+                        </MobileNavItem>
                         <li className="menu-title">
                           <span>Shoes</span>
                         </li>
                         <MobileNavItem href="/shoes/search">
+                          <MdSearch />
                           Search
                         </MobileNavItem>
                         <MobileNavItem href="/shoes/explore">
+                          <MdExplore />
                           Explore
                         </MobileNavItem>
                         <li className="menu-title">
                           <span>Social</span>
                         </li>
-                        <MobileNavItem href="/profiles">Users</MobileNavItem>
+                        <MobileNavItem href="/profiles">
+                          <MdPeople />
+                          Users
+                        </MobileNavItem>
                         {signedIn && (
-                          <MobileNavItem href="/chat">Chat</MobileNavItem>
+                          <MobileNavItem href="/chat">
+                            <MdChat />
+                            Chat
+                          </MobileNavItem>
                         )}
                       </ul>
                     </nav>
