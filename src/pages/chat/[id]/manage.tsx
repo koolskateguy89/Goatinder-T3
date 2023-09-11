@@ -6,6 +6,7 @@ import type {
 import Head from "next/head";
 import Link from "next/link";
 import { getServerSession } from "next-auth";
+import { MdArrowBack } from "react-icons/md";
 
 import type { GroupChatInfo } from "types/chat";
 import { authOptions } from "pages/api/auth/[...nextauth]";
@@ -18,9 +19,6 @@ import DeleteGroupButton from "components/chat/manage/DeleteGroupButton";
 import LeaveGroupButton from "components/chat/manage/LeaveGroupButton";
 import MembersList from "components/chat/manage/MembersList";
 import Member from "components/chat/manage/Member";
-
-// TODO: only allow gc creator to add & remove members
-// TODO: allow creator to change gc name & image
 
 // and members and be able to leave the GC
 // ^ the creator has to set a new creator before they can leave
@@ -65,22 +63,32 @@ const ManageGroupChatPage: NextPage<
         <title>{title}</title>
       </Head>
       <main className="container mt-2 max-w-lg space-y-4 px-2">
-        <EditableName
-          canEdit={iAmCreator}
-          id={groupChat.id}
-          name={groupChat.name}
-          beforeNameChange={(newName) => {
-            // Optimistically update the name
-            utils.chat.infoById.setData({ id }, (oldGroupChatInfo) => {
-              if (!oldGroupChatInfo) return;
+        <div className="flex items-center gap-x-2">
+          <Link
+            href={`/chat/${id}`}
+            className="btn-primary btn-sm btn-circle btn"
+          >
+            <MdArrowBack />
+            <span className="sr-only">Back</span>
+          </Link>
 
-              return {
-                ...oldGroupChatInfo,
-                name: newName,
-              };
-            });
-          }}
-        />
+          <EditableName
+            canEdit={iAmCreator}
+            id={groupChat.id}
+            name={groupChat.name}
+            beforeNameChange={(newName) => {
+              // Optimistically update the name
+              utils.chat.infoById.setData({ id }, (oldGroupChatInfo) => {
+                if (!oldGroupChatInfo) return;
+
+                return {
+                  ...oldGroupChatInfo,
+                  name: newName,
+                };
+              });
+            }}
+          />
+        </div>
 
         <p>
           Group created by{" "}
