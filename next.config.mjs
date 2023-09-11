@@ -31,7 +31,7 @@ const config = {
       {
         // only in dev/preview
         protocol: "https",
-        hostname: "placeimg.com",
+        hostname: "picsum.photos",
       },
     ],
   },
