@@ -4,12 +4,20 @@ import type {
   NextPage,
 } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import { getServerSession } from "next-auth";
 
+import type { GroupChatInfo } from "types/chat";
 import { authOptions } from "pages/api/auth/[...nextauth]";
+import { createSSGHelpers } from "utils/ssg";
 import { prisma } from "server/db";
+import { api } from "utils/api";
+import EditableName from "components/chat/manage/EditableName";
+import AddMemberButton from "components/chat/manage/AddMemberButton";
 import DeleteGroupButton from "components/chat/manage/DeleteGroupButton";
 import LeaveGroupButton from "components/chat/manage/LeaveGroupButton";
+import MembersList from "components/chat/manage/MembersList";
+import Member from "components/chat/manage/Member";
 
 // TODO: only allow gc creator to add & remove members
 // TODO: allow creator to change gc name & image
@@ -21,49 +29,109 @@ import LeaveGroupButton from "components/chat/manage/LeaveGroupButton";
 
 const ManageGroupChatPage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
-> = ({ groupChat, iAmCreator }) => {
+> = ({ id, iAmCreator }) => {
+  // Prefetched in GSSP
+  const { data: _groupChat } = api.chat.infoById.useQuery(
+    { id },
+    { refetchOnWindowFocus: false }
+  );
+  const groupChat = _groupChat as GroupChatInfo;
+
+  // Prefetched in GSSP
+  const { data: _members, refetch: refetchMembers } =
+    api.chat.group.getMembers.useQuery({ id }, { refetchOnWindowFocus: false });
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const members = _members!;
+
   const title = `${groupChat.name} - goaTinder`;
 
   const ManageButton = iAmCreator ? DeleteGroupButton : LeaveGroupButton;
+
+  const utils = api.useContext();
+
+  const removeMemberMut = api.chat.group.removeMember.useMutation({
+    async onSuccess() {
+      await refetchMembers();
+    },
+  });
+
+  const handleRemoveMember = async (memberId: string) => {
+    await removeMemberMut.mutateAsync({ id, userId: memberId });
+  };
 
   return (
     <>
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container mt-2 space-y-4 px-2">
-        <pre>groupChat = {JSON.stringify(groupChat, null, 2)}</pre>
+      <main className="container mt-2 max-w-lg space-y-4 px-2">
+        <EditableName
+          canEdit={iAmCreator}
+          id={groupChat.id}
+          name={groupChat.name}
+          beforeNameChange={(newName) => {
+            // Optimistically update the name
+            utils.chat.infoById.setData({ id }, (oldGroupChatInfo) => {
+              if (!oldGroupChatInfo) return;
 
-        <h1 className="text-2xl font-semibold text-red-400 underline">
-          {/* TODO: name editable */}
-          {groupChat.name}
-        </h1>
+              return {
+                ...oldGroupChatInfo,
+                name: newName,
+              };
+            });
+          }}
+        />
 
         <p>
-          Group created by {groupChat.creator.name} on{" "}
-          {groupChat.createdAt.toDateString()}
+          Group created by{" "}
+          <Link
+            href={`/profile/${groupChat.creator.id}`}
+            className="link-hover link"
+          >
+            {groupChat.creator.name}
+          </Link>{" "}
+          on{" "}
+          <time dateTime={groupChat.createdAt.toISOString()}>
+            {groupChat.createdAt.toDateString()}
+          </time>
         </p>
 
         {/* TODO: be able to update image */}
 
-        <section>
+        <section className="space-y-2">
           <h2 className="text-xl font-semibold">
-            {groupChat.members.length} members
-            {/* TODO: maybe maybe add button a component cos need a modal */}
+            {members.length} member{members.length !== 1 && "s"}
             {iAmCreator && (
-              <button type="button" className="btn-success btn ml-4">
-                Add
-              </button>
+              <AddMemberButton
+                groupChatId={id}
+                onAddMember={() => refetchMembers()}
+              />
             )}
           </h2>
-          <ul>
-            {groupChat.members.map((user) => (
-              <li key={user.id}>
-                {user.name}
-                {/* TODO: button to remove if creator */}
+          <MembersList>
+            {members.length === 0 ? (
+              <li>
+                <p className="p-4 text-center">
+                  {
+                    /* it should be impossible for group to have no members & user isn't creator */
+                    iAmCreator
+                      ? "No members yet, add some!"
+                      : "You're the only member"
+                  }
+                </p>
               </li>
-            ))}
-          </ul>
+            ) : (
+              members.map((user) => (
+                <li key={user.id}>
+                  <Member
+                    {...user}
+                    canRemove={iAmCreator}
+                    onRemove={handleRemoveMember}
+                  />
+                </li>
+              ))
+            )}
+          </MembersList>
         </section>
 
         <ManageButton className="btn-error btn mt-8" id={groupChat.id} />
@@ -99,9 +167,16 @@ export const getServerSideProps = (async (context) => {
     where: {
       id,
     },
-    include: {
-      creator: true,
-      members: true,
+    select: {
+      creatorId: true,
+      members: {
+        select: {
+          id: true,
+        },
+        where: {
+          id: userId,
+        },
+      },
     },
   });
 
@@ -111,10 +186,7 @@ export const getServerSideProps = (async (context) => {
     };
 
   // Only allow creator & members to access this page
-  if (
-    userId !== groupChat.creatorId &&
-    !groupChat.members.some((member) => member.id === userId)
-  ) {
+  if (userId !== groupChat.creatorId && groupChat.members.length === 0) {
     // TODO?: maybe show a message saying they don't have access to this page
     return {
       redirect: {
@@ -124,11 +196,20 @@ export const getServerSideProps = (async (context) => {
     };
   }
 
+  const ssg = await createSSGHelpers(session);
+
+  // prefetch chat data
+  await Promise.allSettled([
+    ssg.chat.infoById.prefetch({ id }),
+    ssg.chat.group.getMembers.prefetch({ id }),
+  ]);
+
   return {
     props: {
       session,
-      groupChat,
+      id,
       iAmCreator: userId === groupChat.creatorId,
+      trpcState: ssg.dehydrate(),
     },
   };
 }) satisfies GetServerSideProps<Record<string, unknown>, { id: string }>;
