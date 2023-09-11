@@ -125,3 +125,108 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+/**
+ * Reusable middleware that enforces users are the group chat's creator before running the
+ * procedure.
+ *
+ * Though it increases the number of database queries, it's better to do this in middleware
+ * than in the procedure. And it's likely the proecdure will make this same query anyway.
+ *
+ * TODO: try and enforce input type - not sure if possible
+ */
+const enforceUserIsCreator = enforceUserIsAuthed.unstable_pipe(
+  async ({ ctx, next, rawInput }) => {
+    const { id } = rawInput as { id: string };
+    const userId = ctx.session.user.id;
+
+    const groupChat = await ctx.prisma.groupChat.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        creatorId: true,
+      },
+    });
+
+    if (!groupChat) {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    if (groupChat.creatorId !== userId) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "You are not the creator of this group chat",
+      });
+    }
+
+    return next();
+  }
+);
+
+/**
+ * Group creator (authenticated) procedure
+ *
+ * If you want a procedure to ONLY be accessible to group chat creator, use this. It verifies
+ * the user is the creator of the group chat.
+ *
+ * @note group chat ID has to be passed in as `id` in the input
+ * @see https://trpc.io/docs/procedures
+ */
+export const groupChatCreatorProcedure = t.procedure.use(enforceUserIsCreator);
+
+/**
+ * Reusable middleware that enforces users have access to the group chat before running the procedure.
+ * Specifically, they must be a member or the creator of the group chat.
+ *
+ * TODO: try and enforce input type - not sure if possible
+ */
+const enforceUserHasAccessToGroupChat = enforceUserIsAuthed.unstable_pipe(
+  async ({ ctx, next, rawInput }) => {
+    const { id } = rawInput as { id: string };
+    const userId = ctx.session.user.id;
+
+    const groupChat = await ctx.prisma.groupChat.findUnique({
+      where: {
+        id,
+      },
+      select: {
+        creatorId: true,
+        members: {
+          select: {
+            id: true,
+          },
+          where: {
+            id: userId,
+          },
+        },
+      },
+    });
+
+    if (!groupChat) {
+      throw new TRPCError({ code: "NOT_FOUND" });
+    }
+
+    if (groupChat.creatorId !== userId && groupChat.members.length === 0) {
+      throw new TRPCError({
+        code: "UNAUTHORIZED",
+        message: "You do not have access to this group chat",
+      });
+    }
+
+    return next();
+  }
+);
+
+/**
+ * Group member/creator (authenticated) procedure
+ *
+ * If you want a procedure to ONLY be accessible to people with access to a group chat, use this.
+ * It verifies the user is has access to the group chat (creator/member).
+ *
+ * @note group chat ID has to be passed in as `id` in the input
+ * @see https://trpc.io/docs/procedures
+ */
+export const groupChatProcedure = t.procedure.use(
+  enforceUserHasAccessToGroupChat
+);

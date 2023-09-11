@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 import clsx from "clsx";
 
 import { api } from "utils/api";
+import SimpleTransitionDialog from "components/common/SimpleTransitionDialog";
 
 export type DeleteGroupButtonProps = {
   id: string;
@@ -14,10 +16,14 @@ export default function DeleteGroupButton({
 }: DeleteGroupButtonProps) {
   const router = useRouter();
 
+  const [isOpen, setOpen] = useState(false);
+
+  const openModal = () => setOpen(true);
+  const closeModal = () => setOpen(false);
+
   const deleteMut = api.chat.group.delete.useMutation();
 
   const handleDelete = async () => {
-    // TODO: confirm delete
     await deleteMut.mutateAsync({ id });
     await router.push("/chat");
   };
@@ -27,12 +33,30 @@ export default function DeleteGroupButton({
       <button
         type="button"
         className={clsx(className, deleteMut.isLoading && "loading")}
-        onClick={handleDelete}
+        onClick={openModal}
         disabled={deleteMut.isLoading}
       >
         Delete
       </button>
-      todo transition (dialog)
+
+      <SimpleTransitionDialog
+        isOpen={isOpen}
+        closeModal={closeModal}
+        title="Are you sure you want to delete this group chat? (irreversible)"
+      >
+        <div className="mt-3 flex justify-evenly">
+          <button
+            type="button"
+            onClick={handleDelete}
+            className="btn-warning btn"
+          >
+            Yes
+          </button>
+          <button type="button" onClick={closeModal} className="btn">
+            No
+          </button>
+        </div>
+      </SimpleTransitionDialog>
     </>
   );
 }

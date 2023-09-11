@@ -63,10 +63,7 @@ export const getServerSideProps = (async (context) => {
 
   const ssg = await createSSGHelpers(session);
 
-  await Promise.all([
-    ssg.chat.getAllInfo.prefetch(),
-    ssg.user.getAllOtherUsers.prefetch(),
-  ]);
+  await ssg.chat.getAllInfo.prefetch();
 
   return {
     props: {

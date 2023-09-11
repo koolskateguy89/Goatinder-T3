@@ -1,9 +1,37 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  groupChatCreatorProcedure,
+  groupChatProcedure,
+} from "server/api/trpc";
 import { commonMessageSelect } from "types/chat";
 
 export const groupChatRouter = createTRPCRouter({
+  getMembers: groupChatProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+
+      console.log("ge member");
+
+      return await ctx.prisma.groupChat
+        .findUniqueOrThrow({
+          where: {
+            id,
+          },
+          select: {
+            members: true,
+          },
+        })
+        .members();
+    }),
+
   createNew: protectedProcedure
     .input(
       z.object({
@@ -33,7 +61,7 @@ export const groupChatRouter = createTRPCRouter({
       });
     }),
 
-  sendMessage: protectedProcedure
+  sendMessage: groupChatProcedure
     .input(
       z.object({
         groupChatId: z.string().cuid(),
@@ -44,28 +72,6 @@ export const groupChatRouter = createTRPCRouter({
       const { groupChatId, content } = input;
 
       const senderId = ctx.session.user.id;
-
-      const { creatorId, members } =
-        await ctx.prisma.groupChat.findUniqueOrThrow({
-          where: {
-            id: groupChatId,
-          },
-          select: {
-            creatorId: true,
-            members: {
-              select: {
-                id: true,
-              },
-              where: {
-                id: senderId,
-              },
-            },
-          },
-        });
-
-      if (creatorId !== senderId && members.length === 0) {
-        throw new Error("You are not part of this group chat");
-      }
 
       const message = await ctx.prisma.groupChatMessage.create({
         data: {
@@ -87,20 +93,29 @@ export const groupChatRouter = createTRPCRouter({
       return message;
     }),
 
-  update: protectedProcedure
+  update: groupChatCreatorProcedure
     .input(
       z.object({
         id: z.string().cuid(),
-        name: z.string().trim().min(1),
-        image: z.string().url(),
+        name: z.string().trim().min(1).optional(),
+        image: z.string().url().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // TODO
+      const { id, name, image } = input;
+
+      await ctx.prisma.groupChat.update({
+        where: {
+          id,
+        },
+        data: {
+          name,
+          image,
+        },
+      });
     }),
 
-  // TODO: add/remove member (could be inside `update`)
-  addMember: protectedProcedure
+  addMember: groupChatCreatorProcedure
     .input(
       z.object({
         id: z.string().cuid(),
@@ -108,7 +123,44 @@ export const groupChatRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // TODO
+      const { id, userId } = input;
+
+      await ctx.prisma.groupChat.update({
+        where: {
+          id,
+        },
+        data: {
+          members: {
+            connect: {
+              id: userId,
+            },
+          },
+        },
+      });
+    }),
+
+  removeMember: groupChatCreatorProcedure
+    .input(
+      z.object({
+        id: z.string().cuid(),
+        userId: z.string().cuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { id, userId } = input;
+
+      await ctx.prisma.groupChat.update({
+        where: {
+          id,
+        },
+        data: {
+          members: {
+            disconnect: {
+              id: userId,
+            },
+          },
+        },
+      });
     }),
 
   leave: protectedProcedure
@@ -136,7 +188,7 @@ export const groupChatRouter = createTRPCRouter({
       });
     }),
 
-  delete: protectedProcedure
+  delete: groupChatCreatorProcedure
     .input(
       z.object({
         id: z.string().cuid(),
@@ -144,23 +196,6 @@ export const groupChatRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
-
-      const userId = ctx.session.user.id;
-
-      const { creatorId } = await ctx.prisma.groupChat.findUniqueOrThrow({
-        where: {
-          id,
-        },
-        select: {
-          creatorId: true,
-        },
-      });
-
-      if (creatorId !== userId) {
-        throw new Error("You are not the creator of this group chat");
-      }
-
-      await new Promise((resolve) => setTimeout(resolve, 5000));
 
       await ctx.prisma.groupChat.delete({
         where: {

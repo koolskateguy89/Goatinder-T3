@@ -93,15 +93,14 @@ export default function NewChatButton({ className }: NewChatButtonProps) {
             >
               Chat
             </button>
-            {/* TODO: uncomment once manage page implemented */}
-            {/* <button
+            <button
               type="button"
               className="btn-primary btn"
               onClick={createNewGroupChat}
               disabled={newGroupChatMut.isLoading}
             >
               New group chat
-            </button> */}
+            </button>
           </div>
         </form>
       </SimpleTransitionDialog>

@@ -86,7 +86,7 @@ export const getServerSideProps = (async (context) => {
     };
   }
 
-  await Promise.all([
+  await Promise.allSettled([
     ssg.chat.messagesById.prefetch({ id }),
     ssg.chat.getAllInfo.prefetch(),
   ]);
