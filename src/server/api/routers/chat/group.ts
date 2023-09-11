@@ -64,12 +64,12 @@ export const groupChatRouter = createTRPCRouter({
   sendMessage: groupChatProcedure
     .input(
       z.object({
-        groupChatId: z.string().cuid(),
+        id: z.string().cuid(),
         content: z.string().trim().min(1),
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const { groupChatId, content } = input;
+      const { id, content } = input;
 
       const senderId = ctx.session.user.id;
 
@@ -83,7 +83,7 @@ export const groupChatRouter = createTRPCRouter({
           },
           groupChat: {
             connect: {
-              id: groupChatId,
+              id,
             },
           },
         },

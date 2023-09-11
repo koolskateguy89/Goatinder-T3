@@ -32,7 +32,7 @@ export default function NewMessageForm({ onMessageSent }: NewMessageFormProps) {
       if (groupChat) {
         return sendGroupChatMessageMut.mutateAsync({
           content: trimmedContent,
-          groupChatId: id,
+          id,
         });
       }
       return sendPrivateMessageMut.mutateAsync({
