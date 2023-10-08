@@ -5,8 +5,7 @@ import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { getProviders, signIn } from "next-auth/react";
 import toast from "react-hot-toast";
-import { FaDiscord } from "react-icons/fa";
-import { GoMarkGithub } from "react-icons/go";
+import { FaDiscord, FaGithub } from "react-icons/fa";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import type { AppPage } from "types";
@@ -52,7 +51,7 @@ const errors: Record<SignInErrorTypes, string> = {
 
 const icons: Record<string, JSX.Element> = {
   discord: <FaDiscord />,
-  github: <GoMarkGithub />,
+  github: <FaGithub />,
 };
 
 /**

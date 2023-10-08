@@ -45,7 +45,7 @@ function BackToTop() {
           !visible && "invisible opacity-0"
         )}
       >
-        <a href="#top" className="btn-primary btn max-lg:btn-circle">
+        <a href="#top" className="btn btn-primary max-lg:btn-circle">
           <BiArrowToTop className="text-2xl lg:hidden" />
           <span className="max-lg:sr-only">Back to top</span>
         </a>
@@ -68,7 +68,6 @@ const ExplorePage: NextPage = () => {
       <InstantSearchProvider>
         <main className="container flex flex-col items-center gap-y-4 px-2 py-4 lg:px-12">
           <Configure
-            // @ts-expect-error Idk
             analytics={false}
             filters="product_category:shoes" // only return shoes
             hitsPerPage={12}
