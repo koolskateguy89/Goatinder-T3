@@ -9,7 +9,10 @@ export type AvatarProps = {
   imageProps?: Partial<
     Omit<ImageProps, "src" | "className" | "fill" | "onError">
   > &
-    Required<Pick<ImageProps, "sizes">>;
+    Required<Pick<ImageProps, "sizes">> & {
+      //? temp fix - IntinsicAttributes can't have key of bigint, since Next 13.5
+      key?: Exclude<React.Key, bigint>;
+    };
 };
 
 /**

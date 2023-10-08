@@ -14,7 +14,10 @@ export type ShoeCardProps = {
           grid_picture_url: GoatShoe["grid_picture_url"];
         }
     );
-  imageProps?: Omit<ImageProps, "src" | "alt" | "fill" | "sizes">;
+  imageProps?: Omit<ImageProps, "src" | "alt" | "fill" | "sizes"> & {
+    //? temp fix - IntinsicAttributes can't have key of bigint, since Next 13.5
+    key?: Exclude<React.Key, bigint>;
+  };
   children: React.ReactNode; // body of the card
 };
 

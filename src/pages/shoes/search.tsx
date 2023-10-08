@@ -59,7 +59,6 @@ const ShoesSearchPage: NextPage = () => {
       <InstantSearchProvider>
         <main className="container flex flex-col items-center gap-y-4 px-2 py-4 lg:px-12">
           <Configure
-            // @ts-expect-error Idk
             analytics={false}
             filters="product_category:shoes" // only return shoes
             distinct
