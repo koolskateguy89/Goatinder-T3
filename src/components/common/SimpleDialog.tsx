@@ -1,7 +1,10 @@
 import React, { forwardRef } from "react";
 import { Dialog, type DialogProps } from "@headlessui/react";
 
-export type SimpleDialogProps = Omit<DialogProps<"div">, "open" | "className"> &
+export type SimpleDialogProps = Omit<
+  DialogProps<"div">,
+  "open" | "className" | "title"
+> &
   React.PropsWithChildren<{
     isOpen: boolean | undefined;
 
