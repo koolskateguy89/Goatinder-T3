@@ -13,15 +13,17 @@ const LandingPage: NextPage = () => {
         <title>goaTinder</title>
       </Head>
       <main className="container flex flex-grow flex-col items-center justify-center gap-y-4 bg-gradient-to-b from-[#2e026d] to-[#15162c]">
-        <h1 className="text-center text-4xl font-semibold">
+        <h1 className="text-center text-4xl font-semibold text-base-100 dark:text-base-content">
           Welcome to <Brand />!
         </h1>
-        Find your dream shoe...
+        <span className="text-base-100 dark:text-base-content">
+          Find your dream shoe...
+        </span>
         <div className="flex gap-4">
-          <Link href="/shoes/explore" className="btn-primary btn">
+          <Link href="/shoes/explore" className="btn btn-primary">
             Explore
           </Link>
-          <Link href="/shoes/search" className="btn-primary btn">
+          <Link href="/shoes/search" className="btn btn-primary">
             Search
           </Link>
         </div>

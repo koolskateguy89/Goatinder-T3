@@ -1,16 +1,14 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { getServerSession } from "next-auth";
-import {
-  Configure,
-  Hits,
-  useInstantSearch,
-} from "react-instantsearch-hooks-web";
+import { Configure, Hits } from "react-instantsearch-hooks-web";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import InstantSearchProvider from "components/algolia/InstantSearchProvider";
 import EmptyQueryBoundary from "components/algolia/EmptyQueryBoundary";
-import NoResultsBoundary from "components/algolia/NoResultsBoundary";
+import NoResultsBoundary, {
+  NoResults,
+} from "components/algolia/NoResultsBoundary";
 import CustomSearchBox from "components/algolia/CustomSearchBox";
 import CustomPagination from "components/algolia/CustomPagination";
 import Refinements from "components/search/Refinements";
@@ -27,16 +25,6 @@ export const attributesToRetrieve = [
 ] as const;
 
 const attributesToSnippet = ["designer"];
-
-function NoResults() {
-  const { indexUiState } = useInstantSearch();
-
-  return (
-    <p className="self-center">
-      No results for <q>{indexUiState.query}</q>.
-    </p>
-  );
-}
 
 /**
  * Need to make like a shoes showcase page.
