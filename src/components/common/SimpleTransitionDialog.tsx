@@ -1,6 +1,8 @@
 import { Dialog } from "@headlessui/react";
 
-import TransitionDialog from "components/common/TransitionDialog";
+import TransitionDialog, {
+  type TransitionDialogProps,
+} from "components/common/TransitionDialog";
 
 export interface SimpleTransitionDialogProps {
   isOpen: boolean;
