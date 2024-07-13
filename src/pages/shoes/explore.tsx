@@ -5,27 +5,19 @@ import { getServerSession } from "next-auth";
 import { useWindowScroll } from "@mantine/hooks";
 import clsx from "clsx";
 import { BiArrowToTop } from "react-icons/bi";
-import { Configure, useInstantSearch } from "react-instantsearch-hooks-web";
+import { Configure } from "react-instantsearch-hooks-web";
 
 import { authOptions } from "pages/api/auth/[...nextauth]";
 import { attributesToRetrieve } from "pages/shoes/search";
 import InstantSearchProvider from "components/algolia/InstantSearchProvider";
-import NoResultsBoundary from "components/algolia/NoResultsBoundary";
+import NoResultsBoundary, {
+  NoResults,
+} from "components/algolia/NoResultsBoundary";
 import CustomInstantSearchBox from "components/algolia/CustomInstantSearchBox";
 import CustomInfiniteHits from "components/explore/CustomInfiniteHits";
 import Refinements from "components/explore/Refinements";
 
 const attributesToSnippet = ["designer"];
-
-function NoResults() {
-  const { indexUiState } = useInstantSearch();
-
-  return (
-    <p>
-      No results for <q>{indexUiState.query}</q>.
-    </p>
-  );
-}
 
 function BackToTop() {
   const [scroll] = useWindowScroll();
