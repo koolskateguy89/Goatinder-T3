@@ -58,7 +58,7 @@ export default function EditableName({
         changeName();
       }}
       ref={inputRef}
-      className="input-bordered input"
+      className="input input-bordered"
     />
   ) : (
     <h1

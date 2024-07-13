@@ -18,7 +18,6 @@ export default function CustomPagination(props: UsePaginationProps) {
     isFirstPage,
     isLastPage,
     canRefine,
-    // eslint-disable-next-line @typescript-eslint/unbound-method
     refine,
   } = usePagination(props);
 
@@ -27,7 +26,7 @@ export default function CustomPagination(props: UsePaginationProps) {
       <div className="join">
         <button
           type="button"
-          className="join-item btn max-md:btn-sm"
+          className="btn join-item max-md:btn-sm"
           onClick={() => refine(0)}
           aria-label="First"
           disabled={isFirstPage}
@@ -36,7 +35,7 @@ export default function CustomPagination(props: UsePaginationProps) {
         </button>
         <button
           type="button"
-          className="join-item btn max-md:btn-sm"
+          className="btn join-item max-md:btn-sm"
           onClick={() => refine(currentRefinement - 1)}
           aria-label="Previous"
           disabled={isFirstPage}
@@ -52,7 +51,7 @@ export default function CustomPagination(props: UsePaginationProps) {
               type="button"
               onClick={() => refine(page)}
               className={clsx(
-                "join-item btn max-md:btn-sm",
+                "btn join-item max-md:btn-sm",
                 isCurrentPage && canRefine && "btn-secondary"
               )}
               aria-label={`Page ${page + 1}`}
@@ -64,7 +63,7 @@ export default function CustomPagination(props: UsePaginationProps) {
 
         <button
           type="button"
-          className="join-item btn max-md:btn-sm"
+          className="btn join-item max-md:btn-sm"
           onClick={() => refine(currentRefinement + 1)}
           aria-label="Next"
           disabled={isLastPage}
@@ -73,7 +72,7 @@ export default function CustomPagination(props: UsePaginationProps) {
         </button>
         <button
           type="button"
-          className="join-item btn max-md:btn-sm"
+          className="btn join-item max-md:btn-sm"
           onClick={() => refine(nbPages - 1)}
           aria-label="Last"
           disabled={isLastPage}
