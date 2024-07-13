@@ -4,7 +4,7 @@ import {
   RefinementList,
 } from "react-instantsearch-hooks-web";
 
-import SimpleTransitionDialog from "components/common/SimpleTransitionDialog";
+import SimpleDialog from "components/common/SimpleDialog";
 
 export default function Refinements() {
   const [isOpen, setIsOpen] = useState(false);
@@ -40,15 +40,16 @@ export default function Refinements() {
       </aside>
 
       <div className="lg:hidden">
-        <button type="button" onClick={openModal} className="btn-secondary btn">
+        <button type="button" onClick={openModal} className="btn btn-secondary">
           Configuration
         </button>
       </div>
 
-      <SimpleTransitionDialog
+      <SimpleDialog
         isOpen={isOpen}
-        closeModal={closeModal}
+        onClose={closeModal}
         title="Refinements"
+        unmount={false}
       >
         <div className="mt-4 space-y-4">
           <ClearRefinements
@@ -73,7 +74,7 @@ export default function Refinements() {
             }}
           />
         </div>
-      </SimpleTransitionDialog>
+      </SimpleDialog>
     </>
   );
 }
