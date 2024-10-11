@@ -53,7 +53,7 @@ export type ChatInfo = GroupChatInfo | PrivateChatInfo;
 
 export function toPrivateChatInfo(
   user: BasicUserInfo,
-  mostRecentMessage: CommonMessage
+  mostRecentMessage: CommonMessage,
 ): PrivateChatInfo {
   return {
     groupChat: false,
@@ -71,7 +71,7 @@ export function toGroupChatInfo(
         select: typeof commonMessageSelect;
       };
     };
-  }>
+  }>,
 ): GroupChatInfo {
   return {
     groupChat: true,

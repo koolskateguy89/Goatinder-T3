@@ -28,7 +28,7 @@ export default function ThemeSwitcher() {
       onClick={handleClick}
       className={clsx(
         "navbar-icon-btn swap grid motion-safe:swap-rotate",
-        resolvedTheme === "light" && "swap-active"
+        resolvedTheme === "light" && "swap-active",
       )}
       aria-label="Toggle Theme"
     >

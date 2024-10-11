@@ -22,7 +22,7 @@ type MessageAction =
 // This _may_ get complicated if using websockets for real-time updates
 const messageReducer: ImmerReducer<MessageState, MessageAction> = (
   draft,
-  action
+  action,
 ) => {
   switch (action.type) {
     case "set":
@@ -33,7 +33,7 @@ const messageReducer: ImmerReducer<MessageState, MessageAction> = (
       break;
     case "delete":
       draft.messages = draft.messages.filter(
-        (message) => message.id !== action.payload.id
+        (message) => message.id !== action.payload.id,
       );
       break;
     default:

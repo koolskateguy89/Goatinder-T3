@@ -100,7 +100,7 @@ export default function AddMemberButton({
             <CgSpinner
               className={clsx(
                 "text-xl motion-safe:animate-spin motion-reduce:hidden",
-                !addMemberMut.isLoading && "hidden"
+                !addMemberMut.isLoading && "hidden",
               )}
             />
             Add

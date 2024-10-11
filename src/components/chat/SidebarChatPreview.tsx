@@ -26,7 +26,7 @@ export default function SidebarChatPreview({
         "rounded-box flex items-center gap-x-4 border-2 px-6 py-4 transition-colors",
         isActive
           ? "bg-base-content text-base-100"
-          : "border-base-300 bg-base-200"
+          : "border-base-300 bg-base-200",
       )}
     >
       <Avatar

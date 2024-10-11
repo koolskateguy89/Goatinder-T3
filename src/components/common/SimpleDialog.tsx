@@ -46,5 +46,5 @@ export default forwardRef<typeof Dialog, SimpleDialogProps>(
         </div>
       </Dialog>
     );
-  }
+  },
 );

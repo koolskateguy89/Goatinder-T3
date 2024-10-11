@@ -13,7 +13,7 @@ export const groupChatRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().cuid(),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       const { id } = input;
@@ -37,7 +37,7 @@ export const groupChatRouter = createTRPCRouter({
       z.object({
         name: z.string().trim().min(1),
         image: z.string().url().or(z.literal("")),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { name, image } = input;
@@ -66,7 +66,7 @@ export const groupChatRouter = createTRPCRouter({
       z.object({
         id: z.string().cuid(),
         content: z.string().trim().min(1),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { id, content } = input;
@@ -99,7 +99,7 @@ export const groupChatRouter = createTRPCRouter({
         id: z.string().cuid(),
         name: z.string().trim().min(1).optional(),
         image: z.string().url().optional(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { id, name, image } = input;
@@ -120,7 +120,7 @@ export const groupChatRouter = createTRPCRouter({
       z.object({
         id: z.string().cuid(),
         userId: z.string().cuid(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { id, userId } = input;
@@ -144,7 +144,7 @@ export const groupChatRouter = createTRPCRouter({
       z.object({
         id: z.string().cuid(),
         userId: z.string().cuid(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { id, userId } = input;
@@ -167,7 +167,7 @@ export const groupChatRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().cuid(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
@@ -192,7 +192,7 @@ export const groupChatRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().cuid(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { id } = input;

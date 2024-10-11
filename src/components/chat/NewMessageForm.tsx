@@ -70,7 +70,7 @@ export default function NewMessageForm({ onMessageSent }: NewMessageFormProps) {
         <CgSpinner
           className={clsx(
             "motion-safe:animate-spin motion-reduce:hidden",
-            !isLoading && "hidden"
+            !isLoading && "hidden",
           )}
         />
         <MdSend className={clsx(isLoading && "motion-safe:hidden")} />

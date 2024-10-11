@@ -31,7 +31,7 @@ export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
               "pointer-events-none group-hover/name:pointer-events-auto",
               // https://tailwindcss.com/blog/multi-line-truncation-with-tailwindcss-line-clamp
               "line-clamp-4",
-              "opacity-0 transition-opacity delay-100 group-hover/name:opacity-100 group-hover/name:delay-700"
+              "opacity-0 transition-opacity delay-100 group-hover/name:opacity-100 group-hover/name:delay-700",
             )}
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: hit.story_html }}

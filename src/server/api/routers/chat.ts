@@ -51,7 +51,7 @@ export const chatRouter = createTRPCRouter({
     });
 
     const senders: PrivateChatInfo[] = _senders.map((sender) =>
-      toPrivateChatInfo(sender, sender.sentMessages[0]!)
+      toPrivateChatInfo(sender, sender.sentMessages[0]!),
     );
 
     const _receivers = await ctx.prisma.user.findMany({
@@ -81,7 +81,7 @@ export const chatRouter = createTRPCRouter({
     });
 
     const receivers: PrivateChatInfo[] = _receivers.map((receiver) =>
-      toPrivateChatInfo(receiver, receiver.receivedMessages[0]!)
+      toPrivateChatInfo(receiver, receiver.receivedMessages[0]!),
     );
 
     // Code below here basically combines the senders and receivers,
@@ -307,7 +307,7 @@ export const chatRouter = createTRPCRouter({
       z.object({
         groupChat: z.boolean(),
         id: z.string().cuid(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { groupChat, id } = input;

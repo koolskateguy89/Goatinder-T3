@@ -31,7 +31,7 @@ const ManageGroupChatPage: NextPage<
   // Prefetched in GSSP
   const { data: _groupChat } = api.chat.infoById.useQuery(
     { id },
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false },
   );
   const groupChat = _groupChat as GroupChatInfo;
 

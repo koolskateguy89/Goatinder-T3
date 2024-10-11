@@ -138,7 +138,7 @@ export const getServerSideProps = (async (context) => {
   const callbackUrl = `/welcome${
     context.query.callbackUrl
       ? `?callbackUrl=${encodeURIComponent(
-          context.query.callbackUrl as string
+          context.query.callbackUrl as string,
         )}`
       : ""
   }`;

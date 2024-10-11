@@ -75,14 +75,14 @@ const ProfilePage: NextPage<
                   isMyProfile
                     ? "You haven't"
                     : user.name
-                    ? `${user.name} hasn't`
-                    : "This user hasn't"
+                      ? `${user.name} hasn't`
+                      : "This user hasn't"
                 } written a bio yet.`
               }
               className={clsx(
                 "textarea textarea-bordered h-32 w-full md:h-52",
                 !user.profile?.bio &&
-                  "text-base-content/70 dark:text-base-content/50"
+                  "text-base-content/70 dark:text-base-content/50",
               )}
               readOnly
             />

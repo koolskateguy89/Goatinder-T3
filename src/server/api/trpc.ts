@@ -161,7 +161,7 @@ const enforceUserIsCreator = enforceUserIsAuthed.unstable_pipe(
     }
 
     return next();
-  }
+  },
 );
 
 /**
@@ -215,7 +215,7 @@ const enforceUserHasAccessToGroupChat = enforceUserIsAuthed.unstable_pipe(
     }
 
     return next();
-  }
+  },
 );
 
 /**
@@ -228,5 +228,5 @@ const enforceUserHasAccessToGroupChat = enforceUserIsAuthed.unstable_pipe(
  * @see https://trpc.io/docs/procedures
  */
 export const groupChatProcedure = t.procedure.use(
-  enforceUserHasAccessToGroupChat
+  enforceUserHasAccessToGroupChat,
 );

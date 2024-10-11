@@ -13,7 +13,7 @@ export const shoesRouter = createTRPCRouter({
           main_picture_url: z.string().url(),
         }),
         remove: z.boolean(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { shoe, remove } = input;
@@ -80,7 +80,7 @@ export const shoesRouter = createTRPCRouter({
           main_picture_url: z.string().url(),
         }),
         remove: z.boolean(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { shoe, remove } = input;

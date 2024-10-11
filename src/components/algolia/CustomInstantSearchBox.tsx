@@ -24,7 +24,7 @@ export default function CustomInstantSearchBox({
 
   const [debouncedQuery, setDebouncedQuery] = useDebouncedState(
     query,
-    debounceDelay
+    debounceDelay,
   );
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function CustomInstantSearchBox({
         <div
           className={clsx(
             "relative opacity-0 transition-opacity",
-            loadingOrStalled && "motion-safe:opacity-100"
+            loadingOrStalled && "motion-safe:opacity-100",
           )}
           aria-hidden
         >

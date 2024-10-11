@@ -7,7 +7,7 @@ export default function Brand({ className, ...props }: BrandProps) {
     <span
       className={clsx(
         "group/brand font-bold transition-colors [&>span]:duration-300",
-        className
+        className,
       )}
       {...props}
     >

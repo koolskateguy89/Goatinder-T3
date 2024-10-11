@@ -29,7 +29,7 @@ const WelcomePage: NextPage<
     e.preventDefault();
 
     const bioElem = e.currentTarget.elements.namedItem(
-      bioId
+      bioId,
     ) as HTMLTextAreaElement;
 
     const bio = bioElem.value.trim();
@@ -52,7 +52,7 @@ const WelcomePage: NextPage<
             ? `Profile created, redirecting to ${callbackUrl} in 3 seconds...`
             : "Profile created!",
           error: "Failed to create profile",
-        }
+        },
       )
       .then(() => {
         if (callbackUrl)

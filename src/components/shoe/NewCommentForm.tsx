@@ -52,7 +52,7 @@ export default function NewCommentForm({
           style: {
             minWidth: "200px",
           },
-        }
+        },
       );
 
       setContent("");
