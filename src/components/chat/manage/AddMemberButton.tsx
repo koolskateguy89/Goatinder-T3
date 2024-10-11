@@ -62,7 +62,7 @@ export default function AddMemberButton({
       <button
         type="button"
         onClick={openModal}
-        className="btn-success btn-sm btn ml-2"
+        className="btn btn-success btn-sm ml-2"
       >
         Add
       </button>
@@ -79,7 +79,7 @@ export default function AddMemberButton({
           ) : (
             <select
               name="userId"
-              className="select-bordered select w-full max-w-xs"
+              className="select select-bordered w-full max-w-xs"
               defaultValue="Select a user"
             >
               <option disabled>Select a user</option>
@@ -93,7 +93,7 @@ export default function AddMemberButton({
 
           <button
             type="submit"
-            className="btn-primary btn"
+            className="btn btn-primary"
             aria-label="Add"
             disabled={usersIsLoading || addMemberMut.isLoading}
           >

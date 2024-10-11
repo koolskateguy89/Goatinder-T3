@@ -9,7 +9,7 @@
 
   /* for some reason the icon isn't sized properly unless it's nested at least 1 child inside button */
   .navbar-icon-btn {
-    @apply btn btn-ghost btn-sm lg:btn-md btn-circle !text-xl;
+    @apply btn btn-circle btn-ghost btn-sm !text-xl lg:btn-md;
   }
 }
 

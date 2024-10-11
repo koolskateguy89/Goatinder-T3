@@ -84,7 +84,7 @@ export default function NewCommentForm({
         </label>
         <textarea
           id={textAreaId}
-          className="textarea-bordered textarea h-24 dark:placeholder:opacity-60"
+          className="textarea textarea-bordered h-24 dark:placeholder:opacity-60"
           placeholder="An opinion is like a nose, everyone has one."
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -95,7 +95,7 @@ export default function NewCommentForm({
       <div className="flex justify-end">
         <button
           type="submit"
-          className={clsx("btn-primary btn", addingComment && "loading")}
+          className={clsx("btn btn-primary", addingComment && "loading")}
           disabled={
             !signedIn || // not signed in
             content.trim().length === 0 || // only entered whitespace

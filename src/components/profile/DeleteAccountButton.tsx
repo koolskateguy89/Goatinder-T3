@@ -23,7 +23,7 @@ export default function DeleteAccountButton() {
       <button
         type="button"
         onClick={openModal}
-        className="btn-primary btn w-32 md:w-48"
+        className="btn btn-primary w-32 md:w-48"
       >
         Delete Account
       </button>
@@ -39,14 +39,14 @@ export default function DeleteAccountButton() {
             <button
               type="button"
               onClick={closeModal}
-              className="btn-ghost btn"
+              className="btn btn-ghost"
             >
               No
             </button>
             <button
               type="button"
               onClick={deleteAccount}
-              className="btn-error btn"
+              className="btn btn-error"
             >
               Yes
             </button>
