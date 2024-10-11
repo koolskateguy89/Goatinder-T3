@@ -66,7 +66,7 @@ const ManageGroupChatPage: NextPage<
         <div className="flex items-center gap-x-2">
           <Link
             href={`/chat/${id}`}
-            className="btn-primary btn-sm btn-circle btn"
+            className="btn btn-circle btn-primary btn-sm"
           >
             <MdArrowBack />
             <span className="sr-only">Back</span>
@@ -142,7 +142,7 @@ const ManageGroupChatPage: NextPage<
           </MembersList>
         </section>
 
-        <ManageButton className="btn-error btn mt-8" id={groupChat.id} />
+        <ManageButton className="btn btn-error mt-8" id={groupChat.id} />
       </main>
     </>
   );

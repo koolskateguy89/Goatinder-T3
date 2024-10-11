@@ -21,7 +21,7 @@ export default function ChatsPage() {
       <main className="container mt-4 flex flex-col items-center px-4">
         <ol className="space-y-4">
           <li>
-            <NewChatButton className="btn-primary btn-block btn" />
+            <NewChatButton className="btn btn-primary btn-block" />
           </li>
           {chatInfos ? (
             chatInfos.length ? (

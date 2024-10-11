@@ -31,7 +31,7 @@ export default function Member({
       {canRemove && (
         <button
           type="button"
-          className="btn-warning btn-sm btn ml-auto"
+          className="btn btn-warning btn-sm ml-auto"
           onClick={async () => {
             // Workaround to have this button disabled while the mutation is running
             setIsDisabled(true);

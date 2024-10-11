@@ -34,7 +34,7 @@ const ChatPage: NextPage<
           ) : (
             <div className="flex flex-col items-center justify-center gap-2 pt-4">
               You cannot message yourself!
-              <Link href="/chat" className="btn-primary btn">
+              <Link href="/chat" className="btn btn-primary">
                 Chats
               </Link>
             </div>

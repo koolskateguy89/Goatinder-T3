@@ -48,7 +48,7 @@ export default function DeleteGroupButton({
           <button
             type="button"
             onClick={handleDelete}
-            className="btn-warning btn"
+            className="btn btn-warning"
           >
             Yes
           </button>

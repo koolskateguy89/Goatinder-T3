@@ -157,7 +157,7 @@ export default function Shoe({
           type="button"
           onClick={handleDislike}
           title={isSignedIn ? undefined : "Sign in to dislike"}
-          className="btn-error btn w-24 gap-1 disabled:btn-error"
+          className="btn btn-error w-24 gap-1 disabled:btn-error"
           disabled={!isSignedIn}
         >
           <span>
@@ -170,7 +170,7 @@ export default function Shoe({
           type="button"
           onClick={handleLike}
           title={isSignedIn ? undefined : "Sign in to like"}
-          className="btn-success btn w-24 gap-1 disabled:btn-success"
+          className="btn btn-success w-24 gap-1 disabled:btn-success"
           disabled={!isSignedIn}
         >
           <span>

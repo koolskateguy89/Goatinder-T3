@@ -54,7 +54,7 @@ export default function MobileDrawer() {
       <button
         type="button"
         onClick={openModal}
-        className="navbar-icon-btn btn-primary btn lg:hidden"
+        className="navbar-icon-btn btn btn-primary lg:hidden"
       >
         <span>
           <HiOutlineMenuAlt1 />
@@ -79,7 +79,7 @@ export default function MobileDrawer() {
           {/* Full-screen scrollable container */}
           <div className="fixed inset-0 overflow-y-auto">
             {/* Container to handle height */}
-            <div className="h-screen h-[100dvh]">
+            <div className="h-[100dvh] h-screen">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out motion-safe:duration-300"
@@ -97,7 +97,7 @@ export default function MobileDrawer() {
                   <header className="navbar gap-1 border-b border-base-300 px-4 dark:border-white/10">
                     <Link
                       href="/"
-                      className="btn-ghost btn-sm btn text-xl normal-case"
+                      className="btn btn-ghost btn-sm text-xl normal-case"
                     >
                       <Brand />
                     </Link>

@@ -58,12 +58,12 @@ export default function NewMessageForm({ onMessageSent }: NewMessageFormProps) {
         placeholder="Type here"
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        className="input-bordered input w-full dark:placeholder:opacity-70"
+        className="input input-bordered w-full dark:placeholder:opacity-70"
         disabled={isLoading}
       />
       <button
         type="submit"
-        className="btn-primary btn-circle btn text-lg"
+        className="btn btn-circle btn-primary text-lg"
         aria-label="Send message"
         disabled={content.trim().length === 0 || isLoading}
       >

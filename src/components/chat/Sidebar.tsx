@@ -13,7 +13,7 @@ export default function Sidebar() {
     <aside className="px-4">
       {/* TODO: search */}
 
-      <NewChatButton className="btn-primary btn-block btn mb-4" />
+      <NewChatButton className="btn btn-primary btn-block mb-4" />
 
       <ol className="space-y-4 overflow-y-auto">
         {chatInfos ? (

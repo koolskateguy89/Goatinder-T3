@@ -13,7 +13,7 @@ export default function ProfileDropdown() {
   // should never show - we're passing `session` to `_app` with `getServerSideProps` on every page
   if (status === "loading") {
     return (
-      <button type="button" className="btn-primary btn-sm btn md:btn-md">
+      <button type="button" className="btn btn-primary btn-sm md:btn-md">
         Sign in
       </button>
     );
@@ -31,7 +31,7 @@ export default function ProfileDropdown() {
           },
         }}
         as="/signin"
-        className="btn-primary btn-sm btn md:btn-md"
+        className="btn btn-primary btn-sm md:btn-md"
       >
         Sign in
       </Link>

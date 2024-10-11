@@ -26,7 +26,7 @@ const ProfilePage: NextPage<
         <title>{title}</title>
       </Head>
       <div className="container">
-        <main className="flex flex-col items-center gap-y-4 px-4 pt-2 pb-4 lg:mx-auto lg:w-3/4">
+        <main className="flex flex-col items-center gap-y-4 px-4 pb-4 pt-2 lg:mx-auto lg:w-3/4">
           <h1 className="text-5xl font-extrabold underline underline-offset-4">
             {user.name ?? "An unnamed user"}
           </h1>
@@ -46,7 +46,7 @@ const ProfilePage: NextPage<
             <div className="flex gap-x-4">
               <Link
                 href={`/profile/${user.id}/edit`}
-                className="btn-primary btn w-32 md:w-48"
+                className="btn btn-primary w-32 md:w-48"
               >
                 Edit Profile
               </Link>
@@ -57,7 +57,7 @@ const ProfilePage: NextPage<
           {!isMyProfile && signedIn && (
             <Link
               href={`/chat/${user.id}`}
-              className="btn-primary btn w-32 md:w-48"
+              className="btn btn-primary w-32 md:w-48"
             >
               Send Message
             </Link>
@@ -80,7 +80,7 @@ const ProfilePage: NextPage<
                 } written a bio yet.`
               }
               className={clsx(
-                "textarea-bordered textarea h-32 w-full md:h-52",
+                "textarea textarea-bordered h-32 w-full md:h-52",
                 !user.profile?.bio &&
                   "text-base-content/70 dark:text-base-content/50"
               )}

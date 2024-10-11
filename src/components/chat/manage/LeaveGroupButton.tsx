@@ -48,7 +48,7 @@ export default function LeaveGroupButton({
           <button
             type="button"
             onClick={handleLeave}
-            className="btn-warning btn"
+            className="btn btn-warning"
           >
             Yes
           </button>

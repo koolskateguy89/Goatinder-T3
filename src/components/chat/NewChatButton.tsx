@@ -74,7 +74,7 @@ export default function NewChatButton({ className }: NewChatButtonProps) {
         <form onSubmit={handleSubmit} className="mt-2 space-y-2">
           <select
             name="userId"
-            className="select-bordered select w-full max-w-xs"
+            className="select select-bordered w-full max-w-xs"
             defaultValue="Select a user"
             disabled={!users}
           >
@@ -88,14 +88,14 @@ export default function NewChatButton({ className }: NewChatButtonProps) {
           <div className="flex justify-between">
             <button
               type="submit"
-              className="btn-link btn-primary btn"
+              className="btn btn-primary btn-link"
               disabled={!users}
             >
               Chat
             </button>
             <button
               type="button"
-              className="btn-primary btn"
+              className="btn btn-primary"
               onClick={createNewGroupChat}
               disabled={newGroupChatMut.isLoading}
             >
