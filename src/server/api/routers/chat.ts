@@ -210,10 +210,15 @@ export const chatRouter = createTRPCRouter({
       if (receiver)
         return toPrivateChatInfo(receiver, receiver.receivedMessages[0]!);
 
-      // TODO: only return this if they are part of the gc, otherwise null
       const groupChat = await ctx.prisma.groupChat.findUnique({
         where: {
           id: receiverOrGroupChatId,
+          // user has to be part of gc
+          members: {
+            some: {
+              id: userId,
+            },
+          },
         },
         select: {
           ...groupChatInfoSelect,
@@ -278,10 +283,15 @@ export const chatRouter = createTRPCRouter({
         } as const;
       }
 
-      // TODO: only return this if they are part of the gc, otherwise throw
       const groupChat = await ctx.prisma.groupChat.findUnique({
         where: {
           id: receiverOrGroupChatId,
+          // user has to be part of gc
+          members: {
+            some: {
+              id: userId,
+            },
+          },
         },
         select: {
           messages: {

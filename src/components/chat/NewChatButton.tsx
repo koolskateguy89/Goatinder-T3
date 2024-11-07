@@ -44,6 +44,9 @@ export default function NewChatButton({ className }: NewChatButtonProps) {
     await router.push(`/chat/${id}/manage`);
   };
 
+  // TODO: improve UI for this, its not very clear
+  // user might think they're making a GC with the user they selected
+
   return (
     <>
       {/* TODO: icon */}
