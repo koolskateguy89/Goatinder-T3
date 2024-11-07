@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "next build",
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "postinstall": "prisma generate",
     "lint": "next lint",
     "eslint9": "eslint ./src",
@@ -26,7 +26,7 @@
     "algoliasearch": "^4.24.0",
     "clsx": "^2.1.1",
     "immer": "^10.1.1",
-    "next": "15.0.2",
+    "next": "^14.2.15",
     "next-auth": "^4.24.8",
     "next-superjson-plugin": "^0.6.3",
     "next-themes": "^0.3.0",
@@ -57,7 +57,7 @@
     "eslint": "^9.12.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-airbnb-typescript": "^18.0.0",
-    "eslint-config-next": "15.0.2",
+    "eslint-config-next": "14.2.15",
     "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.47",
     "prettier": "^3.3.3",
@@ -74,11 +74,5 @@
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
-  },
-  "pnpm": {
-    "overrides": {
-      "@types/react": "18.3.12",
-      "@types/react-dom": "18.3.1"
-    }
   }
 }

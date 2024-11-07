@@ -5,8 +5,7 @@ import eslintConfigPrettier from "eslint-config-prettier";
 import tseslint from "typescript-eslint";
 
 // TODO: ts ignore & check actual type
-// @ts-expect-error No types
-import next from "eslint-config-next";
+import a from "eslint-config-next";
 
 // @ts-expect-error No types
 import airbnb from "eslint-config-airbnb";
@@ -15,41 +14,30 @@ import airbnbTypescript from "eslint-config-airbnb-typescript";
 
 // TODO: add airbnb, next core web vitals
 
-console.log("NEXT CONFIG =");
-console.log(next);
-
-const conf = tseslint.config(
-  eslint.configs.recommended,
-  eslintConfigPrettier,
-  ...tseslint.configs.strictTypeChecked,
-);
-console.log("conf =");
-console.log(conf);
-
 export default tseslint.config(
   eslint.configs.recommended,
   eslintConfigPrettier,
   ...tseslint.configs.strictTypeChecked,
-  // {
-  //   languageOptions: {
-  //     parserOptions: {
-  //       projectService: true,
-  //       tsconfigRootDir: import.meta.dirname,
-  //     },
-  //   },
-  // },
-  // {
-  //   rules: {
-  //     "@typescript-eslint/restrict-template-expressions": "off",
-  //     "@typescript-eslint/no-misused-promises": "off",
-  //     "@typescript-eslint/return-await": "off",
-  //     "@typescript-eslint/require-await": "off", // really annoying during development
+  {
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  {
+    rules: {
+      "@typescript-eslint/restrict-template-expressions": "off",
+      "@typescript-eslint/no-misused-promises": "off",
+      "@typescript-eslint/return-await": "off",
+      "@typescript-eslint/require-await": "off", // really annoying during development
 
-  //     // my own rules
-  //     "no-duplicate-imports": "error",
-  //     "@typescript-eslint/consistent-type-imports": "warn",
+      // my own rules
+      "no-duplicate-imports": "error",
+      "@typescript-eslint/consistent-type-imports": "warn",
 
-  //     // TODO
-  //   },
-  // },
+      // TODO
+    },
+  },
 );
