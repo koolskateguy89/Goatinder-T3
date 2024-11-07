@@ -39,7 +39,9 @@ export default function SidebarChatPreview({
       />
       <div>
         <div className="text-lg font-semibold">{name}</div>
-        <div className="text-sm opacity-70">{mostRecentMessage}</div>
+        <div className="line-clamp-2 text-sm opacity-70">
+          {mostRecentMessage}
+        </div>
       </div>
     </Link>
   );
