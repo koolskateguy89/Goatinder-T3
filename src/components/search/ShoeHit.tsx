@@ -13,7 +13,6 @@ type HitShoe = AlgoliaHit<
 export default function ShoeHit({ hit }: { hit: HitShoe }) {
   return (
     <ShoeCard shoe={hit}>
-      {/* TODO: change link color back to primary */}
       <div className="group/name relative">
         <h2 className="link-hover link-secondary link card-title">
           <Link href={`/shoes/${hit.objectID}`}>{hit.name}</Link>
