@@ -92,17 +92,18 @@ export default function Message({
 }: MessageProps) {
   const { data: session } = useSession();
 
-  const isMyMessage = session?.user?.id === sender.id;
+  const maybeUserId = session?.user?.id;
+  const isMyMessage = sender.id === maybeUserId;
 
-  const { groupChat } = useChatInfo();
+  const chatInfo = useChatInfo();
 
-  // TODO: check if user is gc creator
-  const canDelete = isMyMessage || false;
+  // User can delete the message if they sent it or they are the group chat's creator
+  const canDelete =
+    isMyMessage || (chatInfo.groupChat && chatInfo.creator.id === maybeUserId);
 
   const deleteMut = api.chat.deleteMessage.useMutation();
-
   const deleteMessage = () => {
-    deleteMut.mutate({ groupChat, id });
+    deleteMut.mutate({ groupChat: chatInfo.groupChat, id });
     onDelete(id);
   };
 

@@ -10,7 +10,7 @@ type HitShoe = AlgoliaHit<
   Pick<GoatShoe, (typeof attributesToRetrieve)[number]>
 >;
 
-export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
+export default function ShoeHit({ hit }: { hit: HitShoe }) {
   return (
     <ShoeCard shoe={hit}>
       {/* TODO: change link color back to primary */}
