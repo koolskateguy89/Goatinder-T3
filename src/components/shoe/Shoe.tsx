@@ -1,6 +1,6 @@
 import type { InferGetServerSidePropsType } from "next";
 import { useSession } from "next-auth/react";
-import { MdClose, MdFavorite } from "react-icons/md";
+import { MdClose, MdFavorite, MdOpenInNew } from "react-icons/md";
 import { type ImmerReducer, useImmerReducer } from "use-immer";
 
 import { api } from "utils/api";
@@ -130,13 +130,12 @@ export default function Shoe({
       }}
     >
       <h1 className="link-hover link-primary link card-title">
-        {/* TODO: external icon */}
         <a
           href={`https://www.goat.com/sneakers/${goatShoe.slug}`}
           target="_blank"
           rel="noopener noreferrer"
         >
-          {goatShoe.name}
+          {goatShoe.name} <MdOpenInNew className="inline" />
         </a>
       </h1>
 
