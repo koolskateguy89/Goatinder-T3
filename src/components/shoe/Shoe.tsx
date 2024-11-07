@@ -130,6 +130,7 @@ export default function Shoe({
       }}
     >
       <h1 className="link-hover link-primary link card-title">
+        {/* TODO: external icon */}
         <a
           href={`https://www.goat.com/sneakers/${goatShoe.slug}`}
           target="_blank"
