@@ -18,7 +18,7 @@ export const groupChatRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const { id } = input;
 
-      console.log("ge member");
+      console.log("get member");
 
       return await ctx.prisma.groupChat
         .findUniqueOrThrow({

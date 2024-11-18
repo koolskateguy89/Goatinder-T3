@@ -61,6 +61,7 @@ export default function EditableName({
       className="input input-bordered"
     />
   ) : (
+    // TODO: make click hover cursor pointer when canEdit
     <h1
       className="text-2xl font-semibold underline"
       onClick={() => {

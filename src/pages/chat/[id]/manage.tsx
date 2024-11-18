@@ -43,7 +43,7 @@ const ManageGroupChatPage: NextPage<
 
   const title = `${groupChat.name} - goaTinder`;
 
-  const ManageButton = iAmCreator ? DeleteGroupButton : LeaveGroupButton;
+  const ManageGroupButton = iAmCreator ? DeleteGroupButton : LeaveGroupButton;
 
   const utils = api.useContext();
 
@@ -71,6 +71,8 @@ const ManageGroupChatPage: NextPage<
             <MdArrowBack />
             <span className="sr-only">Back</span>
           </Link>
+
+          {/* TODO: gc editable image/picture */}
 
           <EditableName
             canEdit={iAmCreator}
@@ -121,7 +123,7 @@ const ManageGroupChatPage: NextPage<
               <li>
                 <p className="p-4 text-center">
                   {
-                    /* it should be impossible for group to have no members & user isn't creator */
+                    /* it is impossible for group to have no members & user to NOT be the creator */
                     iAmCreator
                       ? "No members yet, add some!"
                       : "You're the only member"
@@ -142,7 +144,7 @@ const ManageGroupChatPage: NextPage<
           </MembersList>
         </section>
 
-        <ManageButton className="btn btn-error mt-8" id={groupChat.id} />
+        <ManageGroupButton className="btn btn-error mt-8" id={groupChat.id} />
       </main>
     </>
   );
