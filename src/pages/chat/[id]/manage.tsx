@@ -62,7 +62,7 @@ const ManageGroupChatPage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container mt-2 max-w-lg space-y-4 px-2">
+      <main className="container mt-3 max-w-lg space-y-4 px-2">
         <div className="flex items-center gap-x-2">
           <Link
             href={`/chat/${id}`}

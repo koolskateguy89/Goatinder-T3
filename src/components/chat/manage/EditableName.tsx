@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import clsx from "clsx";
 
 import { api } from "utils/api";
 
@@ -61,9 +62,11 @@ export default function EditableName({
       className="input input-bordered"
     />
   ) : (
-    // TODO: make click hover cursor pointer when canEdit
     <h1
-      className="text-2xl font-semibold underline"
+      className={clsx(
+        "text-2xl font-semibold underline",
+        canEdit && "cursor-pointer",
+      )}
       onClick={() => {
         if (canEdit) setIsEditing(true);
       }}
