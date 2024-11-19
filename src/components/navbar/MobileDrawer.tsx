@@ -79,7 +79,7 @@ export default function MobileDrawer() {
           {/* Full-screen scrollable container */}
           <div className="fixed inset-0 overflow-y-auto">
             {/* Container to handle height */}
-            <div className="h-[100dvh] h-screen">
+            <div className="h-dvh">
               <Transition.Child
                 as={Fragment}
                 enter="ease-out motion-safe:duration-300"
