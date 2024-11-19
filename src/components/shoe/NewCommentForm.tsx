@@ -103,7 +103,7 @@ export default function NewCommentForm({
             loading // comments haven't loaded yet, so don't allow adding comment
           }
         >
-          {addingComment ? "Posting..." : "Post"}
+          {!addingComment && "Post"}
         </button>
       </div>
     </form>
