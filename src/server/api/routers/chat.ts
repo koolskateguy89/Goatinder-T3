@@ -214,11 +214,18 @@ export const chatRouter = createTRPCRouter({
         where: {
           id: receiverOrGroupChatId,
           // user has to be part of gc
-          members: {
-            some: {
-              id: userId,
+          OR: [
+            {
+              creatorId: userId,
             },
-          },
+            {
+              members: {
+                some: {
+                  id: userId,
+                },
+              },
+            },
+          ],
         },
         select: {
           ...groupChatInfoSelect,
@@ -287,11 +294,18 @@ export const chatRouter = createTRPCRouter({
         where: {
           id: receiverOrGroupChatId,
           // user has to be part of gc
-          members: {
-            some: {
-              id: userId,
+          OR: [
+            {
+              creatorId: userId,
             },
-          },
+            {
+              members: {
+                some: {
+                  id: userId,
+                },
+              },
+            },
+          ],
         },
         select: {
           messages: {
