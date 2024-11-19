@@ -38,7 +38,7 @@ export default function LeaveGroupButton({
       >
         Leave
       </button>
-      todo transition (dialog)
+
       <SimpleTransitionDialog
         isOpen={isOpen}
         closeModal={closeModal}
