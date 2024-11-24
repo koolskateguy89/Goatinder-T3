@@ -92,16 +92,16 @@ export const chatRouter = createTRPCRouter({
     // and it'll hopefully make sense. I'm not even sure if it's the best
     // way to do it, but it works.
 
-    // https://stackoverflow.com/a/38622270/17381629
+    // https://stackoverflow.com/a/38622270
     // id -> obj
     const sendersMap = new Map(senders.map((info) => [info.id, info]));
     const receiversMap = new Map(receivers.map((info) => [info.id, info]));
 
     const allPrivateChatIds = new Set<string>();
-    sendersMap.forEach((value, key) => {
+    sendersMap.forEach((_sender, key) => {
       allPrivateChatIds.add(key);
     });
-    receiversMap.forEach((value, key) => {
+    receiversMap.forEach((_receiver, key) => {
       allPrivateChatIds.add(key);
     });
 

@@ -93,7 +93,7 @@ const commentsReducer: ImmerReducer<CommentsState, CommentsAction> = (
             b.datePosted.getTime() - a.datePosted.getTime() || b.score - a.score
           );
         }
-        // sort by date, then score (best first)
+        // "oldest" => sort by date, then score (best first)
         return (
           a.datePosted.getTime() - b.datePosted.getTime() || b.score - a.score
         );

@@ -46,10 +46,12 @@ export default function BaseComment({
 
         <DateDisplay date={datePosted} />
 
-        {/* TODO: clamp to like 4 lines and let user expand if they want */}
-        {/* maybe can use DaisyUI's collapse https://daisyui.com/components/collapse/ */}
-        {/* but defo HeadlessUI's disclosure */}
-        <p className="whitespace-pre-wrap break-all">{content}</p>
+        <p
+          // preserve line breaks and break lines on words
+          className="whitespace-pre-wrap break-all"
+        >
+          {content}
+        </p>
       </div>
 
       <ScoreDisplay
