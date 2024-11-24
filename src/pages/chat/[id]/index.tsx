@@ -12,7 +12,7 @@ import Sidebar from "components/chat/Sidebar";
 import Chat from "components/chat/Chat";
 import Link from "next/link";
 
-// gc1: clez36kha000hw2govvab9yax
+// gc1: cm3osg5to000711i7jg889xb2
 
 const ChatPage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -23,10 +23,8 @@ const ChatPage: NextPage<
         <title>Chat - goaTinder</title>
       </Head>
       <main className="container flex flex-grow">
-        <div className="basis-1/4 overflow-auto border-r-4 border-base-300 dark:border-white/5 max-md:hidden">
-          <div className="mt-4 pb-4">
-            <Sidebar />
-          </div>
+        <div className="basis-1/4 border-r-4 border-base-300 pt-4 dark:border-white/5 max-md:hidden">
+          <Sidebar />
         </div>
         <div className="flex flex-grow flex-col">
           {id ? (
