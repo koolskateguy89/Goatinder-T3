@@ -7,7 +7,7 @@ import Avatar from "components/Avatar";
 
 export type SidebarChatPreviewProps = Pick<User, "name" | "image"> & {
   id: string;
-  mostRecentMessage: string;
+  mostRecentMessage: React.ReactNode;
 };
 
 export default function SidebarChatPreview({

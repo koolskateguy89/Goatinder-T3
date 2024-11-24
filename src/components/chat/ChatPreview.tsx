@@ -5,7 +5,7 @@ import Avatar from "components/Avatar";
 
 export type ChatPreviewProps = Pick<User, "name" | "image"> & {
   id: string;
-  mostRecentMessage: string;
+  mostRecentMessage: React.ReactNode;
 };
 
 export default function ChatPreview({
