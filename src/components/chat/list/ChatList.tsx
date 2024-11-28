@@ -132,6 +132,7 @@ export default function ChatList({
       <input
         type="text"
         placeholder="Search chats"
+        defaultValue={debouncedFilter}
         onChange={(e) => setDebouncedFilter(e.currentTarget.value)}
         className="input input-bordered w-full"
         disabled={!chats}

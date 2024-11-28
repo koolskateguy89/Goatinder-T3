@@ -29,6 +29,7 @@ export default function DeleteGroupButton({
   };
 
   return (
+    // FIXME: delete button loading not exactly how we want it
     <>
       <button
         type="button"
@@ -36,7 +37,7 @@ export default function DeleteGroupButton({
         onClick={openModal}
         disabled={deleteMut.isLoading}
       >
-        Delete
+        {!deleteMut.isLoading && "Delete"}
       </button>
 
       <SimpleTransitionDialog

@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useDebouncedState } from "@mantine/hooks";
-import clsx from "clsx";
 import { MdClose } from "react-icons/md";
-import { CgSpinner } from "react-icons/cg";
 import {
   type UseSearchBoxProps,
   useSearchBox,
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
+
+import InputLoadingSpinner from "components/common/InputLoadingSpinner";
 
 export type CustomSearchBoxProps = UseSearchBoxProps & {
   placeholder: string;
@@ -45,18 +45,7 @@ export default function CustomInstantSearchBox({
           aria-label="Search"
         />
 
-        {/* can't use before/after on input so using additional markup */}
-        <div
-          className={clsx(
-            "relative opacity-0 transition-opacity",
-            loadingOrStalled && "motion-safe:opacity-100",
-          )}
-          aria-hidden
-        >
-          <div className="absolute -left-4.5 translate-y-full">
-            <CgSpinner className="motion-safe:animate-spin" />
-          </div>
-        </div>
+        <InputLoadingSpinner loading={loadingOrStalled} className="-left-4.5" />
 
         <button
           type="reset"

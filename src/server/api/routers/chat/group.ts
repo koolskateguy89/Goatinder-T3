@@ -49,11 +49,6 @@ export const groupChatRouter = createTRPCRouter({
           name,
           image,
           creatorId,
-          // creator: {
-          //   connect: {
-          //     id: creatorId,
-          //   },
-          // },
         },
         select: {
           id: true,

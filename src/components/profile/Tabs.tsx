@@ -43,13 +43,13 @@ export default function ProfilePageTabs({
   return (
     <Tab.Group>
       <Tab.List className="tabs">
-        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active focus:outline-none">
+        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active">
           Comments
         </Tab>
-        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active focus:outline-none">
+        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active">
           Likes
         </Tab>
-        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active focus:outline-none">
+        <Tab className="tab tab-bordered basis-1/3 ui-selected:tab-active">
           Dislikes
         </Tab>
       </Tab.List>

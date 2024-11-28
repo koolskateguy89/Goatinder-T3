@@ -29,6 +29,7 @@ export default function LeaveGroupButton({
   };
 
   return (
+    // FIXME>: leave button loading not exactly how we want it
     <>
       <button
         type="button"

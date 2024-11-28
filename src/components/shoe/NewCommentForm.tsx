@@ -98,9 +98,9 @@ export default function NewCommentForm({
           className={clsx("btn btn-primary", addingComment && "loading")}
           disabled={
             !signedIn || // not signed in
-            content.trim().length === 0 || // only entered whitespace
+            loading || // comments haven't loaded yet, so don't allow adding comment
             addingComment || // already adding comment
-            loading // comments haven't loaded yet, so don't allow adding comment
+            content.trim().length === 0 // only entered whitespace
           }
         >
           {!addingComment && "Post"}
