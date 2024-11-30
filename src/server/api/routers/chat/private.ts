@@ -9,7 +9,7 @@ export const privateChatRouter = createTRPCRouter({
       z.object({
         receiverId: z.string().cuid(),
         content: z.string().trim().min(1),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { receiverId, content } = input;

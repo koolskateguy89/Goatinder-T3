@@ -32,10 +32,11 @@ export default function DeleteGroupButton({
     <>
       <button
         type="button"
-        className={clsx(className, deleteMut.isLoading && "loading")}
+        className={className}
         onClick={openModal}
         disabled={deleteMut.isLoading}
       >
+        {deleteMut.isLoading && <span className="loading" />}
         Delete
       </button>
 
@@ -48,7 +49,7 @@ export default function DeleteGroupButton({
           <button
             type="button"
             onClick={handleDelete}
-            className="btn-warning btn"
+            className="btn btn-warning"
           >
             Yes
           </button>

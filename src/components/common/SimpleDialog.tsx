@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import { Dialog, type DialogProps } from "@headlessui/react";
+import clsx from "clsx";
 
 export type SimpleDialogProps = Omit<
   DialogProps<"div">,
@@ -9,6 +10,10 @@ export type SimpleDialogProps = Omit<
     isOpen: boolean | undefined;
 
     title?: React.ReactNode;
+    /**
+     * Additional classs for the panel container `Dialog.Panel`
+     */
+    panelClassName?: string;
 
     /**
      * Any arbitrary content to render behind the dialog.
@@ -23,7 +28,10 @@ export type SimpleDialogProps = Omit<
  */
 export default forwardRef<typeof Dialog, SimpleDialogProps>(
   // eslint-disable-next-line prefer-arrow-callback
-  function SimpleDialog({ isOpen, title, backdrop, children, ...props }, ref) {
+  function SimpleDialog(
+    { isOpen, title, backdrop, panelClassName, children, ...props },
+    ref,
+  ) {
     return (
       // @ts-expect-error spread error idk, not worth time resolving
       <Dialog open={isOpen} className="relative z-40" {...props} ref={ref}>
@@ -33,7 +41,12 @@ export default forwardRef<typeof Dialog, SimpleDialogProps>(
         <div className="fixed inset-0 overflow-y-auto">
           {/* Container to center the panel */}
           <div className="flex min-h-full items-center justify-center">
-            <Dialog.Panel className="w-80 rounded-2xl bg-base-100 p-6 shadow-lg">
+            <Dialog.Panel
+              className={clsx(
+                "w-80 rounded-2xl bg-base-100 p-6 shadow-lg",
+                panelClassName,
+              )}
+            >
               {title && (
                 <Dialog.Title as="h3" className="text-xl font-semibold">
                   {title}
@@ -46,5 +59,5 @@ export default forwardRef<typeof Dialog, SimpleDialogProps>(
         </div>
       </Dialog>
     );
-  }
+  },
 );

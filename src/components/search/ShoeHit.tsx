@@ -10,10 +10,9 @@ type HitShoe = AlgoliaHit<
   Pick<GoatShoe, (typeof attributesToRetrieve)[number]>
 >;
 
-export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
+export default function ShoeHit({ hit }: { hit: HitShoe }) {
   return (
     <ShoeCard shoe={hit}>
-      {/* TODO: change link color back to primary */}
       <div className="group/name relative">
         <h2 className="link-hover link-secondary link card-title">
           <Link href={`/shoes/${hit.objectID}`}>{hit.name}</Link>
@@ -31,7 +30,7 @@ export default function SearchShoeHit({ hit }: { hit: HitShoe }) {
               "pointer-events-none group-hover/name:pointer-events-auto",
               // https://tailwindcss.com/blog/multi-line-truncation-with-tailwindcss-line-clamp
               "line-clamp-4",
-              "opacity-0 transition-opacity delay-100 group-hover/name:opacity-100 group-hover/name:delay-700"
+              "opacity-0 transition-opacity delay-100 group-hover/name:opacity-100 group-hover/name:delay-700",
             )}
             // eslint-disable-next-line react/no-danger
             dangerouslySetInnerHTML={{ __html: hit.story_html }}

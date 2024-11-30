@@ -31,7 +31,7 @@ const ManageGroupChatPage: NextPage<
   // Prefetched in GSSP
   const { data: _groupChat } = api.chat.infoById.useQuery(
     { id },
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false },
   );
   const groupChat = _groupChat as GroupChatInfo;
 
@@ -43,7 +43,7 @@ const ManageGroupChatPage: NextPage<
 
   const title = `${groupChat.name} - goaTinder`;
 
-  const ManageButton = iAmCreator ? DeleteGroupButton : LeaveGroupButton;
+  const ManageGroupButton = iAmCreator ? DeleteGroupButton : LeaveGroupButton;
 
   const utils = api.useContext();
 
@@ -62,15 +62,17 @@ const ManageGroupChatPage: NextPage<
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="container mt-2 max-w-lg space-y-4 px-2">
+      <main className="container mt-3 max-w-lg space-y-4 px-2">
         <div className="flex items-center gap-x-2">
           <Link
             href={`/chat/${id}`}
-            className="btn-primary btn-sm btn-circle btn"
+            className="btn btn-circle btn-primary btn-sm"
           >
             <MdArrowBack />
             <span className="sr-only">Back</span>
           </Link>
+
+          {/* TODO: gc editable image/picture */}
 
           <EditableName
             canEdit={iAmCreator}
@@ -94,12 +96,15 @@ const ManageGroupChatPage: NextPage<
           Group created by{" "}
           <Link
             href={`/profile/${groupChat.creator.id}`}
-            className="link-hover link"
+            className="link-hover link font-semibold"
           >
             {groupChat.creator.name}
           </Link>{" "}
           on{" "}
-          <time dateTime={groupChat.createdAt.toISOString()}>
+          <time
+            dateTime={groupChat.createdAt.toISOString()}
+            className="font-semibold"
+          >
             {groupChat.createdAt.toDateString()}
           </time>
         </p>
@@ -121,7 +126,7 @@ const ManageGroupChatPage: NextPage<
               <li>
                 <p className="p-4 text-center">
                   {
-                    /* it should be impossible for group to have no members & user isn't creator */
+                    /* it is impossible for group to have no members & user to NOT be the creator */
                     iAmCreator
                       ? "No members yet, add some!"
                       : "You're the only member"
@@ -142,7 +147,7 @@ const ManageGroupChatPage: NextPage<
           </MembersList>
         </section>
 
-        <ManageButton className="btn-error btn mt-8" id={groupChat.id} />
+        <ManageGroupButton className="btn btn-error mt-8" id={groupChat.id} />
       </main>
     </>
   );

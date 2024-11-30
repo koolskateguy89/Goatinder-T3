@@ -79,10 +79,10 @@ const SignInPage: AppPage<
       <Head>
         <title>Sign in to goaTinder</title>
       </Head>
-      <main className="flex h-screen !h-[100dvh] flex-col items-center justify-center gap-y-8">
+      <main className="flex h-dvh flex-col items-center justify-center gap-y-8">
         <Link
           href="/"
-          className="btn-ghost btn text-3xl normal-case md:btn-lg md:-mt-10 md:!text-4xl"
+          className="btn btn-ghost text-3xl normal-case md:btn-lg md:-mt-10 md:!text-4xl"
         >
           <Brand />
         </Link>
@@ -97,7 +97,7 @@ const SignInPage: AppPage<
                   type="button"
                   onClick={() => signIn(provider.id, { callbackUrl })}
                   // gradient border effect: https://www.youtube.com/shorts/qzZ0iQKoUQ0
-                  className="btn-outline btn relative text-base normal-case before:absolute before:-inset-[1px] before:bg-gradient-to-br before:from-primary/40 before:via-transparent before:to-primary/40 before:opacity-0 before:[border-radius:inherit] hover:before:opacity-100 dark:hover:bg-white/5 dark:hover:text-base-content"
+                  className="btn btn-outline relative text-base normal-case before:absolute before:-inset-[1px] before:bg-gradient-to-br before:from-primary/40 before:via-transparent before:to-primary/40 before:opacity-0 before:[border-radius:inherit] hover:before:opacity-100 dark:hover:bg-white/5 dark:hover:text-base-content"
                 >
                   <div className="absolute inset-[1px] flex items-center justify-center gap-3 bg-inherit [border-radius:inherit]">
                     {icons[provider.id] && (
@@ -138,7 +138,7 @@ export const getServerSideProps = (async (context) => {
   const callbackUrl = `/welcome${
     context.query.callbackUrl
       ? `?callbackUrl=${encodeURIComponent(
-          context.query.callbackUrl as string
+          context.query.callbackUrl as string,
         )}`
       : ""
   }`;

@@ -1,7 +1,6 @@
 import { useId, useState } from "react";
 import { useSession } from "next-auth/react";
 import { TRPCClientError } from "@trpc/client";
-import clsx from "clsx";
 import toast from "react-hot-toast";
 
 import { api, type RouterOutputs } from "utils/api";
@@ -52,16 +51,16 @@ export default function NewCommentForm({
           style: {
             minWidth: "200px",
           },
-        }
+        },
       );
 
       setContent("");
       onCommentAdded(newComment);
     } catch (error) {
       if (error instanceof TRPCClientError) {
-        console.log("TRPCClientError: ", error);
+        console.log("TRPCClientError:", error);
       } else if (error instanceof Error) {
-        console.log("Error: ", error);
+        console.log("Error:", error);
       } else {
         // not sure of the type
         console.log("unknown error =", error);
@@ -84,7 +83,7 @@ export default function NewCommentForm({
         </label>
         <textarea
           id={textAreaId}
-          className="textarea-bordered textarea h-24 dark:placeholder:opacity-60"
+          className="textarea textarea-bordered h-24 dark:placeholder:opacity-60"
           placeholder="An opinion is like a nose, everyone has one."
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -95,15 +94,16 @@ export default function NewCommentForm({
       <div className="flex justify-end">
         <button
           type="submit"
-          className={clsx("btn-primary btn", addingComment && "loading")}
+          className="btn btn-primary"
           disabled={
             !signedIn || // not signed in
-            content.trim().length === 0 || // only entered whitespace
+            loading || // comments haven't loaded yet, so don't allow adding comment
             addingComment || // already adding comment
-            loading // comments haven't loaded yet, so don't allow adding comment
+            content.trim().length === 0 // only entered whitespace
           }
         >
-          {addingComment ? "Posting..." : "Post"}
+          {addingComment && <span className="loading" />}
+          Post
         </button>
       </div>
     </form>

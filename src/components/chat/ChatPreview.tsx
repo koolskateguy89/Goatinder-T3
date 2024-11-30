@@ -5,7 +5,7 @@ import Avatar from "components/Avatar";
 
 export type ChatPreviewProps = Pick<User, "name" | "image"> & {
   id: string;
-  mostRecentMessage: string;
+  mostRecentMessage: React.ReactNode;
 };
 
 export default function ChatPreview({
@@ -29,8 +29,7 @@ export default function ChatPreview({
       />
       <div>
         <div className="text-base font-semibold md:text-xl">{name}</div>
-        {/* TODO: limit length and add ellipsis */}
-        <div className="opacity-70">{mostRecentMessage}</div>
+        <div className="line-clamp-2 opacity-70">{mostRecentMessage}</div>
       </div>
     </Link>
   );

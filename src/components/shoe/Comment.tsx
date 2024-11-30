@@ -59,7 +59,7 @@ export default function Comment({ comment, onDelete, onVote }: CommentProps) {
             {author.name}
           </Link>
           {isMyComment && (
-            <span className="badge-primary badge badge-sm">you</span>
+            <span className="badge badge-primary badge-sm">you</span>
           )}
         </div>
       }

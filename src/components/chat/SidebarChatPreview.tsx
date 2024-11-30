@@ -7,7 +7,7 @@ import Avatar from "components/Avatar";
 
 export type SidebarChatPreviewProps = Pick<User, "name" | "image"> & {
   id: string;
-  mostRecentMessage: string;
+  mostRecentMessage: React.ReactNode;
 };
 
 export default function SidebarChatPreview({
@@ -26,7 +26,7 @@ export default function SidebarChatPreview({
         "rounded-box flex items-center gap-x-4 border-2 px-6 py-4 transition-colors",
         isActive
           ? "bg-base-content text-base-100"
-          : "border-base-300 bg-base-200"
+          : "border-base-300 bg-base-200",
       )}
     >
       <Avatar
@@ -39,7 +39,9 @@ export default function SidebarChatPreview({
       />
       <div>
         <div className="text-lg font-semibold">{name}</div>
-        <div className="text-sm opacity-70">{mostRecentMessage}</div>
+        <div className="line-clamp-2 text-sm opacity-70">
+          {mostRecentMessage}
+        </div>
       </div>
     </Link>
   );

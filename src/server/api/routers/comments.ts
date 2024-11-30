@@ -13,7 +13,7 @@ export const commentsRouter = createTRPCRouter({
     .input(
       z.object({
         shoeId: z.string().min(1),
-      })
+      }),
     )
     .query(async ({ ctx, input }) => {
       const { shoeId } = input;
@@ -48,7 +48,7 @@ export const commentsRouter = createTRPCRouter({
       z.object({
         shoeId: z.string().min(1),
         content: z.string().trim().min(1),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { shoeId, content } = input;
@@ -104,7 +104,7 @@ export const commentsRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string().cuid(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { id } = input;
@@ -122,7 +122,7 @@ export const commentsRouter = createTRPCRouter({
         id: z.string().cuid(),
         vote: z.enum(["up", "down"]),
         remove: z.boolean(),
-      })
+      }),
     )
     .mutation(async ({ ctx, input }) => {
       const { id, vote, remove } = input;

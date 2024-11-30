@@ -52,7 +52,7 @@ export default function CustomPagination(props: UsePaginationProps) {
               onClick={() => refine(page)}
               className={clsx(
                 "btn join-item max-md:btn-sm",
-                isCurrentPage && canRefine && "btn-secondary"
+                isCurrentPage && canRefine && "btn-secondary",
               )}
               aria-label={`Page ${page + 1}`}
             >

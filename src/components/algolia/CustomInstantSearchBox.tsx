@@ -1,13 +1,13 @@
 import { useEffect } from "react";
 import { useDebouncedState } from "@mantine/hooks";
-import clsx from "clsx";
 import { MdClose } from "react-icons/md";
-import { CgSpinner } from "react-icons/cg";
 import {
   type UseSearchBoxProps,
   useSearchBox,
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
+
+import InputLoadingSpinner from "components/common/InputLoadingSpinner";
 
 export type CustomSearchBoxProps = UseSearchBoxProps & {
   placeholder: string;
@@ -24,7 +24,7 @@ export default function CustomInstantSearchBox({
 
   const [debouncedQuery, setDebouncedQuery] = useDebouncedState(
     query,
-    debounceDelay
+    debounceDelay,
   );
 
   useEffect(() => {
@@ -41,27 +41,16 @@ export default function CustomInstantSearchBox({
           placeholder={placeholder}
           defaultValue={query}
           onChange={(event) => setDebouncedQuery(event.currentTarget.value)}
-          className="input-bordered input join-item dark:placeholder:opacity-60"
+          className="input join-item input-bordered dark:placeholder:opacity-60"
           aria-label="Search"
         />
 
-        {/* can't use before/after on input so using additional markup */}
-        <div
-          className={clsx(
-            "relative opacity-0 transition-opacity",
-            loadingOrStalled && "motion-safe:opacity-100"
-          )}
-          aria-hidden
-        >
-          <div className="absolute -left-4.5 translate-y-full">
-            <CgSpinner className="motion-safe:animate-spin" />
-          </div>
-        </div>
+        <InputLoadingSpinner loading={loadingOrStalled} className="-left-4.5" />
 
         <button
           type="reset"
           title="Reset refinement"
-          className="btn-secondary btn-square join-item btn"
+          className="btn btn-square btn-secondary join-item"
         >
           <MdClose />
         </button>

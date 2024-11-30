@@ -63,7 +63,7 @@ const EditProfilePage: NextPage<
           }}
         />
 
-        <Link href=".." className="btn-primary btn">
+        <Link href=".." className="btn btn-primary">
           Back to Profile
         </Link>
 
@@ -74,11 +74,11 @@ const EditProfilePage: NextPage<
               name="bio"
               value={newBio}
               onChange={(e) => setNewBio(e.target.value)}
-              className="textarea-bordered textarea h-32 w-full md:h-52"
+              className="textarea textarea-bordered h-32 w-full md:h-52"
             />
             <button
               type="submit"
-              className="btn-primary btn-block btn"
+              className="btn btn-primary btn-block"
               disabled={
                 !newBio.trim() ||
                 newBio.trim() === currentBio.current ||

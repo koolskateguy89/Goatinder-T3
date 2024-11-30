@@ -7,11 +7,14 @@ import { createSSGHelpers } from "utils/ssg";
 import { api } from "utils/api";
 import ChatPreview from "components/chat/ChatPreview";
 import NewChatButton from "components/chat/NewChatButton";
+import ChatList from "components/chat/list/ChatList";
 
 export default function ChatsPage() {
   // prefetched in getServerSideProps
   // is already sorted by most recent message
   const { data: chatInfos } = api.chat.getAllInfo.useQuery();
+
+  // FIXME: sort out using ChatList
 
   return (
     <>
@@ -19,31 +22,33 @@ export default function ChatsPage() {
         <title>Chat - goaTinder</title>
       </Head>
       <main className="container mt-4 flex flex-col items-center px-4">
-        <ol className="space-y-4">
-          <li>
-            <NewChatButton className="btn-primary btn-block btn" />
-          </li>
-          {chatInfos ? (
-            chatInfos.length ? (
-              chatInfos.map((chatInfo) => (
-                <li key={chatInfo.id}>
-                  <ChatPreview
-                    id={chatInfo.id}
-                    name={chatInfo.name}
-                    image={chatInfo.image}
-                    mostRecentMessage={
-                      chatInfo.mostRecentMessage?.content ?? "-"
-                    }
-                  />
-                </li>
-              ))
+        <div>
+          <NewChatButton className="btn btn-primary btn-block mb-4" />
+          {/* <ChatList chats={chatInfos} component={ChatPreview} /> */}
+
+          <ol className="space-y-4">
+            {chatInfos ? (
+              chatInfos.length ? (
+                chatInfos.map((chatInfo) => (
+                  <li key={chatInfo.id}>
+                    <ChatPreview
+                      id={chatInfo.id}
+                      name={chatInfo.name}
+                      image={chatInfo.image}
+                      mostRecentMessage={
+                        chatInfo.mostRecentMessage?.content ?? "-"
+                      }
+                    />
+                  </li>
+                ))
+              ) : (
+                <li>No chats, make some friends</li>
+              )
             ) : (
-              <li>No chats, make some friends</li>
-            )
-          ) : (
-            <li>Loading...</li>
-          )}
-        </ol>
+              <li>Loading...</li>
+            )}
+          </ol>
+        </div>
       </main>
     </>
   );

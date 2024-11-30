@@ -6,9 +6,9 @@ import { MdOutlineLightMode, MdOutlineDarkMode } from "react-icons/md";
 export default function ThemeSwitcher() {
   const { resolvedTheme, setTheme } = useTheme();
 
-  const [mounted, setMounded] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounded(true), []);
+  useEffect(() => setMounted(true), []);
 
   // can't just check mounted inside button because then it will
   // show dark icon when reloading in light mode
@@ -28,7 +28,7 @@ export default function ThemeSwitcher() {
       onClick={handleClick}
       className={clsx(
         "navbar-icon-btn swap grid motion-safe:swap-rotate",
-        resolvedTheme === "light" && "swap-active"
+        resolvedTheme === "light" && "swap-active",
       )}
       aria-label="Toggle Theme"
     >

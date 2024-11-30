@@ -8,7 +8,7 @@ export const userRouter = createTRPCRouter({
     .input(
       z.object({
         bio: z.string().trim().min(1),
-      }) satisfies z.ZodType<Omit<Profile, "userId">>
+      }) satisfies z.ZodType<Omit<Profile, "userId">>,
     )
     .mutation(async ({ ctx, input }) => {
       const { bio } = input;

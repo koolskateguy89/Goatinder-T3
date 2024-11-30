@@ -37,8 +37,8 @@ export default function ScoreDisplay({
         : "Upvote"
       : "You must be signed in to vote"
     : userUpvoted
-    ? "Upvoted by you"
-    : undefined;
+      ? "Upvoted by you"
+      : undefined;
 
   const downvoteButtonTitle = interactive
     ? signedIn
@@ -47,8 +47,8 @@ export default function ScoreDisplay({
         : "Downvote"
       : "You must be signed in to vote"
     : userDownvoted
-    ? "Downvoted by you"
-    : undefined;
+      ? "Downvoted by you"
+      : undefined;
 
   return (
     <div className="-mr-2 flex w-12 flex-col items-center gap-y-0.5 text-lg">
@@ -67,7 +67,7 @@ export default function ScoreDisplay({
           <BiUpvote
             className={clsx(
               "text-gray-500",
-              interactive && signedIn && "hover:text-green-500"
+              interactive && signedIn && "hover:text-green-500",
             )}
           />
         )}
@@ -92,7 +92,7 @@ export default function ScoreDisplay({
           <BiDownvote
             className={clsx(
               "text-gray-500",
-              interactive && signedIn && "hover:text-red-500"
+              interactive && signedIn && "hover:text-red-500",
             )}
           />
         )}

@@ -1,6 +1,6 @@
 import type { InferGetServerSidePropsType } from "next";
 import { useSession } from "next-auth/react";
-import { MdClose, MdFavorite } from "react-icons/md";
+import { MdClose, MdFavorite, MdOpenInNew } from "react-icons/md";
 import { type ImmerReducer, useImmerReducer } from "use-immer";
 
 import { api } from "utils/api";
@@ -135,7 +135,7 @@ export default function Shoe({
           target="_blank"
           rel="noopener noreferrer"
         >
-          {goatShoe.name}
+          {goatShoe.name} <MdOpenInNew className="inline" />
         </a>
       </h1>
 
@@ -157,7 +157,7 @@ export default function Shoe({
           type="button"
           onClick={handleDislike}
           title={isSignedIn ? undefined : "Sign in to dislike"}
-          className="btn-error btn w-24 gap-1 disabled:btn-error"
+          className="btn btn-error w-24 gap-1 disabled:btn-error"
           disabled={!isSignedIn}
         >
           <span>
@@ -170,7 +170,7 @@ export default function Shoe({
           type="button"
           onClick={handleLike}
           title={isSignedIn ? undefined : "Sign in to like"}
-          className="btn-success btn w-24 gap-1 disabled:btn-success"
+          className="btn btn-success w-24 gap-1 disabled:btn-success"
           disabled={!isSignedIn}
         >
           <span>

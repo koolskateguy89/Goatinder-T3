@@ -1,11 +1,11 @@
-import clsx from "clsx";
 import { MdClose, MdSearch } from "react-icons/md";
-import { CgSpinner } from "react-icons/cg";
 import {
   type UseSearchBoxProps,
   useSearchBox,
   useInstantSearch,
 } from "react-instantsearch-hooks-web";
+
+import InputLoadingSpinner from "components/common/InputLoadingSpinner";
 
 export type CustomSearchBoxProps = UseSearchBoxProps & {
   placeholder: string;
@@ -39,28 +39,17 @@ export default function CustomSearchBox({
           name="query"
           placeholder={placeholder}
           defaultValue={algoliaQuery}
-          className="input-bordered input join-item dark:placeholder:opacity-60"
+          className="input join-item input-bordered dark:placeholder:opacity-60"
           aria-label="Search"
           required
         />
 
-        {/* can't use before/after on input so using additional markup */}
-        <div
-          className={clsx(
-            "relative opacity-0 transition-opacity",
-            loadingOrStalled && "motion-safe:opacity-100"
-          )}
-          aria-hidden
-        >
-          <div className="absolute -left-4.5 translate-y-full">
-            <CgSpinner className="motion-safe:animate-spin" />
-          </div>
-        </div>
+        <InputLoadingSpinner loading={loadingOrStalled} className="-left-4.5" />
 
         <button
           type="submit"
           title="Search"
-          className="btn-primary btn-square join-item btn"
+          className="btn btn-square btn-primary join-item"
           disabled={loadingOrStalled}
         >
           <MdSearch />
@@ -68,7 +57,7 @@ export default function CustomSearchBox({
         <button
           type="reset"
           title="Reset the search"
-          className="btn-secondary btn-square join-item btn"
+          className="btn btn-square btn-secondary join-item"
         >
           <MdClose />
         </button>

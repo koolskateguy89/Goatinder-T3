@@ -29,7 +29,7 @@ const WelcomePage: NextPage<
     e.preventDefault();
 
     const bioElem = e.currentTarget.elements.namedItem(
-      bioId
+      bioId,
     ) as HTMLTextAreaElement;
 
     const bio = bioElem.value.trim();
@@ -52,7 +52,7 @@ const WelcomePage: NextPage<
             ? `Profile created, redirecting to ${callbackUrl} in 3 seconds...`
             : "Profile created!",
           error: "Failed to create profile",
-        }
+        },
       )
       .then(() => {
         if (callbackUrl)
@@ -80,7 +80,7 @@ const WelcomePage: NextPage<
             </label>
             <textarea
               id={bioId}
-              className="textarea-bordered textarea h-32 w-full placeholder:text-base-content/90 md:h-52"
+              className="textarea textarea-bordered h-32 w-full placeholder:text-base-content/90 md:h-52"
               placeholder={
                 profileExists
                   ? "You already have a bio, check your profile ;)"
@@ -92,7 +92,7 @@ const WelcomePage: NextPage<
           </div>
           <button
             type="submit"
-            className="btn-primary btn-block btn mt-4"
+            className="btn btn-primary btn-block mt-4"
             disabled={!canAddBio}
           >
             {profileExists

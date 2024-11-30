@@ -23,7 +23,7 @@ type CommentsAction =
 
 const commentsReducer: ImmerReducer<CommentsState, CommentsAction> = (
   draft,
-  action
+  action,
 ) => {
   switch (action.type) {
     case "set":
@@ -36,12 +36,12 @@ const commentsReducer: ImmerReducer<CommentsState, CommentsAction> = (
       break;
     case "delete":
       draft.comments = draft.comments.filter(
-        (comment) => comment.id !== action.payload
+        (comment) => comment.id !== action.payload,
       );
       break;
     case "vote": {
       const comment = draft.comments.find(
-        (comm) => comm.id === action.payload.id
+        (comm) => comm.id === action.payload.id,
       );
 
       // should never happen
@@ -93,7 +93,7 @@ const commentsReducer: ImmerReducer<CommentsState, CommentsAction> = (
             b.datePosted.getTime() - a.datePosted.getTime() || b.score - a.score
           );
         }
-        // sort by date, then score (best first)
+        // "oldest" => sort by date, then score (best first)
         return (
           a.datePosted.getTime() - b.datePosted.getTime() || b.score - a.score
         );
@@ -116,7 +116,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
       // want to implement optimistic updates, but idrk how to with react-query
       // _optimisticResults: "optimistic",
       // but tbh I've kinda already implemented optimistic updates in the reducer
-    }
+    },
   );
 
   const [commentsState, dispatchComments] = useImmerReducer(commentsReducer, {
@@ -179,7 +179,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
             onClick={() => handleSortOrderChange("best")}
             className={clsx(
               "tab tab-bordered",
-              commentsState.sort === "best" && "tab-active"
+              commentsState.sort === "best" && "tab-active",
             )}
             disabled={commentsState.comments.length === 0}
           >
@@ -190,7 +190,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
             onClick={() => handleSortOrderChange("newest")}
             className={clsx(
               "tab tab-bordered",
-              commentsState.sort === "newest" && "tab-active"
+              commentsState.sort === "newest" && "tab-active",
             )}
             disabled={commentsState.comments.length === 0}
           >
@@ -201,7 +201,7 @@ export default function CommentSection({ shoeId }: CommentSectionProps) {
             onClick={() => handleSortOrderChange("oldest")}
             className={clsx(
               "tab tab-bordered",
-              commentsState.sort === "oldest" && "tab-active"
+              commentsState.sort === "oldest" && "tab-active",
             )}
             disabled={commentsState.comments.length === 0}
           >

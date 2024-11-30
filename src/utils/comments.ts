@@ -59,7 +59,7 @@ export function scoreStateInclude(userId?: string) {
  * @returns
  */
 export function toScoreStateComment<TComment extends ScoreStateCommentBase>(
-  comment: TComment
+  comment: TComment,
 ) {
   const { upvoters, downvoters, _count, ...rest } = comment;
 

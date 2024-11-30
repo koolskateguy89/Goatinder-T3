@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import clsx from "clsx";
 
 import { api } from "utils/api";
 import SimpleTransitionDialog from "components/common/SimpleTransitionDialog";
@@ -32,13 +31,14 @@ export default function LeaveGroupButton({
     <>
       <button
         type="button"
-        className={clsx(className, leaveMut.isLoading && "loading")}
+        className={className}
         onClick={openModal}
         disabled={leaveMut.isLoading}
       >
+        {leaveMut.isLoading && <span className="loading" />}
         Leave
       </button>
-      todo transition (dialog)
+
       <SimpleTransitionDialog
         isOpen={isOpen}
         closeModal={closeModal}
@@ -48,7 +48,7 @@ export default function LeaveGroupButton({
           <button
             type="button"
             onClick={handleLeave}
-            className="btn-warning btn"
+            className="btn btn-warning"
           >
             Yes
           </button>

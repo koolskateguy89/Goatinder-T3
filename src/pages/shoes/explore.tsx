@@ -34,7 +34,7 @@ function BackToTop() {
         className={clsx(
           "fixed bottom-4 max-lg:left-1/2 max-lg:-translate-x-1/2 lg:right-4",
           "transition-all ease-in-out",
-          !visible && "invisible opacity-0"
+          !visible && "invisible opacity-0",
         )}
       >
         <a href="#top" className="btn btn-primary max-lg:btn-circle">

@@ -9,6 +9,7 @@ export interface SimpleTransitionDialogProps {
   isOpen: boolean;
   closeModal: () => void;
   title?: SimpleDialogProps["title"];
+  panelClassName?: SimpleDialogProps["panelClassName"];
   children: React.ReactNode;
 }
 
@@ -19,6 +20,7 @@ export default function SimpleTransitionDialog({
   isOpen,
   closeModal,
   title,
+  panelClassName,
   children,
 }: SimpleTransitionDialogProps) {
   return (
@@ -28,6 +30,7 @@ export default function SimpleTransitionDialog({
         isOpen={undefined}
         onClose={closeModal}
         title={title}
+        panelClassName={panelClassName}
         backdrop={
           // The backdrop, rendered as a fixed sibling to the panel container
           <Transition.Child

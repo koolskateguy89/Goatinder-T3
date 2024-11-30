@@ -10,10 +10,9 @@ import { authOptions } from "pages/api/auth/[...nextauth]";
 import { fullClient } from "utils/algolia";
 import type { GoatShoe } from "types/goat-shoe";
 import { prisma } from "server/db";
+import BackButton from "components/common/BackButton";
 import CommentSection from "components/shoe/CommentSection";
 import Shoe from "components/shoe/Shoe";
-
-// TODO: back button to go back to search results/explore page
 
 const ShoePage: NextPage<
   InferGetServerSidePropsType<typeof getServerSideProps>
@@ -29,6 +28,8 @@ const ShoePage: NextPage<
         <title>{title}</title>
       </Head>
       <main className="container flex flex-col items-center gap-4 py-4 max-lg:px-4 lg:flex-row lg:items-start lg:justify-center">
+        <BackButton className="fixed left-4 top-20" />
+
         <div className="top-20 lg:sticky">
           <Shoe
             goatShoe={goatShoe}
