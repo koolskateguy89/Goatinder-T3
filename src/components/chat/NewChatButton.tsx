@@ -1,7 +1,6 @@
 import { useId, useState } from "react";
 import { useRouter } from "next/router";
 import { Tab } from "@headlessui/react";
-import clsx from "clsx";
 
 import { api } from "utils/api";
 import SimpleTransitionDialog from "components/common/SimpleTransitionDialog";
@@ -50,7 +49,7 @@ function PrivateMessagePanel({
 
       <button
         type="submit"
-        className="btn btn-primary"
+        className="btn btn-primary btn-block"
         disabled={!users || selectedUserId === SELECT_A_USER}
       >
         Message
@@ -70,7 +69,7 @@ function NewGroupChatPanel({
   const nameId = useId();
   const imageId = useId();
 
-  const [gcName, setGcName] = useState("New Group Chat");
+  const [gcName, setGcName] = useState("");
   const [gcImage, setGcImage] = useState("");
 
   const newGroupChatMut = api.chat.group.createNew.useMutation();
@@ -84,12 +83,17 @@ function NewGroupChatPanel({
     if (!name) return;
     // if (!image) return;
 
-    const { id } = await newGroupChatMut.mutateAsync({ name, image });
-    await onNewGroupChat(id);
+    // FIXME handle when image is not valid url
+    // server validates that image URL is valid
+    try {
+      const { id } = await newGroupChatMut.mutateAsync({ name, image });
+      await onNewGroupChat(id);
+    } catch (error) {
+      console.log("error:", error);
+    }
   };
 
   return (
-    // FIXME: submit button loading not exactly how we want it
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="form-control">
         <label htmlFor={nameId} className="label">
@@ -121,16 +125,13 @@ function NewGroupChatPanel({
 
       <button
         type="submit"
-        className={clsx(
-          "btn btn-primary",
-          newGroupChatMut.isLoading && "loading",
-        )}
+        className="btn btn-primary btn-block"
         disabled={
           newGroupChatMut.isLoading || gcName.trim().length === 0
           // || gcImage.trim().length === 0
         }
       >
-        {!newGroupChatMut.isLoading && "Create"}
+        {newGroupChatMut.isLoading ? <span className="loading" /> : "Create"}
       </button>
     </form>
   );

@@ -29,15 +29,15 @@ export default function DeleteGroupButton({
   };
 
   return (
-    // FIXME: delete button loading not exactly how we want it
     <>
       <button
         type="button"
-        className={clsx(className, deleteMut.isLoading && "loading")}
+        className={className}
         onClick={openModal}
         disabled={deleteMut.isLoading}
       >
-        {!deleteMut.isLoading && "Delete"}
+        {deleteMut.isLoading && <span className="loading" />}
+        Delete
       </button>
 
       <SimpleTransitionDialog
