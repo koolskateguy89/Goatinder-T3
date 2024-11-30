@@ -13,3 +13,10 @@ This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3
 - [Prisma](https://prisma.io)
 - [Tailwind CSS](https://tailwindcss.com)
 - [tRPC](https://trpc.io)
+
+## TODO?
+
+(Based on #16)
+- [ ] daisyui 4.0.0?
+- [ ] headlessui 2.0.0?
+- [ ] next 15? - idk i tried and it just wasn't working
