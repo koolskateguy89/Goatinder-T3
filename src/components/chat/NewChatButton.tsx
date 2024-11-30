@@ -1,6 +1,8 @@
 import { useId, useState } from "react";
 import { useRouter } from "next/router";
 import { Tab } from "@headlessui/react";
+import { TRPCClientError } from "@trpc/client";
+import toast from "react-hot-toast";
 
 import { api } from "utils/api";
 import SimpleTransitionDialog from "components/common/SimpleTransitionDialog";
@@ -83,13 +85,27 @@ function NewGroupChatPanel({
     if (!name) return;
     // if (!image) return;
 
-    // FIXME handle when image is not valid url
-    // server validates that image URL is valid
     try {
-      const { id } = await newGroupChatMut.mutateAsync({ name, image });
+      // Can fail if image is not a valid URL
+      const { id } = await toast.promise(
+        newGroupChatMut.mutateAsync({ name, image }),
+        {
+          loading: "Creating group chat...",
+          success: "Group chat created",
+          error: "Failed to create group chat",
+        },
+        {
+          id: "create-new-group-chat",
+          style: {
+            minWidth: "260px",
+          },
+        },
+      );
       await onNewGroupChat(id);
     } catch (error) {
-      console.log("error:", error);
+      if (error instanceof TRPCClientError) {
+        console.log("TRPCClientError:", error);
+      }
     }
   };
 
@@ -131,7 +147,8 @@ function NewGroupChatPanel({
           // || gcImage.trim().length === 0
         }
       >
-        {newGroupChatMut.isLoading ? <span className="loading" /> : "Create"}
+        {newGroupChatMut.isLoading && <span className="loading" />}
+        Create
       </button>
     </form>
   );

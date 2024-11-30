@@ -96,12 +96,15 @@ const ManageGroupChatPage: NextPage<
           Group created by{" "}
           <Link
             href={`/profile/${groupChat.creator.id}`}
-            className="link-hover link"
+            className="link-hover link font-semibold"
           >
             {groupChat.creator.name}
           </Link>{" "}
           on{" "}
-          <time dateTime={groupChat.createdAt.toISOString()}>
+          <time
+            dateTime={groupChat.createdAt.toISOString()}
+            className="font-semibold"
+          >
             {groupChat.createdAt.toDateString()}
           </time>
         </p>
